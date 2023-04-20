@@ -118,7 +118,7 @@
           </execution>
         </executions>
         <groupId>org.apache.maven.plugins</groupId>
-        <version>3.6.2</version>
+        <version>3.8.1</version>
       </plugin>
     </plugins>
   </build>
@@ -127,13 +127,13 @@
       <artifactId>maven-plugin-api</artifactId>
       <groupId>org.apache.maven</groupId>
       <scope>provided</scope>
-      <version>3.9.0</version>
+      <version>3.9.1</version>
     </dependency>
     <dependency>
       <artifactId>maven-plugin-annotations</artifactId>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <scope>provided</scope>
-      <version>3.7.0</version>
+      <version>3.8.1</version>
     </dependency>
     <dependency>
       <artifactId>plexus-utils</artifactId>
@@ -190,7 +190,7 @@
               </execution>
             </executions>
             <groupId>org.apache.maven.plugins</groupId>
-            <version>3.2.2</version>
+            <version>3.5.1</version>
           </plugin>
         </plugins>
       </build>
