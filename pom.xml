@@ -161,6 +161,9 @@
       <plugin>
         <artifactId>jacoco-maven-plugin</artifactId>
         <configuration>
+          <excludes>
+            <exclude>uk/bot_by/maven_plugin/ijhttp_maven_plugin/HelpMojo.class</exclude>
+          </excludes>
         </configuration>
         <executions>
           <execution>
@@ -210,9 +213,6 @@
           <execution>
             <configuration>
               <dataFile>${project.build.directory}/jacoco.exec</dataFile>
-              <excludes>
-                <exclude>uk/bot_by/maven_plugin/ijhttp_maven_plugin/HelpMojo.class</exclude>
-              </excludes>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
