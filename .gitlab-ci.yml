@@ -9,9 +9,7 @@ include:
 cache:
   paths:
     - .m2/repository
-    - core/target
-    - logger/target
-    - json-logger/target
+    - target
 
 stages:
   - build
@@ -54,7 +52,7 @@ codacy:
 sast:
   stage: test
   variables:
-    SAST_EXCLUDED_PATHS: jacoco-resources,prism.js,src/it/**
+    SAST_EXCLUDED_PATHS: jacoco-resources,prism.js,src/it/simple-it
 
 spotbugs-sast:
   variables:
