@@ -120,6 +120,122 @@
         <groupId>org.apache.maven.plugins</groupId>
         <version>3.8.1</version>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <properties>
+            <groups>fast</groups>
+          </properties>
+        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.0.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.3.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <forkCount>1</forkCount>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+          <properties>
+            <groups>slow</groups>
+          </properties>
+          <reuseForks>false</reuseForks>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>3.0.0</version>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+        </configuration>
+        <executions>
+          <execution>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-ut.exec</destFile>
+            </configuration>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <id>prepare-agent</id>
+          </execution>
+          <execution>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+            <id>prepare-agent-integration</id>
+          </execution>
+          <execution>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco.exec</destFile>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <includes>
+                    <include>*.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </configuration>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <id>merge-results</id>
+            <phase>verify</phase>
+          </execution>
+          <execution>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco</outputDirectory>
+            </configuration>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <id>report</id>
+            <phase>verify</phase>
+          </execution>
+          <execution>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
+              <excludes>
+                <exclude>uk/bot_by/maven_plugin/ijhttp_maven_plugin/HelpMojo.class</exclude>
+              </excludes>
+              <rules>
+                <rule>
+                  <element>BUNDLE</element>
+                  <limits>
+                    <limit>
+                      <counter>COMPLEXITY</counter>
+                      <minimum>0.72</minimum>
+                      <value>COVEREDRATIO</value>
+                    </limit>
+                  </limits>
+                </rule>
+              </rules>
+            </configuration>
+            <goals>
+              <goal>check</goal>
+            </goals>
+            <id>check-coverage</id>
+            <phase>verify</phase>
+          </execution>
+        </executions>
+        <groupId>org.jacoco</groupId>
+        <version>0.8.9</version>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -152,6 +268,18 @@
       <groupId>org.junit.jupiter</groupId>
       <scope>test</scope>
       <version>${junit-jupiter.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>mockito-core</artifactId>
+      <groupId>org.mockito</groupId>
+      <scope>test</scope>
+      <version>5.3.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <groupId>org.mockito</groupId>
+      <scope>test</scope>
+      <version>5.3.0</version>
     </dependency>
   </dependencies>
   <groupId>uk.bot-by.maven-plugin</groupId>
