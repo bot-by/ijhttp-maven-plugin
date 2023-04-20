@@ -56,6 +56,10 @@ sast:
   variables:
     SAST_EXCLUDED_PATHS: jacoco-resources,prism.js
 
+spotbugs-sast:
+  variables:
+    SAST_JAVA_VERSION: 11
+
 release:
   stage: deploy
   script:
