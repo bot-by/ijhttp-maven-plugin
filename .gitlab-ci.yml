@@ -52,7 +52,7 @@ codacy:
 sast:
   stage: test
   variables:
-    SAST_EXCLUDED_PATHS: jacoco-resources,prism.js,src/it/simple-it
+    SAST_EXCLUDED_PATHS: "jacoco-resources, prism.js, src/it/simple-it"
 
 spotbugs-sast:
   variables:
