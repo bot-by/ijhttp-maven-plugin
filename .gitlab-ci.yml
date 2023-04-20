@@ -34,6 +34,18 @@ test:
         - target/surefire-reports/TEST-*.xml
         - target/failsafe-reports/TEST-*.xml
 
+sast:
+  stage: test
+  variables:
+    SAST_EXCLUDED_PATHS: jacoco-resources, prism.js
+
+spotbugs-sast:
+  variables:
+    MAVEN_REPO_PATH: '.m2/repository'
+    SAST_JAVA_VERSION: 11
+  before_script:
+    - rm -rf src/it
+
 coverage:
   stage: verify
   script:
@@ -48,17 +60,6 @@ codacy:
     - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r target/site/jacoco/jacoco.xml
   rules:
     - if: $CODACY_PROJECT_TOKEN && $CI_COMMIT_TAG == null
-
-sast:
-  stage: test
-  variables:
-    SAST_EXCLUDED_PATHS: jacoco-resources, prism.js
-
-spotbugs-sast:
-  variables:
-    SAST_JAVA_VERSION: 11
-  before_script:
-    - rm -rf src/it
 
 release:
   stage: deploy
