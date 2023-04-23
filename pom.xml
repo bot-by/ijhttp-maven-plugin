@@ -238,6 +238,10 @@
       </plugin>
     </plugins>
   </build>
+  <ciManagement>
+    <system>GitLab</system>
+    <url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/pipelines</url>
+  </ciManagement>
   <dependencies>
     <dependency>
       <artifactId>maven-plugin-api</artifactId>
@@ -282,8 +286,35 @@
       <version>5.3.1</version>
     </dependency>
   </dependencies>
+  <description></description>
+  <developers>
+    <developer>
+      <email>radio_rogal@posteo.pl</email>
+      <id>radio_rogal</id>
+      <name>Witalij Berdinskich</name>
+      <timezone>Europe/Kyiv</timezone>
+      <url>https://gitlab.com/radio_rogal</url>
+    </developer>
+  </developers>
   <groupId>uk.bot-by.maven-plugin</groupId>
+  <inceptionYear>2022</inceptionYear>
+  <issueManagement>
+    <system>GitLab</system>
+    <url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/issues</url>
+  </issueManagement>
+  <licenses>
+    <license>
+      <comments>See NOTICE for third-party licenses.</comments>
+      <distribution>repo</distribution>
+      <name>Apache 2</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
   <modelVersion>4.0.0</modelVersion>
+  <organization>
+    <name>bot-by</name>
+    <url>https://bot-by.uk</url>
+  </organization>
   <name>IntelliJ HTTP Client Maven Plugin</name>
   <!-- FIXME change it to the project's website -->
   <packaging>maven-plugin</packaging>
@@ -323,6 +354,56 @@
         </plugins>
       </build>
       <id>run-its</id>
+    </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>sign-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <groupId>org.simplify4u.plugins</groupId>
+            <version>1.0.1</version>
+          </plugin>
+          <plugin>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+              <serverId>ossrh</serverId>
+            </configuration>
+            <extensions>true</extensions>
+            <groupId>org.sonatype.plugins</groupId>
+            <version>1.6.13</version>
+          </plugin>
+        </plugins>
+      </build>
+      <id>sign-and-deploy</id>
+    </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-source-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <id>attach-sources</id>
+              </execution>
+            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <version>3.2.1</version>
+          </plugin>
+        </plugins>
+      </build>
+      <id>sources</id>
     </profile>
   </profiles>
   <properties>
