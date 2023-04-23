@@ -11,9 +11,11 @@ updates:
     schedule:
       interval: "weekly"
       day: "sunday"
+    target-branch: "develop"
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
       day: "sunday"
+    target-branch: "develop"
