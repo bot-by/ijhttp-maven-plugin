@@ -21,10 +21,10 @@
         <version>@project.version@</version>
         <executions>
           <execution>
-            <id>touch</id>
-            <phase>validate</phase>
+            <id>integration-test</id>
+            <phase>verify</phase>
             <goals>
-              <goal>touch</goal>
+              <goal>integration-test</goal>
             </goals>
           </execution>
         </executions>
