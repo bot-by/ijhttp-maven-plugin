@@ -114,7 +114,6 @@ public class IntegrationTestMojo extends AbstractMojo {
     try {
       var commandLine = getCommandLine();
 
-      System.out.println(commandLine.toString());
       executor.execute(commandLine);
     } catch (IOException exception) {
       throw new MojoExecutionException("I/O Error", exception);
