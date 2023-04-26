@@ -139,25 +139,49 @@ public class IntegrationTestMojo extends AbstractMojo {
   CommandLine getCommandLine() throws IOException {
     var commandLine = new CommandLine(EXECUTABLE);
 
-    if (nonNull(connectTimeout)) {
-      commandLine.addArgument(CONNECT_TIMEOUT).addArgument(connectTimeout.toString());
+    if (isNull(files)) {
+      throw new IllegalArgumentException("files are required");
     }
-    if (dockerMode) {
-      commandLine.addArgument(DOCKER_MODE);
-    }
-    if (nonNull(environmentFile)) {
-      commandLine.addArgument(ENV_FILE).addArgument(environmentFile.getCanonicalPath());
-    }
+    flags(commandLine);
+    logLevel(commandLine);
+    timeouts(commandLine);
+    environmentName(commandLine);
+    environment(commandLine);
+    privateEnvironment(commandLine);
+    requests(commandLine);
+
+    return commandLine;
+  }
+
+  private void environmentName(CommandLine commandLine) {
     if (nonNull(environmentName) && !environmentName.isBlank()) {
       commandLine.addArgument(ENVIRONMENT_NAME).addArgument(environmentName);
+    }
+  }
+
+  private void environment(CommandLine commandLine) throws IOException {
+    if (nonNull(environmentFile)) {
+      commandLine.addArgument(ENV_FILE).addArgument(environmentFile.getCanonicalPath());
     }
     if (nonNull(environmentVariables)) {
       environmentVariables.forEach(
           variable -> commandLine.addArgument(ENV_VARIABLES).addArgument(variable));
     }
+  }
+
+  private void flags(CommandLine commandLine) {
+    if (dockerMode) {
+      commandLine.addArgument(DOCKER_MODE);
+    }
     if (insecure) {
       commandLine.addArgument(INSECURE);
     }
+    if (report) {
+      commandLine.addArgument(REPORT);
+    }
+  }
+
+  private void logLevel(CommandLine commandLine) {
     switch (logLevel) {
       case HEADERS:
       case VERBOSE:
@@ -166,6 +190,9 @@ public class IntegrationTestMojo extends AbstractMojo {
       default:
         // do nothing
     }
+  }
+
+  private void privateEnvironment(CommandLine commandLine) throws IOException {
     if (nonNull(privateEnvironmentFile)) {
       commandLine.addArgument(PRIVATE_ENV_FILE)
           .addArgument(privateEnvironmentFile.getCanonicalPath());
@@ -174,20 +201,21 @@ public class IntegrationTestMojo extends AbstractMojo {
       privateEnvironmentVariables.forEach(
           variable -> commandLine.addArgument(PRIVATE_ENV_VARIABLES).addArgument(variable));
     }
-    if (report) {
-      commandLine.addArgument(REPORT);
+  }
+
+  private void requests(CommandLine commandLine) throws IOException {
+    for (File file : files) {
+      commandLine.addArgument(file.getCanonicalPath());
+    }
+  }
+
+  private void timeouts(CommandLine commandLine) {
+    if (nonNull(connectTimeout)) {
+      commandLine.addArgument(CONNECT_TIMEOUT).addArgument(connectTimeout.toString());
     }
     if (nonNull(socketTimeout)) {
       commandLine.addArgument(SOCKET_TIMEOUT).addArgument(socketTimeout.toString());
     }
-    if (isNull(files)) {
-      throw new IllegalArgumentException("files are required");
-    }
-    for (File file : files) {
-      commandLine.addArgument(file.getCanonicalPath());
-    }
-
-    return commandLine;
   }
 
 }
