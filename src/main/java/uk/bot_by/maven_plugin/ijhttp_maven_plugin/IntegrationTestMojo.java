@@ -52,45 +52,30 @@ public class IntegrationTestMojo extends AbstractMojo {
   private static final String PRIVATE_ENV_VARIABLES = "--private-env-variables";
   private static final String REPORT = "--report";
   private static final String SOCKET_TIMEOUT = "--socket-timeout";
-
-  public enum LogLevel {BASIC, HEADERS, VERBOSE}
-
   @Parameter(property = "ijhttp.connect-timeout")
   private Integer connectTimeout;
-
   @Parameter(property = "ijhttp.docker-mode")
   private boolean dockerMode;
-
   @Parameter(property = "ijhttp.env-file")
   private File environmentFile;
-
   @Parameter(property = "ijhttp.env-variables")
   private List<String> environmentVariables;
-
   @Parameter(property = "ijhttp.env")
   private String environmentName;
-
   @Parameter(property = "ijhttp.files", required = true)
   private List<File> files;
-
   @Parameter(property = "ijhttp.insecure", defaultValue = "false")
   private boolean insecure;
-
   @Parameter(property = "ijhttp.log-level", defaultValue = "BASIC")
   private LogLevel logLevel;
-
   @Parameter(property = "ijhttp.private-env-file")
   private File privateEnvironmentFile;
-
   @Parameter(property = "ijhttp.private-env-variables")
   private List<String> privateEnvironmentVariables;
-
   @Parameter(property = "ijhttp.report", defaultValue = "false")
   private boolean report;
-
   @Parameter(property = "ijhttp.skip", defaultValue = "false")
   private boolean skip;
-
   @Parameter(property = "ijhttp.socket-timeout")
   private Integer socketTimeout;
 
@@ -129,6 +114,7 @@ public class IntegrationTestMojo extends AbstractMojo {
     try {
       var commandLine = getCommandLine();
 
+      System.out.println(commandLine.toString());
       executor.execute(commandLine);
     } catch (IOException exception) {
       throw new MojoExecutionException("I/O Error", exception);
@@ -217,5 +203,7 @@ public class IntegrationTestMojo extends AbstractMojo {
       commandLine.addArgument(SOCKET_TIMEOUT).addArgument(socketTimeout.toString());
     }
   }
+
+  public enum LogLevel {BASIC, HEADERS, VERBOSE}
 
 }

@@ -353,7 +353,7 @@
               <debug>true</debug>
               <goals>
                 <goal>clean</goal>
-                <goal>test-compile</goal>
+                <goal>verify</goal>
               </goals>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
               <pomIncludes>
