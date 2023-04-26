@@ -83,6 +83,7 @@ public class IntegrationTestMojo extends AbstractMojo {
   }
 
   @VisibleForTesting
+  @SuppressWarnings("PMD.ExcessiveParameterList")
   IntegrationTestMojo(Integer connectTimeout, boolean dockerMode, File environmentFile,
       List<String> environmentVariables, String environmentName, List<File> files, boolean insecure,
       LogLevel logLevel, File privateEnvironmentFile, List<String> privateEnvironmentVariables,
