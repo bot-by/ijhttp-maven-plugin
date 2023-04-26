@@ -5,6 +5,8 @@ import static java.util.Objects.nonNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.ArrayMatching.arrayContaining;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +27,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.converter.ArgumentConversionException;
+import org.junit.jupiter.params.converter.ConvertWith;
+import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -33,7 +39,7 @@ import uk.bot_by.maven_plugin.ijhttp_maven_plugin.IntegrationTestMojo.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")
-class IntegrationTestMojoTest {
+class IntegrationTestMojoFastTest {
 
   @Mock
   private Log logger;
@@ -204,6 +210,79 @@ class IntegrationTestMojoTest {
     var arguments = commandLine.getArguments();
 
     assertThat(testName, arguments, arrayContaining(argumentName, "*"));
+  }
+
+  @DisplayName("File arguments")
+  @ParameterizedTest
+  @CsvSource(value = {"environment file,env.json,N/A,env.json,--env-file",
+      "private environment file,N/A,private-env.json,private-env.json,--private-env-file"}, nullValues = "N/A")
+  void fileArguments(String testName, File environmentFile, File privateEnvironmentFile,
+      String argumentValue, String argumentName) throws IOException {
+    // given
+    var file = mock(File.class);
+    var mojo = new IntegrationTestMojo(null, false, environmentFile, null, null,
+        Collections.singletonList(file), false, LogLevel.BASIC, privateEnvironmentFile, null, false,
+        false, null);
+
+    when(file.getCanonicalPath()).thenReturn("*");
+
+    // when
+    var commandLine = mojo.getCommandLine();
+
+    // then
+    var arguments = commandLine.getArguments();
+
+    assertThat(testName, arguments,
+        arrayContaining(equalTo(argumentName), endsWith(argumentValue), equalTo("*")));
+  }
+
+  @DisplayName("Multi-value arguments")
+  @ParameterizedTest
+  @CsvSource(value = {"single environment variable,abc=123,N/A,--env-variables/abc=123/*",
+      "multi environment variables,abc=123/qwerty=xzy,N/A,--env-variables/abc=123/--env-variables/qwerty=xzy/*",
+      "single private environment variable,N/A,qwerty=xzy,--private-env-variables/qwerty=xzy/*",
+      "multi environment variables,N/A,abc=123/qwerty=xzy,--private-env-variables/abc=123/--private-env-variables/qwerty=xzy/*"}, nullValues = "N/A")
+  void multiValueArguments(String testName,
+      @ConvertWith(SlashyStringToListConverter.class) List<String> environmentVariables,
+      @ConvertWith(SlashyStringToListConverter.class) List<String> privateEnvironmentVariables,
+      @ConvertWith(SlashyStringToListConverter.class) List<String> expectedArguments)
+      throws IOException {
+    // given
+    var file = mock(File.class);
+    var mojo = new IntegrationTestMojo(null, false, null, environmentVariables, null,
+        Collections.singletonList(file), false, LogLevel.BASIC, null, privateEnvironmentVariables,
+        false, false, null);
+
+    when(file.getCanonicalPath()).thenReturn("*");
+
+    // when
+    var commandLine = mojo.getCommandLine();
+
+    // then
+    var arguments = commandLine.getArguments();
+
+    assertThat(testName, arguments, arrayContaining(expectedArguments.toArray()));
+  }
+
+  static class SlashyStringToListConverter extends SimpleArgumentConverter {
+
+    @Override
+    protected Object convert(Object source, Class<?> targetType)
+        throws ArgumentConversionException {
+      if (!targetType.isAssignableFrom(List.class)) {
+        throw new ArgumentConversionException(
+            "Cannot convert to " + targetType.getName() + ": " + source);
+      }
+
+      if (isNull(source)) {
+        return null;
+      }
+
+      var slashyString = (String) source;
+
+      return List.of(slashyString.split("/"));
+    }
+
   }
 
 }
