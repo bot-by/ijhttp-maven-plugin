@@ -17,7 +17,7 @@
               <report>true</report>
             </configuration>
             <goals>
-              <goal>integration-test</goal>
+              <goal>run</goal>
             </goals>
             <id>log-level</id>
             <phase>integration-test</phase>

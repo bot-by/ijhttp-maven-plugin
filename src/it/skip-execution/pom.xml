@@ -17,7 +17,7 @@
               <skip>true</skip>
             </configuration>
             <goals>
-              <goal>integration-test</goal>
+              <goal>run</goal>
             </goals>
             <id>skip-run</id>
             <phase>integration-test</phase>

@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>environment-variables</artifactId>
+  <artifactId>working-directory</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -10,19 +10,16 @@
         <executions>
           <execution>
             <configuration>
-              <environmentVariables>
-                <environmentVariable>id=1234</environmentVariable>
-                <environmentVariable>field=name</environmentVariable>
-              </environmentVariables>
               <files>
-                <file>environment-variables.http</file>
+                <file>src/test/resources/simple-run.http</file>
               </files>
               <report>true</report>
+              <workingDirectory>test-working-directory</workingDirectory>
             </configuration>
             <goals>
               <goal>run</goal>
             </goals>
-            <id>public-variables</id>
+            <id>run-in-another-directory</id>
             <phase>integration-test</phase>
           </execution>
         </executions>

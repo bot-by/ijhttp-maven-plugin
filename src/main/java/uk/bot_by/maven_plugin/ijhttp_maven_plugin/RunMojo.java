@@ -29,7 +29,6 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.jetbrains.annotations.VisibleForTesting;
 
 /**
@@ -38,8 +37,8 @@ import org.jetbrains.annotations.VisibleForTesting;
  * @author Witalij Berdinskich
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
  */
-@Mojo(name = "integration-test", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.INTEGRATION_TEST)
-public class HttpClientMojo extends AbstractMojo {
+@Mojo(name = "run", defaultPhase = LifecyclePhase.INTEGRATION_TEST, requiresProject = false)
+public class RunMojo extends AbstractMojo {
 
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
   private static final String DOCKER_MODE = "--docker-mode";
@@ -53,6 +52,7 @@ public class HttpClientMojo extends AbstractMojo {
   private static final String PRIVATE_ENV_VARIABLES = "--private-env-variables";
   private static final String REPORT = "--report";
   private static final String SOCKET_TIMEOUT = "--socket-timeout";
+
   @Parameter(property = "ijhttp.connect-timeout")
   private Integer connectTimeout;
   @Parameter(property = "ijhttp.docker-mode")
@@ -79,13 +79,15 @@ public class HttpClientMojo extends AbstractMojo {
   private boolean skip;
   @Parameter(property = "ijhttp.socket-timeout")
   private Integer socketTimeout;
+  @Parameter(property = "ijhttp.workingdir")
+  private File workingDirectory;
 
-  public HttpClientMojo() {
+  public RunMojo() {
   }
 
   @VisibleForTesting
   @SuppressWarnings("PMD.ExcessiveParameterList")
-  HttpClientMojo(Integer connectTimeout, boolean dockerMode, File environmentFile,
+  RunMojo(Integer connectTimeout, boolean dockerMode, File environmentFile,
       List<String> environmentVariables, String environmentName, List<File> files, boolean insecure,
       LogLevel logLevel, File privateEnvironmentFile, List<String> privateEnvironmentVariables,
       boolean report, boolean skip, Integer socketTimeout) {
@@ -104,6 +106,11 @@ public class HttpClientMojo extends AbstractMojo {
     this.socketTimeout = socketTimeout;
   }
 
+  @VisibleForTesting
+  RunMojo(File workingDirectory) {
+    this.workingDirectory = workingDirectory;
+  }
+
   @Override
   public void execute() throws MojoExecutionException {
     if (skip) {
@@ -114,6 +121,7 @@ public class HttpClientMojo extends AbstractMojo {
     try {
       var commandLine = getCommandLine();
 
+      getLog().debug("Executing command line: " + commandLine);
       getExecutor().execute(commandLine);
     } catch (IOException exception) {
       var message = new StringBuilder("I/O Error");
@@ -121,6 +129,7 @@ public class HttpClientMojo extends AbstractMojo {
       if (nonNull(exception.getMessage()) && !exception.getMessage().isBlank()) {
         message.append(": ").append(exception.getMessage());
       }
+      getLog().warn(message);
       throw new MojoExecutionException(message.toString(), exception);
     }
   }
@@ -145,7 +154,14 @@ public class HttpClientMojo extends AbstractMojo {
 
   @VisibleForTesting
   Executor getExecutor() {
-    return new DefaultExecutor();
+    var executor = new DefaultExecutor();
+
+    if (nonNull(workingDirectory) && workingDirectory.isDirectory()) {
+      executor.setWorkingDirectory(workingDirectory);
+      getLog().debug("Working directory: " + workingDirectory);
+    }
+
+    return executor;
   }
 
   private void environmentName(CommandLine commandLine) {

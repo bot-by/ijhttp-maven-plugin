@@ -10,15 +10,15 @@
         <executions>
           <execution>
             <configuration>
-              <privateEnvironmentFile>private-env.json</privateEnvironmentFile>
               <environmentName>dev</environmentName>
               <files>
                 <file>environment-file.http</file>
               </files>
+              <privateEnvironmentFile>private-env.json</privateEnvironmentFile>
               <report>true</report>
             </configuration>
             <goals>
-              <goal>integration-test</goal>
+              <goal>run</goal>
             </goals>
             <id>private-environment</id>
             <phase>integration-test</phase>

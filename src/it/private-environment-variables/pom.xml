@@ -10,17 +10,17 @@
         <executions>
           <execution>
             <configuration>
+              <files>
+                <file>environment-variables.http</file>
+              </files>
               <privateEnvironmentVariables>
                 <privateEnvironmentVariable>id=1234</privateEnvironmentVariable>
                 <privateEnvironmentVariable>field=name</privateEnvironmentVariable>
               </privateEnvironmentVariables>
-              <files>
-                <file>environment-variables.http</file>
-              </files>
               <report>true</report>
             </configuration>
             <goals>
-              <goal>integration-test</goal>
+              <goal>run</goal>
             </goals>
             <id>private-variables</id>
             <phase>integration-test</phase>

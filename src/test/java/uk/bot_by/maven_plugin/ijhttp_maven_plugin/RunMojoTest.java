@@ -8,6 +8,7 @@ import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -40,11 +41,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.bot_by.maven_plugin.ijhttp_maven_plugin.HttpClientMojo.LogLevel;
+import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")
-class HttpClientMojoTest {
+class RunMojoTest {
 
   @Captor
   private ArgumentCaptor<CommandLine> commandLineCaptor;
@@ -57,8 +58,8 @@ class HttpClientMojoTest {
   @Test
   void skip() throws MojoExecutionException {
     // given
-    var mojo = new HttpClientMojo(null, false, null, null, null, null, false, null, null, null,
-        false, true, null);
+    var mojo = new RunMojo(null, false, null, null, null, null, false, null, null, null, false,
+        true, null);
 
     mojo = spy(mojo);
     when(mojo.getLog()).thenReturn(logger);
@@ -74,8 +75,8 @@ class HttpClientMojoTest {
   @Test
   void filesAreRequired() {
     // given
-    var mojo = new HttpClientMojo(null, false, null, null, null, null, false, LogLevel.BASIC, null,
-        null, false, false, null);
+    var mojo = new RunMojo(null, false, null, null, null, null, false, LogLevel.BASIC, null, null,
+        false, false, null);
 
     // when
     var exception = assertThrows(MojoExecutionException.class, mojo::execute);
@@ -84,13 +85,13 @@ class HttpClientMojoTest {
     assertEquals("files are required", exception.getMessage());
   }
 
-  @DisplayName("Executor")
+  @DisplayName("Run")
   @Test
-  void executor() throws IOException, MojoExecutionException {
+  void run() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
     var mojo = spy(
-        new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file), false,
+        new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
             LogLevel.BASIC, null, null, false, false, null));
 
     when(file.getCanonicalPath()).thenReturn("*");
@@ -107,13 +108,13 @@ class HttpClientMojoTest {
     assertThat("files", arguments, arrayContaining("*"));
   }
 
-  @DisplayName("Executor exception")
+  @DisplayName("Run with exception")
   @Test
-  void executorException() throws IOException, MojoExecutionException {
+  void runWithException() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
     var mojo = spy(
-        new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file), false,
+        new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
             LogLevel.BASIC, null, null, false, false, null));
 
     when(file.getCanonicalPath()).thenReturn("*");
@@ -129,6 +130,22 @@ class HttpClientMojoTest {
     assertEquals("I/O Error: test exception", exception.getMessage());
   }
 
+  @DisplayName("Executor")
+  @ParameterizedTest
+  @CsvSource(value = {"N/A,.", "target/classes,classes", "pom.xml,.",
+      "qwerty,."}, nullValues = "N/A")
+  void executor(String workingDirectoryName, String expectedWorkingDirectoryName) {
+    // given
+    File workingDirectory = (isNull(workingDirectoryName)) ? null : new File(workingDirectoryName);
+    var mojo = new RunMojo(workingDirectory);
+
+    // when
+    var executor = assertDoesNotThrow(mojo::getExecutor, "default executor");
+
+    // then
+    assertEquals(expectedWorkingDirectoryName, executor.getWorkingDirectory().getName());
+  }
+
   @DisplayName("Executor exception without message")
   @ParameterizedTest
   @NullAndEmptySource
@@ -137,7 +154,7 @@ class HttpClientMojoTest {
     // given
     var file = mock(File.class);
     var mojo = spy(
-        new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file), false,
+        new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
             LogLevel.BASIC, null, null, false, false, null));
 
     when(file.getCanonicalPath()).thenReturn("*");
@@ -158,8 +175,8 @@ class HttpClientMojoTest {
   void simpleRun() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file),
-        false, LogLevel.BASIC, null, null, false, false, null);
+    var mojo = new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
+        LogLevel.BASIC, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -179,8 +196,8 @@ class HttpClientMojoTest {
   void environmentName(String name) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, false, null, null, name, Collections.singletonList(file),
-        false, LogLevel.BASIC, null, null, false, false, null);
+    var mojo = new RunMojo(null, false, null, null, name, Collections.singletonList(file), false,
+        LogLevel.BASIC, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -204,7 +221,7 @@ class HttpClientMojoTest {
   void quotedEnvironmentName() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, false, null, null, "environment name",
+    var mojo = new RunMojo(null, false, null, null, "environment name",
         Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
@@ -227,8 +244,8 @@ class HttpClientMojoTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file),
-        false, logLevel, null, null, false, false, null);
+    var mojo = new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
+        logLevel, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -252,9 +269,8 @@ class HttpClientMojoTest {
       String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(connectTimeout, false, null, null, null,
-        Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false,
-        socketTimeout);
+    var mojo = new RunMojo(connectTimeout, false, null, null, null, Collections.singletonList(file),
+        false, LogLevel.BASIC, null, null, false, false, socketTimeout);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -275,8 +291,8 @@ class HttpClientMojoTest {
       String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, dockerMode, null, null, null,
-        Collections.singletonList(file), insecure, LogLevel.BASIC, null, null, report, false, null);
+    var mojo = new RunMojo(null, dockerMode, null, null, null, Collections.singletonList(file),
+        insecure, LogLevel.BASIC, null, null, report, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -297,7 +313,7 @@ class HttpClientMojoTest {
       String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, false, environmentFile, null, null,
+    var mojo = new RunMojo(null, false, environmentFile, null, null,
         Collections.singletonList(file), false, LogLevel.BASIC, privateEnvironmentFile, null, false,
         false, null);
 
@@ -326,7 +342,7 @@ class HttpClientMojoTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new HttpClientMojo(null, false, null, environmentVariables, null,
+    var mojo = new RunMojo(null, false, null, environmentVariables, null,
         Collections.singletonList(file), false, LogLevel.BASIC, null, privateEnvironmentVariables,
         false, false, null);
 

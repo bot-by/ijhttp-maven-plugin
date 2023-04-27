@@ -15,7 +15,7 @@
               </files>
             </configuration>
             <goals>
-              <goal>integration-test</goal>
+              <goal>run</goal>
             </goals>
             <id>simple-run-without-report</id>
             <phase>integration-test</phase>

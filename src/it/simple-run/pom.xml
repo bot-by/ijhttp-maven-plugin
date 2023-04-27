@@ -16,7 +16,7 @@
               <report>true</report>
             </configuration>
             <goals>
-              <goal>integration-test</goal>
+              <goal>run</goal>
             </goals>
             <id>simple-run-with-report</id>
             <phase>integration-test</phase>
