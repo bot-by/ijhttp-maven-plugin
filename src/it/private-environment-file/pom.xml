@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>environment-variables</artifactId>
+  <artifactId>private-environment-file</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -10,19 +10,17 @@
         <executions>
           <execution>
             <configuration>
-              <environmentVariables>
-                <environmentVariable>id=1234</environmentVariable>
-                <environmentVariable>field=name</environmentVariable>
-              </environmentVariables>
+              <privateEnvironmentFile>private-env.json</privateEnvironmentFile>
+              <environmentName>dev</environmentName>
               <files>
-                <file>environment-variables.http</file>
+                <file>environment-file.http</file>
               </files>
               <report>true</report>
             </configuration>
             <goals>
               <goal>integration-test</goal>
             </goals>
-            <id>public-variables</id>
+            <id>private-environment</id>
             <phase>integration-test</phase>
           </execution>
         </executions>

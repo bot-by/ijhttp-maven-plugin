@@ -20,7 +20,7 @@
             <goals>
               <goal>integration-test</goal>
             </goals>
-            <id>integration-test</id>
+            <id>public-environment</id>
             <phase>integration-test</phase>
           </execution>
         </executions>

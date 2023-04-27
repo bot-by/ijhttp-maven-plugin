@@ -310,7 +310,7 @@
       <version>2.2</version>
     </dependency>
   </dependencies>
-  <description></description>
+  <description>Run HTTP requests of integration tests</description>
   <developers>
     <developer>
       <email>radio_rogal@posteo.pl</email>
@@ -321,7 +321,7 @@
     </developer>
   </developers>
   <groupId>uk.bot-by.maven-plugin</groupId>
-  <inceptionYear>2022</inceptionYear>
+  <inceptionYear>2023</inceptionYear>
   <issueManagement>
     <system>GitLab</system>
     <url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/issues</url>
@@ -350,7 +350,6 @@
             <artifactId>maven-invoker-plugin</artifactId>
             <configuration>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-              <debug>true</debug>
               <goals>
                 <goal>clean</goal>
                 <goal>verify</goal>
@@ -366,8 +365,7 @@
               <execution>
                 <goals>
                   <goal>install</goal>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
+                  <goal>run</goal>
                 </goals>
                 <id>integration-test</id>
               </execution>

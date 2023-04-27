@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -20,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
 import org.junit.jupiter.api.DisplayName;
@@ -33,14 +36,20 @@ import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.bot_by.maven_plugin.ijhttp_maven_plugin.IntegrationTestMojo.LogLevel;
+import uk.bot_by.maven_plugin.ijhttp_maven_plugin.HttpClientMojo.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")
-class IntegrationTestMojoFastTest {
+class HttpClientMojoTest {
 
+  @Captor
+  private ArgumentCaptor<CommandLine> commandLineCaptor;
+  @Mock
+  private Executor executor;
   @Mock
   private Log logger;
 
@@ -48,7 +57,7 @@ class IntegrationTestMojoFastTest {
   @Test
   void skip() throws MojoExecutionException {
     // given
-    var mojo = new IntegrationTestMojo(null, false, null, null, null, null, false, null, null, null,
+    var mojo = new HttpClientMojo(null, false, null, null, null, null, false, null, null, null,
         false, true, null);
 
     mojo = spy(mojo);
@@ -65,23 +74,92 @@ class IntegrationTestMojoFastTest {
   @Test
   void filesAreRequired() {
     // given
-    var mojo = new IntegrationTestMojo(null, false, null, null, null, null, false, LogLevel.BASIC,
-        null, null, false, false, null);
+    var mojo = new HttpClientMojo(null, false, null, null, null, null, false, LogLevel.BASIC, null,
+        null, false, false, null);
 
     // when
-    var exception = assertThrows(IllegalArgumentException.class, mojo::execute);
+    var exception = assertThrows(MojoExecutionException.class, mojo::execute);
 
     // then
     assertEquals("files are required", exception.getMessage());
   }
 
-  @DisplayName("Simple run without arguments")
+  @DisplayName("Executor")
   @Test
-  void simpleRun() throws IOException {
+  void executor() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, false, null, null, null,
-        Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false, null);
+    var mojo = spy(
+        new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file), false,
+            LogLevel.BASIC, null, null, false, false, null));
+
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+
+    // when
+    mojo.execute();
+
+    // then
+    verify(executor).execute(commandLineCaptor.capture());
+
+    var arguments = commandLineCaptor.getValue().getArguments();
+
+    assertThat("files", arguments, arrayContaining("*"));
+  }
+
+  @DisplayName("Executor exception")
+  @Test
+  void executorException() throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = spy(
+        new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file), false,
+            LogLevel.BASIC, null, null, false, false, null));
+
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException("test exception"));
+
+    // when
+    Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    verify(executor).execute(isA(CommandLine.class));
+
+    assertEquals("I/O Error: test exception", exception.getMessage());
+  }
+
+  @DisplayName("Executor exception without message")
+  @ParameterizedTest
+  @NullAndEmptySource
+  @ValueSource(strings = {" "})
+  void executorExceptionWithoutMessage(String message) throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = spy(
+        new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file), false,
+            LogLevel.BASIC, null, null, false, false, null));
+
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException(message));
+
+    // when
+    Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    verify(executor).execute(isA(CommandLine.class));
+
+    assertEquals("I/O Error", exception.getMessage());
+  }
+
+  @DisplayName("Simple run without arguments")
+  @Test
+  void simpleRun() throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file),
+        false, LogLevel.BASIC, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -91,19 +169,18 @@ class IntegrationTestMojoFastTest {
     // then
     var arguments = commandLine.getArguments();
 
-    assertAll("File argument", () -> assertThat("how much arguments", arguments, arrayWithSize(1)),
-        () -> assertEquals("*", arguments[0], "filename"));
+    assertThat("files", arguments, arrayContaining("*"));
   }
 
   @DisplayName("Environment name")
   @ParameterizedTest
   @NullAndEmptySource
   @ValueSource(strings = {"   ", "envname"})
-  void environmentName(String name) throws IOException {
+  void environmentName(String name) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, false, null, null, name,
-        Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false, null);
+    var mojo = new HttpClientMojo(null, false, null, null, name, Collections.singletonList(file),
+        false, LogLevel.BASIC, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -124,10 +201,10 @@ class IntegrationTestMojoFastTest {
 
   @DisplayName("Quoted environment name")
   @Test
-  void quotedEnvironmentName() throws IOException {
+  void quotedEnvironmentName() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, false, null, null, "environment name",
+    var mojo = new HttpClientMojo(null, false, null, null, "environment name",
         Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
@@ -147,11 +224,11 @@ class IntegrationTestMojoFastTest {
   @CsvSource(value = {"BASIC, 1, N/A", "HEADERS, 3, HEADERS",
       "VERBOSE, 3, VERBOSE"}, nullValues = "N/A")
   void loggerLevels(LogLevel logLevel, int howMuchArguments, String logLevelName)
-      throws IOException {
+      throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, false, null, null, null,
-        Collections.singletonList(file), false, logLevel, null, null, false, false, null);
+    var mojo = new HttpClientMojo(null, false, null, null, null, Collections.singletonList(file),
+        false, logLevel, null, null, false, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -172,10 +249,10 @@ class IntegrationTestMojoFastTest {
   @CsvSource(value = {"connect timeout, 345, N/A, 345, --connect-timeout",
       "socket timeout, N/A, 765, 765, --socket-timeout"}, nullValues = "N/A")
   void timeouts(String testName, Integer connectTimeout, Integer socketTimeout,
-      String argumentValue, String argumentName) throws IOException {
+      String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(connectTimeout, false, null, null, null,
+    var mojo = new HttpClientMojo(connectTimeout, false, null, null, null,
         Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false,
         socketTimeout);
 
@@ -195,10 +272,10 @@ class IntegrationTestMojoFastTest {
   @CsvSource({"docker mode, true, false, false, --docker-mode",
       "insecure, false, true, false, --insecure", "report, false, false, true, --report"})
   void flagArguments(String testName, boolean dockerMode, boolean insecure, boolean report,
-      String argumentName) throws IOException {
+      String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, dockerMode, null, null, null,
+    var mojo = new HttpClientMojo(null, dockerMode, null, null, null,
         Collections.singletonList(file), insecure, LogLevel.BASIC, null, null, report, false, null);
 
     when(file.getCanonicalPath()).thenReturn("*");
@@ -217,10 +294,10 @@ class IntegrationTestMojoFastTest {
   @CsvSource(value = {"environment file,env.json,N/A,env.json,--env-file",
       "private environment file,N/A,private-env.json,private-env.json,--private-env-file"}, nullValues = "N/A")
   void fileArguments(String testName, File environmentFile, File privateEnvironmentFile,
-      String argumentValue, String argumentName) throws IOException {
+      String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, false, environmentFile, null, null,
+    var mojo = new HttpClientMojo(null, false, environmentFile, null, null,
         Collections.singletonList(file), false, LogLevel.BASIC, privateEnvironmentFile, null, false,
         false, null);
 
@@ -246,10 +323,10 @@ class IntegrationTestMojoFastTest {
       @ConvertWith(SlashyStringToListConverter.class) List<String> environmentVariables,
       @ConvertWith(SlashyStringToListConverter.class) List<String> privateEnvironmentVariables,
       @ConvertWith(SlashyStringToListConverter.class) List<String> expectedArguments)
-      throws IOException {
+      throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new IntegrationTestMojo(null, false, null, environmentVariables, null,
+    var mojo = new HttpClientMojo(null, false, null, environmentVariables, null,
         Collections.singletonList(file), false, LogLevel.BASIC, null, privateEnvironmentVariables,
         false, false, null);
 

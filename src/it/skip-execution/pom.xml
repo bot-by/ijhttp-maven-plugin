@@ -19,7 +19,7 @@
             <goals>
               <goal>integration-test</goal>
             </goals>
-            <id>integration-test</id>
+            <id>skip-run</id>
             <phase>integration-test</phase>
           </execution>
         </executions>

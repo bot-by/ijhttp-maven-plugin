@@ -1,0 +1,2 @@
+### Get todo's name
+GET http://localhost:8080/todos/{{id}}/{{field}}

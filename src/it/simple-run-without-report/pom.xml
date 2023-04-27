@@ -17,7 +17,7 @@
             <goals>
               <goal>integration-test</goal>
             </goals>
-            <id>integration-test</id>
+            <id>simple-run-without-report</id>
             <phase>integration-test</phase>
           </execution>
         </executions>

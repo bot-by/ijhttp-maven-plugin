@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -38,7 +39,7 @@ import org.jetbrains.annotations.VisibleForTesting;
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
  */
 @Mojo(name = "integration-test", requiresDependencyResolution = ResolutionScope.TEST, defaultPhase = LifecyclePhase.INTEGRATION_TEST)
-public class IntegrationTestMojo extends AbstractMojo {
+public class HttpClientMojo extends AbstractMojo {
 
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
   private static final String DOCKER_MODE = "--docker-mode";
@@ -79,12 +80,12 @@ public class IntegrationTestMojo extends AbstractMojo {
   @Parameter(property = "ijhttp.socket-timeout")
   private Integer socketTimeout;
 
-  public IntegrationTestMojo() {
+  public HttpClientMojo() {
   }
 
   @VisibleForTesting
   @SuppressWarnings("PMD.ExcessiveParameterList")
-  IntegrationTestMojo(Integer connectTimeout, boolean dockerMode, File environmentFile,
+  HttpClientMojo(Integer connectTimeout, boolean dockerMode, File environmentFile,
       List<String> environmentVariables, String environmentName, List<File> files, boolean insecure,
       LogLevel logLevel, File privateEnvironmentFile, List<String> privateEnvironmentVariables,
       boolean report, boolean skip, Integer socketTimeout) {
@@ -110,23 +111,26 @@ public class IntegrationTestMojo extends AbstractMojo {
       return;
     }
 
-    var executor = new DefaultExecutor();
-
     try {
       var commandLine = getCommandLine();
 
-      executor.execute(commandLine);
+      getExecutor().execute(commandLine);
     } catch (IOException exception) {
-      throw new MojoExecutionException("I/O Error", exception);
+      var message = new StringBuilder("I/O Error");
+
+      if (nonNull(exception.getMessage()) && !exception.getMessage().isBlank()) {
+        message.append(": ").append(exception.getMessage());
+      }
+      throw new MojoExecutionException(message.toString(), exception);
     }
   }
 
   @VisibleForTesting
-  CommandLine getCommandLine() throws IOException {
+  CommandLine getCommandLine() throws IOException, MojoExecutionException {
     var commandLine = new CommandLine(EXECUTABLE);
 
     if (isNull(files)) {
-      throw new IllegalArgumentException("files are required");
+      throw new MojoExecutionException("files are required");
     }
     flags(commandLine);
     logLevel(commandLine);
@@ -137,6 +141,11 @@ public class IntegrationTestMojo extends AbstractMojo {
     requests(commandLine);
 
     return commandLine;
+  }
+
+  @VisibleForTesting
+  Executor getExecutor() {
+    return new DefaultExecutor();
   }
 
   private void environmentName(CommandLine commandLine) {
