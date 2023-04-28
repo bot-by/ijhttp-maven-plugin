@@ -484,7 +484,7 @@
     <changelist>-SNAPSHOT</changelist>
     <java.version>17</java.version>
     <junit-jupiter.version>5.9.2</junit-jupiter.version>
-    <maven-minimal.version>3.8.7</maven-minimal.version>
+    <maven-minimal.version>3.8.5</maven-minimal.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <revision>1.0.0</revision>
