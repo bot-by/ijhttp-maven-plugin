@@ -34,8 +34,34 @@ import org.jetbrains.annotations.VisibleForTesting;
 /**
  * Run integration tests using IntelliJ HTTP Client.
  *
+ * Sample configuration:
+ * <pre><code class="language-xml">
+ *   &lt;configuration&gt;
+ *     &lt;environmentFile&gt;public-env.json&lt;/environmentFile&gt;
+ *     &lt;environmentName&gt;dev&lt;/environmentName&gt;
+ *     &lt;files&gt;
+ *       &lt;file&gt;sample-1-queries.http&lt;/file&gt;
+ *       &lt;file&gt;sample-2-queries.http&lt;/file&gt;
+ *     &lt;/files&gt;
+ *     &lt;logLevel&gt;HEADERS&lt;/logLevel&gt;
+ *     &lt;report&gt;true&lt;/report&gt;
+ *     &lt;workingDirectory&gt;target&lt;/workingDirectory&gt;
+ *   &lt;/configuration&gt;
+ * </code></pre>
+ * Environment variables:
+ * <pre><code class="language-xml">
+ *   ...
+ *   &lt;environmentVariables&gt;
+ *     &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
+ *     &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
+ *   &lt;/environmentVariables&gt;
+ *   ...
+ * </code></pre>
  * @author Witalij Berdinskich
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
+ * @see <a href="https://www.youtube.com/live/mwiHAukbWjM?feature=share">Lve stream: The New HTTP
+ * Client CLI</a>
+ * @since 1.0.0
  */
 @Mojo(name = "run", defaultPhase = LifecyclePhase.INTEGRATION_TEST, requiresProject = false)
 public class RunMojo extends AbstractMojo {
@@ -53,35 +79,102 @@ public class RunMojo extends AbstractMojo {
   private static final String REPORT = "--report";
   private static final String SOCKET_TIMEOUT = "--socket-timeout";
 
+  /**
+   * Number of milliseconds for connection. Defaults to <em>3000</em>.
+   */
   @Parameter(property = "ijhttp.connect-timeout")
   private Integer connectTimeout;
-  @Parameter(property = "ijhttp.docker-mode")
+  /**
+   * Enables Docker mode. Treat {@code localhost} as {@code host.docker.internal}. Defaults to
+   * <em>false</em>.
+   */
+  @Parameter(property = "ijhttp.docker-mode", defaultValue = "false")
   private boolean dockerMode;
+  /**
+   * Name of the public environment file, e.g. {@code http-client.env.json}.
+   */
   @Parameter(property = "ijhttp.env-file")
   private File environmentFile;
+  /**
+   * Public environment variables.
+   * <p>
+   * Example:
+   * <pre><code class="language-xml">
+   *   &lt;configuration&gt;
+   *     &lt;environmentVariables&gt;
+   *       &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
+   *       &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
+   *     &lt;/environmentVariables&gt;
+   *   &lt;/configuration&gt;
+   * </code></pre>
+   */
   @Parameter(property = "ijhttp.env-variables")
   private List<String> environmentVariables;
+  /**
+   * Name of the environment in config file.
+   */
   @Parameter(property = "ijhttp.env")
   private String environmentName;
+  /**
+   * HTTP file paths. They are required.
+   */
   @Parameter(property = "ijhttp.files", required = true)
   private List<File> files;
+  /**
+   * Allow insecure SSL connection. Defaults to <em>false</em>.
+   * <p>
+   * Example:
+   * <pre><code class="language-xml">
+   *   &lt;files&gt;
+   *     &lt;file>simple-run.http&lt;/file&gt;
+   *   &lt;/files&gt;
+   * </code></pre>
+   */
   @Parameter(property = "ijhttp.insecure", defaultValue = "false")
   private boolean insecure;
+  /**
+   * Logging level: BASIC, HEADERS, VERBOSE. Defaults to <em>BASIC</em>.
+   */
   @Parameter(property = "ijhttp.log-level", defaultValue = "BASIC")
   private LogLevel logLevel;
+  /**
+   * Name of the private environment file, e.g. {@code http-client.private.env.json}.
+   */
   @Parameter(property = "ijhttp.private-env-file")
   private File privateEnvironmentFile;
+  /**
+   * Private environment variables.
+   *
+   * @see #environmentVariables
+   */
   @Parameter(property = "ijhttp.private-env-variables")
   private List<String> privateEnvironmentVariables;
+  /**
+   * Creates report about execution in JUnit XML Format. Puts it in folder {@code reports } in the
+   * current directory. Defaults to <em>false</em>.
+   */
   @Parameter(property = "ijhttp.report", defaultValue = "false")
   private boolean report;
+  /**
+   * Skip the execution. Defaults to <em>false</em>.
+   */
   @Parameter(property = "ijhttp.skip", defaultValue = "false")
   private boolean skip;
+  /**
+   * Number of milliseconds for socket read. Defaults to <em>10000</em>.
+   */
   @Parameter(property = "ijhttp.socket-timeout")
   private Integer socketTimeout;
+  /**
+   * The current working directory. This is optional: if not specified, the current directory will
+   * be used.
+   */
   @Parameter(property = "ijhttp.workingdir")
   private File workingDirectory;
 
+  /**
+   * The constructor.
+   */
   public RunMojo() {
   }
 
@@ -111,6 +204,11 @@ public class RunMojo extends AbstractMojo {
     this.workingDirectory = workingDirectory;
   }
 
+  /**
+   * Run HTTP requests.
+   *
+   * @throws MojoExecutionException if a failure happens
+   */
   @Override
   public void execute() throws MojoExecutionException {
     if (skip) {
@@ -229,6 +327,22 @@ public class RunMojo extends AbstractMojo {
     }
   }
 
-  public enum LogLevel {BASIC, HEADERS, VERBOSE}
+  /**
+   * Logging levels.
+   */
+  public enum LogLevel {
+    /**
+     * Print out HTTP request filename, names and values of public variables.
+     */
+    BASIC,
+    /**
+     * Add to BASIC level HTTP headers.
+     */
+    HEADERS,
+    /**
+     * Add to HEADERS level request and response bodies, execution statistics.
+     */
+    VERBOSE
+  }
 
 }

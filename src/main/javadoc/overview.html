@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>IntelliJ HTTP Client, Maven Plugin</title>
+</head>
+<body>
+<p>Originally the <a
+    href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html">HTTP
+  Client</a> plugin allows to create, edit, and execute HTTP requests directly in the
+  IntelliJ IDEA code editor. The HTTP Client is also <a
+      href="https://www.jetbrains.com/help/idea/http-client-cli.html">available as a CLI tool</a>.
+</p>
+<p>The plugin allows to run HTTP requests through the IntelliJ HTTP Client on the <em>integration-test</em>
+  phase. The <a
+      href="https://github.com/JetBrains/http-request-in-editor-spec">HTTP Request in Editor
+    Specification</a> describes format these files.
+<p>Example requests:
+<pre><code class="language-apex">
+  GET https://example.com/api/get
+
+  ### Add an item
+  POST https://example.com/api/add
+  Content-Type: application/json
+
+  {
+    "name": "entity",
+    "value": "content"
+  }
+</code></pre>
+</body>
+</html>

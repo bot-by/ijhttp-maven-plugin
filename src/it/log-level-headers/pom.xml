@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>log-level</artifactId>
+  <artifactId>log-level-headers</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -13,13 +13,13 @@
               <files>
                 <file>simple-run.http</file>
               </files>
-              <logLevel>VERBOSE</logLevel>
+              <logLevel>HEADERS</logLevel>
               <report>true</report>
             </configuration>
             <goals>
               <goal>run</goal>
             </goals>
-            <id>log-level</id>
+            <id>log-level-headers</id>
             <phase>integration-test</phase>
           </execution>
         </executions>
