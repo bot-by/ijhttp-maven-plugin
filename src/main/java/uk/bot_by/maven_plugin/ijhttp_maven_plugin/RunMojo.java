@@ -126,7 +126,7 @@ public class RunMojo extends AbstractMojo {
    * Example:
    * <pre><code class="language-xml">
    *   &lt;files&gt;
-   *     &lt;file>simple-run.http&lt;/file&gt;
+   *     &lt;file&gt;simple-run.http&lt;/file&gt;
    *   &lt;/files&gt;
    * </code></pre>
    */
