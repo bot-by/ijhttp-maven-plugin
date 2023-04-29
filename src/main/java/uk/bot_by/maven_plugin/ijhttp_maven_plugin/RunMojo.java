@@ -33,7 +33,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 /**
  * Run integration tests using IntelliJ HTTP Client.
- *
+ * <p>
  * Sample configuration:
  * <pre><code class="language-xml">
  *   &lt;configuration&gt;
@@ -57,6 +57,7 @@ import org.jetbrains.annotations.VisibleForTesting;
  *   &lt;/environmentVariables&gt;
  *   ...
  * </code></pre>
+ *
  * @author Witalij Berdinskich
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
  * @see <a href="https://www.youtube.com/live/mwiHAukbWjM?feature=share">Lve stream: The New HTTP
@@ -71,7 +72,6 @@ public class RunMojo extends AbstractMojo {
   private static final String ENV_FILE = "--env-file";
   private static final String ENVIRONMENT_NAME = "--env";
   private static final String ENV_VARIABLES = "--env-variables";
-  private static final String EXECUTABLE = "ijhttp";
   private static final String INSECURE = "--insecure";
   private static final String LOG_LEVEL = "--log-level";
   private static final String PRIVATE_ENV_FILE = "--private-env-file";
@@ -79,130 +79,21 @@ public class RunMojo extends AbstractMojo {
   private static final String REPORT = "--report";
   private static final String SOCKET_TIMEOUT = "--socket-timeout";
 
-  /**
-   * Number of milliseconds for connection. Defaults to <em>3000</em>.
-   */
-  @Parameter(property = "ijhttp.connect-timeout")
   private Integer connectTimeout;
-  /**
-   * Enables Docker mode. Treat {@code localhost} as {@code host.docker.internal}. Defaults to
-   * <em>false</em>.
-   */
-  @Parameter(property = "ijhttp.docker-mode", defaultValue = "false")
   private boolean dockerMode;
-  /**
-   * Name of the public environment file, e.g. {@code http-client.env.json}.
-   */
-  @Parameter(property = "ijhttp.env-file")
   private File environmentFile;
-  /**
-   * Public environment variables.
-   * <p>
-   * Example:
-   * <pre><code class="language-xml">
-   *   &lt;configuration&gt;
-   *     &lt;environmentVariables&gt;
-   *       &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
-   *       &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
-   *     &lt;/environmentVariables&gt;
-   *   &lt;/configuration&gt;
-   * </code></pre>
-   */
-  @Parameter(property = "ijhttp.env-variables")
   private List<String> environmentVariables;
-  /**
-   * Name of the environment in config file.
-   */
-  @Parameter(property = "ijhttp.env")
   private String environmentName;
-  /**
-   * HTTP file paths. They are required.
-   */
-  @Parameter(property = "ijhttp.files", required = true)
+  private String executable;
   private List<File> files;
-  /**
-   * Allow insecure SSL connection. Defaults to <em>false</em>.
-   * <p>
-   * Example:
-   * <pre><code class="language-xml">
-   *   &lt;files&gt;
-   *     &lt;file&gt;simple-run.http&lt;/file&gt;
-   *   &lt;/files&gt;
-   * </code></pre>
-   */
-  @Parameter(property = "ijhttp.insecure", defaultValue = "false")
   private boolean insecure;
-  /**
-   * Logging level: BASIC, HEADERS, VERBOSE. Defaults to <em>BASIC</em>.
-   */
-  @Parameter(property = "ijhttp.log-level", defaultValue = "BASIC")
   private LogLevel logLevel;
-  /**
-   * Name of the private environment file, e.g. {@code http-client.private.env.json}.
-   */
-  @Parameter(property = "ijhttp.private-env-file")
   private File privateEnvironmentFile;
-  /**
-   * Private environment variables.
-   *
-   * @see #environmentVariables
-   */
-  @Parameter(property = "ijhttp.private-env-variables")
   private List<String> privateEnvironmentVariables;
-  /**
-   * Creates report about execution in JUnit XML Format. Puts it in folder {@code reports } in the
-   * current directory. Defaults to <em>false</em>.
-   */
-  @Parameter(property = "ijhttp.report", defaultValue = "false")
   private boolean report;
-  /**
-   * Skip the execution. Defaults to <em>false</em>.
-   */
-  @Parameter(property = "ijhttp.skip", defaultValue = "false")
   private boolean skip;
-  /**
-   * Number of milliseconds for socket read. Defaults to <em>10000</em>.
-   */
-  @Parameter(property = "ijhttp.socket-timeout")
   private Integer socketTimeout;
-  /**
-   * The current working directory. This is optional: if not specified, the current directory will
-   * be used.
-   */
-  @Parameter(property = "ijhttp.workingdir")
   private File workingDirectory;
-
-  /**
-   * The constructor.
-   */
-  public RunMojo() {
-  }
-
-  @VisibleForTesting
-  @SuppressWarnings("PMD.ExcessiveParameterList")
-  RunMojo(Integer connectTimeout, boolean dockerMode, File environmentFile,
-      List<String> environmentVariables, String environmentName, List<File> files, boolean insecure,
-      LogLevel logLevel, File privateEnvironmentFile, List<String> privateEnvironmentVariables,
-      boolean report, boolean skip, Integer socketTimeout) {
-    this.connectTimeout = connectTimeout;
-    this.dockerMode = dockerMode;
-    this.environmentFile = environmentFile;
-    this.environmentVariables = environmentVariables;
-    this.environmentName = environmentName;
-    this.files = files;
-    this.insecure = insecure;
-    this.logLevel = logLevel;
-    this.privateEnvironmentFile = privateEnvironmentFile;
-    this.privateEnvironmentVariables = privateEnvironmentVariables;
-    this.report = report;
-    this.skip = skip;
-    this.socketTimeout = socketTimeout;
-  }
-
-  @VisibleForTesting
-  RunMojo(File workingDirectory) {
-    this.workingDirectory = workingDirectory;
-  }
 
   /**
    * Run HTTP requests.
@@ -232,9 +123,151 @@ public class RunMojo extends AbstractMojo {
     }
   }
 
+  /**
+   * Number of milliseconds for connection. Defaults to <em>3000</em>.
+   */
+  @Parameter(property = "ijhttp.connect-timeout")
+  public void setConnectTimeout(Integer connectTimeout) {
+    this.connectTimeout = connectTimeout;
+  }
+
+  /**
+   * Enables Docker mode. Treat {@code localhost} as {@code host.docker.internal}. Defaults to
+   * <em>false</em>.
+   */
+  @Parameter(property = "ijhttp.docker-mode", defaultValue = "false")
+  public void setDockerMode(boolean dockerMode) {
+    this.dockerMode = dockerMode;
+  }
+
+  /**
+   * Name of the public environment file, e.g. {@code http-client.env.json}.
+   */
+  @Parameter(property = "ijhttp.env-file")
+  public void setEnvironmentFile(File environmentFile) {
+    this.environmentFile = environmentFile;
+  }
+
+  /**
+   * Public environment variables.
+   * <p>
+   * Example:
+   * <pre><code class="language-xml">
+   *   &lt;configuration&gt;
+   *     &lt;environmentVariables&gt;
+   *       &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
+   *       &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
+   *     &lt;/environmentVariables&gt;
+   *   &lt;/configuration&gt;
+   * </code></pre>
+   */
+  @Parameter(property = "ijhttp.env-variables")
+  public void setEnvironmentVariables(List<String> environmentVariables) {
+    this.environmentVariables = environmentVariables;
+  }
+
+  /**
+   * Name of the environment in config file.
+   */
+  @Parameter(property = "ijhttp.env")
+  public void setEnvironmentName(String environmentName) {
+    this.environmentName = environmentName;
+  }
+
+  /**
+   * The executable. Can be a full path or the name of the executable.
+   */
+  @Parameter(property = "ijhttp.executable", defaultValue = "ijhttp")
+  public void setExecutable(String executable) {
+    this.executable = executable;
+  }
+
+  /**
+   * HTTP file paths. They are required.
+   * <p>
+   * Example:
+   * <pre><code class="language-xml">
+   *   &lt;files&gt;
+   *     &lt;file&gt;simple-run.http&lt;/file&gt;
+   *   &lt;/files&gt;
+   * </code></pre>
+   */
+  @Parameter(property = "ijhttp.files", required = true)
+  public void setFiles(List<File> files) {
+    this.files = files;
+  }
+
+  /**
+   * Allow insecure SSL connection. Defaults to <em>false</em>.
+   */
+  @Parameter(property = "ijhttp.insecure", defaultValue = "false")
+  public void setInsecure(boolean insecure) {
+    this.insecure = insecure;
+  }
+
+  /**
+   * Logging level: BASIC, HEADERS, VERBOSE. Defaults to <em>BASIC</em>.
+   */
+  @Parameter(property = "ijhttp.log-level", defaultValue = "BASIC")
+  public void setLogLevel(LogLevel logLevel) {
+    this.logLevel = logLevel;
+  }
+
+  /**
+   * Name of the private environment file, e.g. {@code http-client.private.env.json}.
+   */
+  @Parameter(property = "ijhttp.private-env-file")
+  public void setPrivateEnvironmentFile(File privateEnvironmentFile) {
+    this.privateEnvironmentFile = privateEnvironmentFile;
+  }
+
+  /**
+   * Private environment variables.
+   *
+   * @see #environmentVariables
+   */
+  @Parameter(property = "ijhttp.private-env-variables")
+  public void setPrivateEnvironmentVariables(List<String> privateEnvironmentVariables) {
+    this.privateEnvironmentVariables = privateEnvironmentVariables;
+  }
+
+  /**
+   * Creates report about execution in JUnit XML Format. Puts it in folder {@code reports } in the
+   * current directory. Defaults to <em>false</em>.
+   */
+  @Parameter(property = "ijhttp.report", defaultValue = "false")
+  public void setReport(boolean report) {
+    this.report = report;
+  }
+
+  /**
+   * Skip the execution. Defaults to <em>false</em>.
+   */
+  @Parameter(property = "ijhttp.skip", defaultValue = "false")
+  public void setSkip(boolean skip) {
+    this.skip = skip;
+  }
+
+  /**
+   * Number of milliseconds for socket read. Defaults to <em>10000</em>.
+   */
+  @Parameter(property = "ijhttp.socket-timeout")
+  public void setSocketTimeout(Integer socketTimeout) {
+    this.socketTimeout = socketTimeout;
+  }
+
+  /**
+   * The current working directory. This is optional: if not specified, the current directory will
+   * be used.
+   */
+  @Parameter(property = "ijhttp.workingdir")
+  public void setWorkingDirectory(File workingDirectory) {
+    this.workingDirectory = workingDirectory;
+  }
+
   @VisibleForTesting
   CommandLine getCommandLine() throws IOException, MojoExecutionException {
-    var commandLine = new CommandLine(EXECUTABLE);
+    var commandLine = new CommandLine(executable);
 
     if (isNull(files)) {
       throw new MojoExecutionException("files are required");
@@ -262,12 +295,6 @@ public class RunMojo extends AbstractMojo {
     return executor;
   }
 
-  private void environmentName(CommandLine commandLine) {
-    if (nonNull(environmentName) && !environmentName.isBlank()) {
-      commandLine.addArgument(ENVIRONMENT_NAME).addArgument(environmentName);
-    }
-  }
-
   private void environment(CommandLine commandLine) throws IOException {
     if (nonNull(environmentFile)) {
       commandLine.addArgument(ENV_FILE).addArgument(environmentFile.getCanonicalPath());
@@ -275,6 +302,12 @@ public class RunMojo extends AbstractMojo {
     if (nonNull(environmentVariables)) {
       environmentVariables.forEach(
           variable -> commandLine.addArgument(ENV_VARIABLES).addArgument(variable));
+    }
+  }
+
+  private void environmentName(CommandLine commandLine) {
+    if (nonNull(environmentName) && !environmentName.isBlank()) {
+      commandLine.addArgument(ENVIRONMENT_NAME).addArgument(environmentName);
     }
   }
 

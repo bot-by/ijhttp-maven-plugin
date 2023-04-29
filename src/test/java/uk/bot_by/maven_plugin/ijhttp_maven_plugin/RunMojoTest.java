@@ -39,6 +39,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
@@ -53,16 +54,15 @@ class RunMojoTest {
   private Executor executor;
   @Mock
   private Log logger;
+  @InjectMocks
+  private RunMojo mojo;
 
   @DisplayName("Skip execution")
   @Test
   void skip() throws MojoExecutionException {
     // given
-    var mojo = new RunMojo(null, false, null, null, null, null, false, null, null, null, false,
-        true, null);
-
-    mojo = spy(mojo);
-    when(mojo.getLog()).thenReturn(logger);
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setSkip(true);
 
     // when
     mojo.execute();
@@ -75,8 +75,8 @@ class RunMojoTest {
   @Test
   void filesAreRequired() {
     // given
-    var mojo = new RunMojo(null, false, null, null, null, null, false, LogLevel.BASIC, null, null,
-        false, false, null);
+    mojo.setExecutable("ijhttp");
+    mojo.setLogLevel(LogLevel.BASIC);
 
     // when
     var exception = assertThrows(MojoExecutionException.class, mojo::execute);
@@ -90,10 +90,11 @@ class RunMojoTest {
   void run() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(
-        new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
-            LogLevel.BASIC, null, null, false, false, null));
+    var mojo = spy(this.mojo);
 
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
 
@@ -108,15 +109,16 @@ class RunMojoTest {
     assertThat("files", arguments, arrayContaining("*"));
   }
 
-  @DisplayName("Run with exception")
+  @DisplayName("Executor: run with an exception")
   @Test
   void runWithException() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(
-        new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
-            LogLevel.BASIC, null, null, false, false, null));
+    var mojo = spy(this.mojo);
 
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException("test exception"));
@@ -130,33 +132,19 @@ class RunMojoTest {
     assertEquals("I/O Error: test exception", exception.getMessage());
   }
 
-  @DisplayName("Executor")
-  @ParameterizedTest
-  @CsvSource(value = {"N/A,.", "target/classes,classes", "pom.xml,.",
-      "qwerty,."}, nullValues = "N/A")
-  void executor(String workingDirectoryName, String expectedWorkingDirectoryName) {
-    // given
-    File workingDirectory = (isNull(workingDirectoryName)) ? null : new File(workingDirectoryName);
-    var mojo = new RunMojo(workingDirectory);
 
-    // when
-    var executor = assertDoesNotThrow(mojo::getExecutor, "default executor");
-
-    // then
-    assertEquals(expectedWorkingDirectoryName, executor.getWorkingDirectory().getName());
-  }
-
-  @DisplayName("Executor exception without message")
+  @DisplayName("Executor: run with an exception without a message")
   @ParameterizedTest
   @NullAndEmptySource
   @ValueSource(strings = {" "})
   void executorExceptionWithoutMessage(String message) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(
-        new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
-            LogLevel.BASIC, null, null, false, false, null));
+    var mojo = spy(this.mojo);
 
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException(message));
@@ -170,14 +158,32 @@ class RunMojoTest {
     assertEquals("I/O Error", exception.getMessage());
   }
 
+  @DisplayName("Working directory")
+  @ParameterizedTest
+  @CsvSource(value = {"N/A,.", "target/classes,classes", "pom.xml,.",
+      "qwerty,."}, nullValues = "N/A")
+  void workingDirectory(String workingDirectoryName, String expectedWorkingDirectoryName) {
+    // given
+    File workingDirectory = (isNull(workingDirectoryName)) ? null : new File(workingDirectoryName);
+
+    mojo.setWorkingDirectory(workingDirectory);
+
+    // when
+    var executor = assertDoesNotThrow(mojo::getExecutor, "default executor");
+
+    // then
+    assertEquals(expectedWorkingDirectoryName, executor.getWorkingDirectory().getName());
+  }
+
   @DisplayName("Simple run without arguments")
   @Test
   void simpleRun() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
-        LogLevel.BASIC, null, null, false, false, null);
 
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -196,9 +202,11 @@ class RunMojoTest {
   void environmentName(String name) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, false, null, null, name, Collections.singletonList(file), false,
-        LogLevel.BASIC, null, null, false, false, null);
 
+    mojo.setEnvironmentName(name);
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -221,9 +229,11 @@ class RunMojoTest {
   void quotedEnvironmentName() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, false, null, null, "environment name",
-        Collections.singletonList(file), false, LogLevel.BASIC, null, null, false, false, null);
 
+    mojo.setEnvironmentName("environment name");
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -244,9 +254,10 @@ class RunMojoTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, false, null, null, null, Collections.singletonList(file), false,
-        logLevel, null, null, false, false, null);
 
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(logLevel);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -269,9 +280,12 @@ class RunMojoTest {
       String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(connectTimeout, false, null, null, null, Collections.singletonList(file),
-        false, LogLevel.BASIC, null, null, false, false, socketTimeout);
 
+    mojo.setConnectTimeout(connectTimeout);
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setSocketTimeout(socketTimeout);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -291,9 +305,13 @@ class RunMojoTest {
       String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, dockerMode, null, null, null, Collections.singletonList(file),
-        insecure, LogLevel.BASIC, null, null, report, false, null);
 
+    mojo.setDockerMode(dockerMode);
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setInsecure(insecure);
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setReport(report);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -313,10 +331,12 @@ class RunMojoTest {
       String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, false, environmentFile, null, null,
-        Collections.singletonList(file), false, LogLevel.BASIC, privateEnvironmentFile, null, false,
-        false, null);
 
+    mojo.setEnvironmentFile(environmentFile);
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setPrivateEnvironmentFile(privateEnvironmentFile);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
@@ -342,10 +362,12 @@ class RunMojoTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = new RunMojo(null, false, null, environmentVariables, null,
-        Collections.singletonList(file), false, LogLevel.BASIC, null, privateEnvironmentVariables,
-        false, false, null);
 
+    mojo.setEnvironmentVariables(environmentVariables);
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setPrivateEnvironmentVariables(privateEnvironmentVariables);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
