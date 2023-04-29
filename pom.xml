@@ -335,10 +335,6 @@
     </license>
   </licenses>
   <modelVersion>4.0.0</modelVersion>
-  <organization>
-    <name>bot-by</name>
-    <url>https://bot-by.uk</url>
-  </organization>
   <name>IntelliJ HTTP Client Maven Plugin</name>
   <organization>
     <name>bot-by</name>
