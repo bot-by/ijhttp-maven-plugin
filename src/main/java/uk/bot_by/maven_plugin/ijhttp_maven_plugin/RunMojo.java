@@ -167,7 +167,7 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * Name of the environment in config file.
+   * Name of the environment in a configuration file.
    */
   @Parameter(property = "ijhttp.env")
   public void setEnvironmentName(String environmentName) {
@@ -365,7 +365,8 @@ public class RunMojo extends AbstractMojo {
    */
   public enum LogLevel {
     /**
-     * Print out HTTP request filename, names and values of public variables.
+     * Print out HTTP request filename, names and values of public variables, names of private
+     * variables, names and URLs of requests.
      */
     BASIC,
     /**
