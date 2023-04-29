@@ -1,0 +1,2 @@
+### Get todos
+GET http://localhost:8080/todos

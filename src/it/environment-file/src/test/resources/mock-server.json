@@ -1,0 +1,12 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/todos/1234"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "body": "{\"name\":\"remember the milk\",\"done\":false}"
+    }
+  }
+]

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>skip-execution</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>@project.artifactId@</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <files>
+                <file>simple.http</file>
+              </files>
+              <report>true</report>
+              <skip>true</skip>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <id>skip-run</id>
+          </execution>
+        </executions>
+        <groupId>@project.groupId@</groupId>
+        <version>@project.version@</version>
+      </plugin>
+    </plugins>
+  </build>
+  <description>A simple IT verifying the basic use case.</description>
+  <groupId>uk.bot-by.maven-plugin.it</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <version>1.0-SNAPSHOT</version>
+</project>

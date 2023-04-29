@@ -31,10 +31,10 @@
         <configuration>
           <rules>
             <requireJavaVersion>
-              <version>17</version>
+              <version>${java.version}</version>
             </requireJavaVersion>
             <requireMavenVersion>
-              <version>3.8.1</version>
+              <version>${maven-minimal.version}</version>
             </requireMavenVersion>
           </rules>
         </configuration>
@@ -91,7 +91,7 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <release>11</release>
+          <release>${java.version}</release>
           <showDeprecation>true</showDeprecation>
         </configuration>
         <groupId>org.apache.maven.plugins</groupId>
@@ -118,7 +118,7 @@
           </execution>
         </executions>
         <groupId>org.apache.maven.plugins</groupId>
-        <version>3.8.2</version>
+        <version>${plugin-annotations.version}</version>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -247,18 +247,30 @@
       <artifactId>maven-plugin-api</artifactId>
       <groupId>org.apache.maven</groupId>
       <scope>provided</scope>
-      <version>3.9.1</version>
+      <version>${plugin-api.version}</version>
     </dependency>
     <dependency>
       <artifactId>maven-plugin-annotations</artifactId>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <scope>provided</scope>
-      <version>3.8.2</version>
+      <version>${plugin-annotations.version}</version>
     </dependency>
+    <dependency>
+      <artifactId>annotations</artifactId>
+      <groupId>org.jetbrains</groupId>
+      <version>24.0.1</version>
+    </dependency>
+    <!--
     <dependency>
       <artifactId>plexus-utils</artifactId>
       <groupId>org.codehaus.plexus</groupId>
       <version>3.5.1</version>
+    </dependency>
+    -->
+    <dependency>
+      <artifactId>commons-exec</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <version>1.3</version>
     </dependency>
     <!-- test -->
     <dependency>
@@ -269,6 +281,12 @@
     </dependency>
     <dependency>
       <artifactId>junit-jupiter-engine</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+      <scope>test</scope>
+      <version>${junit-jupiter.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>junit-jupiter-params</artifactId>
       <groupId>org.junit.jupiter</groupId>
       <scope>test</scope>
       <version>${junit-jupiter.version}</version>
@@ -285,8 +303,14 @@
       <scope>test</scope>
       <version>5.3.1</version>
     </dependency>
+    <dependency>
+      <artifactId>hamcrest</artifactId>
+      <groupId>org.hamcrest</groupId>
+      <scope>test</scope>
+      <version>2.2</version>
+    </dependency>
   </dependencies>
-  <description></description>
+  <description>Run HTTP requests of integration tests</description>
   <developers>
     <developer>
       <email>radio_rogal@posteo.pl</email>
@@ -297,7 +321,7 @@
     </developer>
   </developers>
   <groupId>uk.bot-by.maven-plugin</groupId>
-  <inceptionYear>2022</inceptionYear>
+  <inceptionYear>2023</inceptionYear>
   <issueManagement>
     <system>GitLab</system>
     <url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/issues</url>
@@ -311,13 +335,16 @@
     </license>
   </licenses>
   <modelVersion>4.0.0</modelVersion>
+  <name>IntelliJ HTTP Client Maven Plugin</name>
   <organization>
     <name>bot-by</name>
     <url>https://bot-by.uk</url>
   </organization>
-  <name>IntelliJ HTTP Client Maven Plugin</name>
   <!-- FIXME change it to the project's website -->
   <packaging>maven-plugin</packaging>
+  <prerequisites>
+    <maven>${maven-minimal.version}</maven>
+  </prerequisites>
   <profiles>
     <profile>
       <build>
@@ -326,10 +353,9 @@
             <artifactId>maven-invoker-plugin</artifactId>
             <configuration>
               <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-              <debug>true</debug>
               <goals>
                 <goal>clean</goal>
-                <goal>test-compile</goal>
+                <goal>verify</goal>
               </goals>
               <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
               <pomIncludes>
@@ -342,8 +368,7 @@
               <execution>
                 <goals>
                   <goal>install</goal>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
+                  <goal>run</goal>
                 </goals>
                 <id>integration-test</id>
               </execution>
@@ -389,6 +414,56 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <additionalJOptions>
+                <additionalJOption>
+                  -J-Dhttp.agent=maven-javadoc-plugin_${project.groupId}:${project.artifactId}
+                </additionalJOption>
+              </additionalJOptions>
+              <additionalOptions>
+                <additionalOption>--allow-script-in-comments</additionalOption>
+              </additionalOptions>
+              <bottom><![CDATA[
+<script type="text/javascript" src="{@docRoot}/resources/prism.js"></script>
+							]]></bottom>
+              <docfilessubdirs>true</docfilessubdirs>
+              <doclint>none</doclint>
+              <isOffline>false</isOffline>
+              <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+              <links>
+                <link>
+                  https://javadoc.io/doc/org.apache.maven/maven-plugin-api/${plugin-api.version}
+                </link>
+                <link>
+                  https://javadoc.io/doc/org.apache.maven.plugin-tools/maven-plugin-annotations/${plugin-annotations.version}
+                </link>
+              </links>
+              <show>public</show>
+              <top><![CDATA[
+<link rel="stylesheet" type="text/css" href="{@docRoot}/resources/prism.css"/>
+<link rel="stylesheet" type="text/css" href="{@docRoot}/resources/ijhttp-maven-plugin.css"/>
+							]]></top>
+            </configuration>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <id>attach-javadocs</id>
+              </execution>
+            </executions>
+            <groupId>org.apache.maven.plugins</groupId>
+            <version>${javadoc-plugin.version}</version>
+          </plugin>
+        </plugins>
+      </build>
+      <id>javadocs</id>
+    </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
             <artifactId>maven-source-plugin</artifactId>
             <executions>
               <execution>
@@ -405,15 +480,100 @@
       </build>
       <id>sources</id>
     </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-site-plugin</artifactId>
+            <configuration>
+              <stagingDirectory>public</stagingDirectory>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <artifactId>docs-maven-skin</artifactId>
+                <groupId>com.bernardomg.maven.skins</groupId>
+                <version>2.3.2</version>
+              </dependency>
+            </dependencies>
+            <groupId>org.apache.maven.plugins</groupId>
+            <version>3.12.1</version>
+          </plugin>
+        </plugins>
+      </build>
+      <distributionManagement>
+        <site>
+          <id>${project.artifactId}-site</id>
+          <url>./</url>
+        </site>
+      </distributionManagement>
+      <id>site</id>
+      <reporting>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <doclint>none</doclint>
+            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+            <reportSets>
+              <reportSet>
+                <id>aggregate</id>
+                <inherited>false</inherited>
+                <reports>
+                  <report>aggregate</report>
+                </reports>
+              </reportSet>
+              <reportSet>
+                <id>default</id>
+                <reports>
+                  <report>javadoc</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+            <version>${javadoc-plugin.version}</version>
+          </plugin>
+          <plugin>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+            <reportSets>
+              <reportSet>
+                <reports>
+                  <report>ci-management</report>
+                  <report>dependencies</report>
+                  <report>issue-management</report>
+                  <report>licenses</report>
+                  <report>scm</report>
+                  <report>team</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+            <version>3.4.3</version>
+          </plugin>
+        </plugins>
+      </reporting>
+    </profile>
   </profiles>
   <properties>
     <changelist>-SNAPSHOT</changelist>
+    <github.release.url>https://github.com/bot-by/ijhttp-maven-plugin/releases</github.release.url>
+    <gitlab.release.url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/releases
+    </gitlab.release.url>
+    <java.version>17</java.version>
+    <javadoc-plugin.version>3.5.0</javadoc-plugin.version>
     <junit-jupiter.version>5.9.2</junit-jupiter.version>
+    <maven-minimal.version>3.8.5</maven-minimal.version>
+    <plugin-annotations.version>3.8.2</plugin-annotations.version>
+    <plugin-api.version>3.9.1</plugin-api.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <revision>1.0.0</revision>
     <sha1/>
   </properties>
+  <scm>
+    <connection>scm:git:https://gitlab.com/bot-by/ijhttp-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@gitlab.com:bot-by/ijhttp-maven-plugin.git</developerConnection>
+    <url>https://gitlab.com/bot-by/ijhttp-maven-plugin</url>
+  </scm>
   <url>https://gitlab.com/bot-by/ijhttp-maven-plugin</url>
   <version>${revision}${sha1}${changelist}</version>
 </project>

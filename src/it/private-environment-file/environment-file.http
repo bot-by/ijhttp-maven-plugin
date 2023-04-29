@@ -1,0 +1,2 @@
+### Get todo
+GET http://localhost:8080/todos/{{id}}
