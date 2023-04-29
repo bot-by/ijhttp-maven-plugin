@@ -1,7 +1,7 @@
 # IntelliJ HTTP Client, Maven Plugin
 
 A Maven Plugin  to run HTTP requests through the [IntelliJ HTTP Client][http-client] on
-the <em>integration-test</em> phase.
+the _integration-test_ phase.
 
 [![Codacy Grade](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
@@ -12,7 +12,7 @@ Originally the HTTP Client plugin allows to create, edit, and execute HTTP reque
 IntelliJ IDEA code editor. The HTTP Client is also [available as a CLI tool][cli-tool].
 
 The plugin allows to run HTTP requests through the IntelliJ HTTP Client on
-the <em>integration-test</em> phase. The [HTTP Request in Editor Specification][specification]
+the _integration-test_ phase. The [HTTP Request in Editor Specification][specification]
 describes format these files.
 
 Example requests:
