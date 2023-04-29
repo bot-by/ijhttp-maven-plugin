@@ -20,7 +20,6 @@
               <goal>run</goal>
             </goals>
             <id>log-level-verbose</id>
-            <phase>integration-test</phase>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>

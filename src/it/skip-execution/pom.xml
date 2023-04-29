@@ -20,7 +20,6 @@
               <goal>run</goal>
             </goals>
             <id>skip-run</id>
-            <phase>integration-test</phase>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>

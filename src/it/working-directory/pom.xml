@@ -20,7 +20,6 @@
               <goal>run</goal>
             </goals>
             <id>run-in-another-directory</id>
-            <phase>integration-test</phase>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>

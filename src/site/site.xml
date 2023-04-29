@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/DECORATION/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
+  <skin>
+    <groupId>com.bernardomg.maven.skins</groupId>
+    <artifactId>docs-maven-skin</artifactId>
+    <version>2.3.2</version>
+  </skin>
+  <custom>
+    <skinConfig>
+      <keywords>ijhttp,http client cli,maven plugin</keywords>
+      <descriptionUrl>Run HTTP requests of integration tests.</descriptionUrl>
+      <topNav>
+        <menu>Documentation</menu>
+        <menu>Info and reports</menu>
+      </topNav>
+      <bottomNav>
+        <menu>General Info</menu>
+        <menu>Code</menu>
+        <menu>Releases</menu>
+      </bottomNav>
+      <iconNav>
+        <menu>Icons</menu>
+      </iconNav>
+    </skinConfig>
+  </custom>
+  <body>
+    <head><![CDATA[
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+    ]]></head>
+    <links>
+      <item name="IntelliJ HTTP Client" href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"/>
+    </links>
+    <menu name="General Info" inherit="top">
+      <item name="Usage" href="./usage.html"/>
+      <item name="Contributing" href="./contributing.html"/>
+    </menu>
+    <menu name="Documentation" inherit="bottom">
+      <item name="Usage" href="./usage.html"/>
+      <item name="Configuration" href="./configuration.html"/>
+      <item name="Contributing" href="./contributing.html"/>
+      <item name="Javadocs" href="./apidocs/"/>
+    </menu>
+    <menu name="Info and reports" inherit="bottom">
+      <item name="Project Information" href="./project-info.html"/>
+    </menu>
+    <menu name="Code" inherit="bottom">
+      <item name="SCM" href="${project.scm.url}">
+        <description>GitLab</description>
+      </item>
+      <item name="CI" href="${project.ciManagement.url}">
+        <description>${project.ciManagement.system}</description>
+      </item>
+      <item name="Issues" href="${project.issueManagement.url}">
+        <description>${project.issueManagement.system}</description>
+      </item>
+    </menu>
+    <menu name="Releases" inherit="bottom">
+      <item name="GitLab" href="${gitlab.release.url}"/>
+      <item name="GitHub" href="${github.release.url}"/>
+      <item name="Changes Log" href="./changelog.html"/>
+    </menu>
+    <menu name="Icons" inherit="bottom">
+      <item name="GitLab" img="gitlab" href="${project.scm.url}"/>
+    </menu>
+  </body>
+</project>

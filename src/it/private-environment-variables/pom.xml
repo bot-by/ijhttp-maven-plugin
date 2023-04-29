@@ -23,7 +23,6 @@
               <goal>run</goal>
             </goals>
             <id>private-variables</id>
-            <phase>integration-test</phase>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>

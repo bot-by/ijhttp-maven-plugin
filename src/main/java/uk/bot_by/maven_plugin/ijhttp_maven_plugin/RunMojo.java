@@ -257,8 +257,7 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * The current working directory. This is optional: if not specified, the current directory will
-   * be used.
+   * The working directory. This is optional: if not specified, the current directory will be used.
    */
   @Parameter(property = "ijhttp.workingdir")
   public void setWorkingDirectory(File workingDirectory) {

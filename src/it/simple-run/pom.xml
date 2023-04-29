@@ -19,7 +19,6 @@
               <goal>run</goal>
             </goals>
             <id>simple-run-with-report</id>
-            <phase>integration-test</phase>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>

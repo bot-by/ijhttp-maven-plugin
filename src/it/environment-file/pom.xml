@@ -21,7 +21,6 @@
               <goal>run</goal>
             </goals>
             <id>public-environment</id>
-            <phase>integration-test</phase>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>
