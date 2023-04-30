@@ -71,7 +71,7 @@ public class RunMojo extends AbstractMojo {
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
   private static final String DOCKER_MODE = "--docker-mode";
   private static final String ENV_FILE = "--env-file";
-  private static final String ENVIRONMENT_NAME = "--env";
+  private static final String ENV = "--env";
   private static final String ENV_VARIABLES = "--env-variables";
   private static final String INSECURE = "--insecure";
   private static final String LOG_LEVEL = "--log-level";
@@ -313,7 +313,7 @@ public class RunMojo extends AbstractMojo {
 
   private void environmentName(CommandLine commandLine) {
     if (nonNull(environmentName) && !environmentName.isBlank()) {
-      commandLine.addArgument(ENVIRONMENT_NAME).addArgument(environmentName);
+      commandLine.addArgument(ENV).addArgument(environmentName);
     }
   }
 
