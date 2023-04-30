@@ -9,6 +9,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
@@ -22,6 +24,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteStreamHandler;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
@@ -51,6 +56,8 @@ class RunMojoFastTest {
   private ArgumentCaptor<CommandLine> commandLineCaptor;
   @Mock
   private Executor executor;
+  @Mock
+  private ExecuteStreamHandler streamHandler;
   @InjectMocks
   private RunMojo mojo;
 
@@ -97,6 +104,7 @@ class RunMojoFastTest {
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
 
     // when
     mojo.execute();
@@ -122,6 +130,7 @@ class RunMojoFastTest {
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException("test exception"));
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
 
     // when
     Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
@@ -132,12 +141,11 @@ class RunMojoFastTest {
     assertEquals("I/O Error: test exception", exception.getMessage());
   }
 
-
   @DisplayName("Executor: run with an exception without a message")
   @ParameterizedTest
   @NullAndEmptySource
   @ValueSource(strings = {" "})
-  void executorExceptionWithoutMessage(String message) throws IOException, MojoExecutionException {
+  void runWithExceptionWithoutMessage(String message) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
     var mojo = spy(this.mojo);
@@ -148,6 +156,7 @@ class RunMojoFastTest {
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException(message));
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
 
     // when
     Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
@@ -156,6 +165,67 @@ class RunMojoFastTest {
     verify(executor).execute(isA(CommandLine.class));
 
     assertEquals("I/O Error", exception.getMessage());
+  }
+
+  @DisplayName("Executor: run with an execute exception")
+  @ParameterizedTest
+  @ValueSource(booleans = {true, false})
+  void runWithExecuteException(boolean watchdogExists) throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = spy(this.mojo);
+    var watchdog = mock(ExecuteWatchdog.class);
+
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.execute(isA(CommandLine.class))).thenThrow(
+        new ExecuteException("test execute exception", 2));
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
+    if (watchdogExists) {
+      when(executor.getWatchdog()).thenReturn(watchdog);
+      when(watchdog.killedProcess()).thenReturn(false);
+    }
+
+    // when
+    Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    verify(executor).execute(isA(CommandLine.class));
+
+    assertEquals("Execution failed: test execute exception (Exit value: 2)",
+        exception.getMessage());
+  }
+
+  @DisplayName("Executor: timeout")
+  @Test
+  void timeoutOfExecutor() throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = spy(this.mojo);
+    var watchdog = mock(ExecuteWatchdog.class);
+
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setTimeout(1234567);
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.execute(isA(CommandLine.class))).thenThrow(
+        new ExecuteException("test execute exception", 3));
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
+    when(executor.getWatchdog()).thenReturn(watchdog);
+    when(watchdog.killedProcess()).thenReturn(true);
+
+    // when
+    Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    verify(executor).execute(isA(CommandLine.class));
+
+    assertEquals("Timeout. Process runs longer that 1234567 ms.", exception.getMessage());
   }
 
   @DisplayName("Current directory")
@@ -370,6 +440,54 @@ class RunMojoFastTest {
     var arguments = commandLine.getArguments();
 
     assertThat(testName, arguments, arrayContaining(expectedArguments.toArray()));
+  }
+
+  @DisplayName("Watchdog")
+  @ParameterizedTest
+  @ValueSource(booleans = {true, false})
+  void watchdog(boolean useWatchdog) throws MojoExecutionException, IOException {
+    // given
+    if (useWatchdog) {
+      mojo.setTimeout(1000000);
+    }
+
+    // when
+    var executor = mojo.getExecutor();
+
+    // then
+    if (useWatchdog) {
+      assertNotNull(executor.getWatchdog(), "watchdog exists");
+    } else {
+      assertNull(executor.getWatchdog(), "watchdog does not exist");
+    }
+  }
+
+  @DisplayName("Use Maven Logger")
+  @ParameterizedTest
+  @ValueSource(booleans = {true, false})
+  void useMavenLogger(boolean quietLogs) throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = spy(this.mojo);
+
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setQuietLogs(quietLogs);
+    mojo.setUseMavenLogger(true);
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
+
+    // when
+    mojo.execute();
+
+    // then
+    verify(executor).execute(commandLineCaptor.capture());
+
+    var arguments = commandLineCaptor.getValue().getArguments();
+
+    assertThat("files", arguments, arrayContaining("*"));
   }
 
   static class SlashyStringToListConverter extends SimpleArgumentConverter {

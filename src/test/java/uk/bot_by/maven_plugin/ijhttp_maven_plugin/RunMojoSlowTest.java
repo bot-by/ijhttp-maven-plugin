@@ -5,19 +5,36 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collections;
+import org.apache.commons.exec.ExecuteStreamHandler;
+import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
 
+@ExtendWith(MockitoExtension.class)
 @Tag("slow")
 class RunMojoSlowTest {
+
+  @Mock
+  private Executor executor;
+  @Mock
+  private ExecuteStreamHandler streamHandler;
 
   private RunMojo mojo;
 
@@ -60,7 +77,31 @@ class RunMojoSlowTest {
     Exception exception = assertThrows(MojoExecutionException.class, mojo::getExecutor);
 
     // then
-    assertEquals("working directory is a file: " + testDirectoryLikeFile, exception.getMessage());
+    assertEquals("the working directory is a file: " + testDirectoryLikeFile,
+        exception.getMessage());
+  }
+
+  @DisplayName("Output file")
+  @Test
+  void outputFile() throws IOException, MojoExecutionException {
+    // given
+    var outputFile = Files.createTempFile("http-client-", ".log");
+    var file = mock(File.class);
+    var mojo = spy(this.mojo);
+
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setOutputFile(outputFile.toFile());
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
+
+    // when
+    mojo.execute();
+
+    // then
+    assertTrue(Files.exists(outputFile));
   }
 
 }
