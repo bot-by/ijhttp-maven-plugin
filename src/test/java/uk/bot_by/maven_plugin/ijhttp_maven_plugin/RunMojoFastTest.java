@@ -8,7 +8,6 @@ import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -46,14 +45,12 @@ import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")
-class RunMojoTest {
+class RunMojoFastTest {
 
   @Captor
   private ArgumentCaptor<CommandLine> commandLineCaptor;
   @Mock
   private Executor executor;
-  @Mock
-  private Log logger;
   @InjectMocks
   private RunMojo mojo;
 
@@ -61,6 +58,9 @@ class RunMojoTest {
   @Test
   void skip() throws MojoExecutionException {
     // given
+    var logger = mock(Log.class);
+
+    mojo.setLog(logger);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setSkip(true);
 
@@ -158,21 +158,14 @@ class RunMojoTest {
     assertEquals("I/O Error", exception.getMessage());
   }
 
-  @DisplayName("Working directory")
-  @ParameterizedTest
-  @CsvSource(value = {"N/A,.", "target/classes,classes", "pom.xml,.",
-      "qwerty,."}, nullValues = "N/A")
-  void workingDirectory(String workingDirectoryName, String expectedWorkingDirectoryName) {
-    // given
-    File workingDirectory = (isNull(workingDirectoryName)) ? null : new File(workingDirectoryName);
-
-    mojo.setWorkingDirectory(workingDirectory);
-
+  @DisplayName("Current directory")
+  @Test
+  void currentDirectory() throws MojoExecutionException, IOException {
     // when
-    var executor = assertDoesNotThrow(mojo::getExecutor, "default executor");
+    var executor = mojo.getExecutor();
 
     // then
-    assertEquals(expectedWorkingDirectoryName, executor.getWorkingDirectory().getName());
+    assertEquals(".", executor.getWorkingDirectory().getName(), "working directory");
   }
 
   @DisplayName("Simple run without arguments")

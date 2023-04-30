@@ -20,6 +20,7 @@ import static java.util.Objects.nonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -257,9 +258,9 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * The working directory. This is optional: if not specified, the current directory will be used.
+   * The working directory. Defaults to <em>${basedir}</em>.
    */
-  @Parameter(property = "ijhttp.workingdir")
+  @Parameter(property = "ijhttp.workingdir", defaultValue = "${basedir}")
   public void setWorkingDirectory(File workingDirectory) {
     this.workingDirectory = workingDirectory;
   }
@@ -283,13 +284,19 @@ public class RunMojo extends AbstractMojo {
   }
 
   @VisibleForTesting
-  Executor getExecutor() {
+  Executor getExecutor() throws IOException, MojoExecutionException {
     var executor = new DefaultExecutor();
 
-    if (nonNull(workingDirectory) && workingDirectory.isDirectory()) {
+    if (nonNull(workingDirectory)) {
+      if (!workingDirectory.exists()) {
+        Files.createDirectory(workingDirectory.toPath());
+      } else if (!workingDirectory.isDirectory()) {
+        throw new MojoExecutionException(
+            "working directory is a file: " + workingDirectory.getPath());
+      }
       executor.setWorkingDirectory(workingDirectory);
-      getLog().debug("Working directory: " + workingDirectory);
     }
+    getLog().debug("Working directory: " + executor.getWorkingDirectory());
 
     return executor;
   }
