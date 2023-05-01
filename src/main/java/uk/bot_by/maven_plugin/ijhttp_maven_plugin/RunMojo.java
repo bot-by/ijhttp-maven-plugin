@@ -122,7 +122,9 @@ public class RunMojo extends AbstractMojo {
       var commandLine = getCommandLine();
       var executor = getExecutor();
 
-      getLog().debug("Executing command line: " + commandLine);
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Executing command line: " + commandLine);
+      }
       try {
         runHttpClient(commandLine, executor);
       } catch (ExecuteException exception) {
@@ -241,9 +243,10 @@ public class RunMojo extends AbstractMojo {
 
   /**
    * Program standard and error output will be redirected to the file specified by this optional
-   * field. If not specified the standard Maven logging is used.
+   * field. If not enabled the traditional behavior of program output being directed to standard
+   * {@code System.out} and {@code System.err} is used.
    *
-   * @see #useMavenLogger
+   * @see #setUseMavenLogger(boolean)
    */
   @Parameter(property = "ijhttp.output-file")
   public void setOutputFile(File outputFile) {
@@ -272,8 +275,8 @@ public class RunMojo extends AbstractMojo {
    * When combined with {@code ijhttp.useMavenLogger=true}, prints all executed program output at
    * debug level instead of the default info level to the Maven logger.
    *
-   * @see #outputFile
-   * @see #useMavenLogger
+   * @see #setOutputFile(File)
+   * @see #setUseMavenLogger(boolean)
    */
   @Parameter(property = "ijhttp.quietLogs", defaultValue = "false")
   public void setQuietLogs(boolean quietLogs) {
@@ -319,7 +322,8 @@ public class RunMojo extends AbstractMojo {
    * behavior of program output being directed to standard {@code System.out} and {@code System.err}
    * is used.
    *
-   * @see #outputFile
+   * @see #setOutputFile(File)
+   * @see #setQuietLogs(boolean)
    */
   @Parameter(property = "ijhttp.useMavenLogger", defaultValue = "false")
   public void setUseMavenLogger(boolean useMavenLogger) {
@@ -396,7 +400,7 @@ public class RunMojo extends AbstractMojo {
 
       executor.setWatchdog(watchdog);
       if (getLog().isDebugEnabled()) {
-        getLog().debug(String.format("Set the watchdog(%s)", timeout));
+        getLog().debug(String.format("Set the watchdog (%s) ms", timeout));
       }
     }
   }
@@ -412,7 +416,9 @@ public class RunMojo extends AbstractMojo {
       }
       executor.setWorkingDirectory(workingDirectory);
     }
-    getLog().debug("Working directory: " + executor.getWorkingDirectory());
+    if (getLog().isDebugEnabled()) {
+      getLog().debug("Working directory: " + executor.getWorkingDirectory());
+    }
   }
 
   private void logLevel(CommandLine commandLine) {
@@ -451,7 +457,9 @@ public class RunMojo extends AbstractMojo {
       }
       var outputStream = new FileOutputStream(outputFile);
       executor.setStreamHandler(new PumpStreamHandler(new BufferedOutputStream(outputStream)));
-      getLog().debug("Will redirect program output to the log file: " + outputFile);
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Will redirect program output to the log file: " + outputFile);
+      }
       try (outputStream) {
         executor.getStreamHandler().start();
         executor.execute(commandLine);
@@ -476,7 +484,9 @@ public class RunMojo extends AbstractMojo {
         }
       };
       executor.setStreamHandler(new PumpStreamHandler(loggerOutStream, loggerErrStream));
-      getLog().debug("Will redirect program output to Maven logger");
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Will redirect program output to Maven logger");
+      }
       try (loggerErrStream; loggerOutStream) {
         executor.getStreamHandler().start();
         executor.execute(commandLine);

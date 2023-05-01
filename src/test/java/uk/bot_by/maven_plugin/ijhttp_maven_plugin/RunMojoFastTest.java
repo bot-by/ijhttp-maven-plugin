@@ -30,6 +30,8 @@ import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.logging.SystemStreamLog;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -60,6 +62,16 @@ class RunMojoFastTest {
   private ExecuteStreamHandler streamHandler;
   @InjectMocks
   private RunMojo mojo;
+
+  @BeforeEach
+  void setUp() {
+    mojo.setLog(new SystemStreamLog() {
+      @Override
+      public boolean isDebugEnabled() {
+        return true;
+      }
+    });
+  }
 
   @DisplayName("Skip execution")
   @Test

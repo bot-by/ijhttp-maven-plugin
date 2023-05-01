@@ -1,5 +1,7 @@
 package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,10 +14,12 @@ import static org.mockito.Mockito.when;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -41,6 +45,12 @@ class RunMojoSlowTest {
   @BeforeEach
   void setUp() throws IOException {
     mojo = new RunMojo();
+    mojo.setLog(new SystemStreamLog() {
+      @Override
+      public boolean isDebugEnabled() {
+        return true;
+      }
+    });
   }
 
   @DisplayName("Working directory: existed directory, non-existed directory")
@@ -102,6 +112,30 @@ class RunMojoSlowTest {
 
     // then
     assertTrue(Files.exists(outputFile));
+  }
+
+  @DisplayName("Parent directories do not exist")
+  @Test
+  void parentDirectories() throws IOException, MojoExecutionException {
+    // given
+    var parentDirectories = Path.of(Files.createTempFile("parent-", "-directory").toString(),
+        "second");
+    var outputFile = Path.of(parentDirectories.toString(), "http-client.log");
+    var file = mock(File.class);
+    var mojo = spy(this.mojo);
+
+    mojo.setExecutable("ijhttp");
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setOutputFile(outputFile.toFile());
+    when(file.getCanonicalPath()).thenReturn("*");
+    when(mojo.getExecutor()).thenReturn(executor);
+
+    // when
+    Exception exception = assertThrows(MojoExecutionException.class, mojo::execute);
+
+    // then
+    assertThat(exception.getMessage(), startsWith("I/O Error: "));
   }
 
 }
