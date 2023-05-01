@@ -1,5 +1,6 @@
 package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
 
+import static java.util.Objects.nonNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collections;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
@@ -26,6 +28,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -136,6 +139,37 @@ class RunMojoSlowTest {
 
     // then
     assertThat(exception.getMessage(), startsWith("I/O Error: "));
+  }
+
+  @DisplayName("Use Maven Logger")
+  @ParameterizedTest
+  @CsvSource(value = {"true,echo,test,N/A,true", "false,echo,test,N/A,true",
+      "true,echo,test,>&2,true", "false,echo,test,>&2,true"}, nullValues = "N/A")
+  void useMavenLogger(boolean quietLogs, String executable, String firstArgument,
+      String secondArgument, boolean passed) throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var mojo = spy(this.mojo);
+    var files = new ArrayList<File>();
+
+    files.add(file);
+    if (nonNull(secondArgument)) {
+      files.add(file);
+    }
+
+    mojo.setExecutable(executable);
+    mojo.setFiles(files);
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setQuietLogs(quietLogs);
+    mojo.setUseMavenLogger(true);
+    when(file.getCanonicalPath()).thenReturn(firstArgument, secondArgument);
+
+    // when
+    if (passed) {
+      mojo.execute();
+    } else {
+      assertThrows(MojoExecutionException.class, mojo::execute);
+    }
   }
 
 }
