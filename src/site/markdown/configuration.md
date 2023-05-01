@@ -32,7 +32,7 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
 - **privateEnvironmentVariables** - Private environment variables.
 - **outputFile** - Program standard and error output will be redirected to the file specified
   by this optional field.
-- **quietLog** - When combined with `ijhttp.useMavenLogger=true`, prints all executed program
+- **quietLog** - When combined with `useMavenLogger=true`, prints all executed program
   output at `DEBUG` level instead of the default `INFO` level to the Maven logger.
 - **report** - Creates report about execution in JUnit XML Format. Puts it in folder `reports`
   in the current directory. Defaults to _false_.
