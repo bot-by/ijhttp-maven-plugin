@@ -18,12 +18,19 @@ package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.LogOutputStream;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -70,7 +77,7 @@ public class RunMojo extends AbstractMojo {
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
   private static final String DOCKER_MODE = "--docker-mode";
   private static final String ENV_FILE = "--env-file";
-  private static final String ENVIRONMENT_NAME = "--env";
+  private static final String ENV = "--env";
   private static final String ENV_VARIABLES = "--env-variables";
   private static final String INSECURE = "--insecure";
   private static final String LOG_LEVEL = "--log-level";
@@ -88,11 +95,15 @@ public class RunMojo extends AbstractMojo {
   private List<File> files;
   private boolean insecure;
   private LogLevel logLevel;
+  private File outputFile;
   private File privateEnvironmentFile;
   private List<String> privateEnvironmentVariables;
+  private boolean quietLogs;
   private boolean report;
   private boolean skip;
   private Integer socketTimeout;
+  private Integer timeout;
+  private boolean useMavenLogger;
   private File workingDirectory;
 
   /**
@@ -109,9 +120,26 @@ public class RunMojo extends AbstractMojo {
 
     try {
       var commandLine = getCommandLine();
+      var executor = getExecutor();
 
-      getLog().debug("Executing command line: " + commandLine);
-      getExecutor().execute(commandLine);
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Executing command line: " + commandLine);
+      }
+      try {
+        runHttpClient(commandLine, executor);
+      } catch (ExecuteException exception) {
+        if (nonNull(executor.getWatchdog()) && executor.getWatchdog().killedProcess()) {
+          var message = "Timeout. Process runs longer that " + timeout + " ms.";
+
+          getLog().error(message);
+          throw new MojoExecutionException(message);
+        } else {
+          var message = "Execution failed: " + exception.getMessage();
+
+          getLog().error(message, exception);
+          throw new MojoExecutionException(message, exception);
+        }
+      }
     } catch (IOException exception) {
       var message = new StringBuilder("I/O Error");
 
@@ -214,6 +242,18 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
+   * Program standard and error output will be redirected to the file specified by this optional
+   * field. If not enabled the traditional behavior of program output being directed to standard
+   * {@code System.out} and {@code System.err} is used.
+   *
+   * @see #setUseMavenLogger(boolean)
+   */
+  @Parameter(property = "ijhttp.output-file")
+  public void setOutputFile(File outputFile) {
+    this.outputFile = outputFile;
+  }
+
+  /**
    * Name of the private environment file, e.g. {@code http-client.private.env.json}.
    */
   @Parameter(property = "ijhttp.private-env-file")
@@ -229,6 +269,18 @@ public class RunMojo extends AbstractMojo {
   @Parameter(property = "ijhttp.private-env-variables")
   public void setPrivateEnvironmentVariables(List<String> privateEnvironmentVariables) {
     this.privateEnvironmentVariables = privateEnvironmentVariables;
+  }
+
+  /**
+   * When combined with {@code ijhttp.useMavenLogger=true}, prints all executed program output at
+   * debug level instead of the default info level to the Maven logger.
+   *
+   * @see #setOutputFile(File)
+   * @see #setUseMavenLogger(boolean)
+   */
+  @Parameter(property = "ijhttp.quietLogs", defaultValue = "false")
+  public void setQuietLogs(boolean quietLogs) {
+    this.quietLogs = quietLogs;
   }
 
   /**
@@ -257,9 +309,31 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * The working directory. This is optional: if not specified, the current directory will be used.
+   * Number of milliseconds for execution.
    */
-  @Parameter(property = "ijhttp.workingdir")
+  @Parameter(property = "ijhttp.timeout")
+  public void setTimeout(Integer timeout) {
+    this.timeout = timeout;
+  }
+
+  /**
+   * When enabled, program standard and error output will be redirected to the Maven logger as
+   * <em>Info</em> and <em>Error</em> level logs, respectively. If not enabled the traditional
+   * behavior of program output being directed to standard {@code System.out} and {@code System.err}
+   * is used.
+   *
+   * @see #setOutputFile(File)
+   * @see #setQuietLogs(boolean)
+   */
+  @Parameter(property = "ijhttp.useMavenLogger", defaultValue = "false")
+  public void setUseMavenLogger(boolean useMavenLogger) {
+    this.useMavenLogger = useMavenLogger;
+  }
+
+  /**
+   * The working directory. Defaults to <em>${basedir}</em>.
+   */
+  @Parameter(property = "ijhttp.workingdir", defaultValue = "${basedir}")
   public void setWorkingDirectory(File workingDirectory) {
     this.workingDirectory = workingDirectory;
   }
@@ -283,13 +357,11 @@ public class RunMojo extends AbstractMojo {
   }
 
   @VisibleForTesting
-  Executor getExecutor() {
+  Executor getExecutor() throws IOException, MojoExecutionException {
     var executor = new DefaultExecutor();
 
-    if (nonNull(workingDirectory) && workingDirectory.isDirectory()) {
-      executor.setWorkingDirectory(workingDirectory);
-      getLog().debug("Working directory: " + workingDirectory);
-    }
+    handleWatchdog(executor);
+    handleWorkingDirectory(executor);
 
     return executor;
   }
@@ -306,7 +378,7 @@ public class RunMojo extends AbstractMojo {
 
   private void environmentName(CommandLine commandLine) {
     if (nonNull(environmentName) && !environmentName.isBlank()) {
-      commandLine.addArgument(ENVIRONMENT_NAME).addArgument(environmentName);
+      commandLine.addArgument(ENV).addArgument(environmentName);
     }
   }
 
@@ -319,6 +391,33 @@ public class RunMojo extends AbstractMojo {
     }
     if (report) {
       commandLine.addArgument(REPORT);
+    }
+  }
+
+  private void handleWatchdog(DefaultExecutor executor) {
+    if (nonNull(timeout)) {
+      var watchdog = new ExecuteWatchdog(timeout);
+
+      executor.setWatchdog(watchdog);
+      if (getLog().isDebugEnabled()) {
+        getLog().debug(String.format("Set the watchdog (%s) ms", timeout));
+      }
+    }
+  }
+
+  private void handleWorkingDirectory(DefaultExecutor executor)
+      throws IOException, MojoExecutionException {
+    if (nonNull(workingDirectory)) {
+      if (!workingDirectory.exists()) {
+        Files.createDirectory(workingDirectory.toPath());
+      } else if (!workingDirectory.isDirectory()) {
+        throw new MojoExecutionException(
+            "the working directory is a file: " + workingDirectory.getPath());
+      }
+      executor.setWorkingDirectory(workingDirectory);
+    }
+    if (getLog().isDebugEnabled()) {
+      getLog().debug("Working directory: " + executor.getWorkingDirectory());
     }
   }
 
@@ -347,6 +446,61 @@ public class RunMojo extends AbstractMojo {
   private void requests(CommandLine commandLine) throws IOException {
     for (File file : files) {
       commandLine.addArgument(file.getCanonicalPath());
+    }
+  }
+
+  private void runHttpClient(CommandLine commandLine, Executor executor) throws IOException {
+    if (nonNull(outputFile)) {
+      if (!outputFile.getParentFile().exists() && !outputFile.getParentFile().mkdirs()) {
+        getLog().warn(
+            "Could not create non existing parent directories for the log file: " + outputFile);
+      }
+      var outputStream = new FileOutputStream(outputFile);
+      executor.setStreamHandler(new PumpStreamHandler(new BufferedOutputStream(outputStream)));
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Will redirect program output to the log file: " + outputFile);
+      }
+      try (outputStream) {
+        executor.getStreamHandler().start();
+        executor.execute(commandLine);
+      } finally {
+        executor.getStreamHandler().stop();
+      }
+    } else if (useMavenLogger) {
+      var loggerErrStream = new LogOutputStream() {
+        @Override
+        protected void processLine(String line, int logLevel) {
+          getLog().error(line);
+        }
+      };
+      var loggerOutStream = new LogOutputStream() {
+        @Override
+        protected void processLine(String line, int logLevel) {
+          if (quietLogs) {
+            getLog().debug(line);
+          } else {
+            getLog().info(line);
+          }
+        }
+      };
+      executor.setStreamHandler(new PumpStreamHandler(loggerOutStream, loggerErrStream));
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Will redirect program output to Maven logger");
+      }
+      try (loggerErrStream; loggerOutStream) {
+        executor.getStreamHandler().start();
+        executor.execute(commandLine);
+      } finally {
+        executor.getStreamHandler().stop();
+      }
+    } else {
+      executor.setStreamHandler(new PumpStreamHandler());
+      try {
+        executor.getStreamHandler().start();
+        executor.execute(commandLine);
+      } finally {
+        executor.getStreamHandler().stop();
+      }
     }
   }
 
