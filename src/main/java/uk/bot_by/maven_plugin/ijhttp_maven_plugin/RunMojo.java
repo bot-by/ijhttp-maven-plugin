@@ -33,6 +33,7 @@ import org.apache.commons.exec.LogOutputStream;
 import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -64,6 +65,8 @@ import org.jetbrains.annotations.VisibleForTesting;
  *   &lt;/environmentVariables&gt;
  *   ...
  * </code></pre>
+ * To manage plugin's output use {@link #useMavenLogger}, {@link #quietLogs} and
+ * {@link #outputFile}.
  *
  * @author Witalij Berdinskich
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
@@ -109,10 +112,11 @@ public class RunMojo extends AbstractMojo {
   /**
    * Run HTTP requests.
    *
-   * @throws MojoExecutionException if a failure happens
+   * @throws MojoExecutionException if a error happens
+   * @throws MojoFailureException   if a failure happens
    */
   @Override
-  public void execute() throws MojoExecutionException {
+  public void execute() throws MojoExecutionException, MojoFailureException {
     if (skip) {
       getLog().info("skipping execute as per configuration");
       return;

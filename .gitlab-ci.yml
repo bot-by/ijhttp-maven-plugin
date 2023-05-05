@@ -72,7 +72,8 @@ pages:
   stage: deploy
   script:
     - cp changelog.md src/site/markdown
-    - mvn $MAVEN_CLI_OPTS -pl . verify site site:stage -Dchangelist= -Pjavadocs,site
+    - cp contributing.md src/site/markdown
+    - mvn $MAVEN_CLI_OPTS verify site site:stage -Dchangelist= -Pjavadocs,site
   artifacts:
     paths:
       - public

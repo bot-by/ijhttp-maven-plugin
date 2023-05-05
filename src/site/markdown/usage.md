@@ -1,13 +1,12 @@
 # Usage
 
-**Important!** The plugin does not contain the HTTP client: you need to install it by yourself then add to `PATH`.
+**Important!** The plugin does not contain the HTTP client: you need to install it by yourself
+then add to `PATH`. You can also set the full path to the ijhttp via the parameter `executable`.
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by/ijhttp-maven-plugin)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by/ijhttp-maven-plugin)
 
-There is one goal **run**. To use it add the plugin to your POM.
-
-Example of full configuration:
+There is one goal **run**. Add the plugin to your POM, example of full configuration:
 
 ```language-xml
 <plugin>
@@ -35,3 +34,9 @@ Example of full configuration:
   </executions>
 </plugin>
 ```
+
+To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
+
+Further reading: [Configuration][].
+
+[Configuration]: configuration.html
