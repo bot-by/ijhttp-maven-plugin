@@ -1,6 +1,5 @@
 package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
 
-import static java.util.Objects.nonNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -9,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -18,9 +16,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,9 +29,9 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
 
@@ -42,12 +43,12 @@ class RunMojoSlowTest {
   private Executor executor;
   @Mock
   private ExecuteStreamHandler streamHandler;
-
+  @Spy
   private RunMojo mojo;
 
   @BeforeEach
   void setUp() throws IOException {
-    mojo = new RunMojo();
+    mojo.setExecutable("ijhttp");
     mojo.setLog(new SystemStreamLog() {
       @Override
       public boolean isDebugEnabled() {
@@ -96,13 +97,11 @@ class RunMojoSlowTest {
 
   @DisplayName("Output file")
   @Test
-  void outputFile() throws IOException, MojoExecutionException {
+  void outputFile() throws IOException, MojoExecutionException, MojoFailureException {
     // given
     var outputFile = Files.createTempFile("http-client-", ".log");
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setOutputFile(outputFile.toFile());
@@ -125,9 +124,7 @@ class RunMojoSlowTest {
         "second");
     var outputFile = Path.of(parentDirectories.toString(), "http-client.log");
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setOutputFile(outputFile.toFile());
@@ -143,33 +140,51 @@ class RunMojoSlowTest {
 
   @DisplayName("Use Maven Logger")
   @ParameterizedTest
-  @CsvSource(value = {"true,echo,test,N/A,true", "false,echo,test,N/A,true",
-      "true,echo,test,>&2,true", "false,echo,test,>&2,true"}, nullValues = "N/A")
-  void useMavenLogger(boolean quietLogs, String executable, String firstArgument,
-      String secondArgument, boolean passed) throws IOException, MojoExecutionException {
+  @ValueSource(booleans = {true, false})
+  void useMavenLogger(boolean quietLogs) throws IOException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
     var files = new ArrayList<File>();
 
     files.add(file);
-    if (nonNull(secondArgument)) {
-      files.add(file);
-    }
 
-    mojo.setExecutable(executable);
+    mojo.setExecutable("./mvnw");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn(firstArgument, secondArgument);
+    when(file.getCanonicalPath()).thenReturn("--version");
 
     // when
-    if (passed) {
-      mojo.execute();
-    } else {
-      assertThrows(MojoExecutionException.class, mojo::execute);
-    }
+    assertDoesNotThrow(mojo::execute);
+  }
+
+  @DisplayName("stderr")
+  @Test
+  void stderr() throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+    var files = new ArrayList<File>();
+    var logger = mock(Log.class);
+
+    files.add(file);
+
+    mojo.setExecutable("./mvnw");
+    mojo.setFiles(files);
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setUseMavenLogger(true);
+    when(file.getCanonicalPath()).thenReturn("--version2");
+    when(mojo.getExecutor()).thenAnswer(invocationOnMock -> {
+      var executor = new DefaultExecutor();
+
+      executor.setExitValue(1);
+
+      return executor;
+    });
+    when(mojo.getLog()).thenReturn(logger);
+
+    // when
+    assertDoesNotThrow(mojo::execute);
   }
 
 }

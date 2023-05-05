@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +28,7 @@ import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,8 +45,8 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
 
@@ -60,11 +60,12 @@ class RunMojoFastTest {
   private Executor executor;
   @Mock
   private ExecuteStreamHandler streamHandler;
-  @InjectMocks
+  @Spy
   private RunMojo mojo;
 
   @BeforeEach
   void setUp() {
+    mojo.setExecutable("ijhttp");
     mojo.setLog(new SystemStreamLog() {
       @Override
       public boolean isDebugEnabled() {
@@ -75,7 +76,7 @@ class RunMojoFastTest {
 
   @DisplayName("Skip execution")
   @Test
-  void skip() throws MojoExecutionException {
+  void skip() throws MojoExecutionException, MojoFailureException {
     // given
     var logger = mock(Log.class);
 
@@ -94,7 +95,6 @@ class RunMojoFastTest {
   @Test
   void filesAreRequired() {
     // given
-    mojo.setExecutable("ijhttp");
     mojo.setLogLevel(LogLevel.BASIC);
 
     // when
@@ -106,12 +106,10 @@ class RunMojoFastTest {
 
   @DisplayName("Run")
   @Test
-  void run() throws IOException, MojoExecutionException {
+  void run() throws IOException, MojoExecutionException, MojoFailureException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -134,9 +132,7 @@ class RunMojoFastTest {
   void runWithException() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -160,9 +156,7 @@ class RunMojoFastTest {
   void runWithExceptionWithoutMessage(String message) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -185,10 +179,8 @@ class RunMojoFastTest {
   void runWithExecuteException(boolean watchdogExists) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
     var watchdog = mock(ExecuteWatchdog.class);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -216,10 +208,8 @@ class RunMojoFastTest {
   void timeoutOfExecutor() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
     var watchdog = mock(ExecuteWatchdog.class);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setTimeout(1234567);
@@ -256,7 +246,6 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -279,7 +268,6 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentName(name);
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -306,7 +294,6 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentName("environment name");
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -330,7 +317,6 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(logLevel);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -357,7 +343,6 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setConnectTimeout(connectTimeout);
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setSocketTimeout(socketTimeout);
@@ -382,7 +367,6 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setDockerMode(dockerMode);
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setInsecure(insecure);
     mojo.setLogLevel(LogLevel.BASIC);
@@ -408,7 +392,6 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentFile(environmentFile);
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentFile(privateEnvironmentFile);
@@ -439,7 +422,6 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentVariables(environmentVariables);
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentVariables(privateEnvironmentVariables);
@@ -477,12 +459,11 @@ class RunMojoFastTest {
   @DisplayName("Use Maven Logger")
   @ParameterizedTest
   @ValueSource(booleans = {true, false})
-  void useMavenLogger(boolean quietLogs) throws IOException, MojoExecutionException {
+  void useMavenLogger(boolean quietLogs)
+      throws IOException, MojoExecutionException, MojoFailureException {
     // given
     var file = mock(File.class);
-    var mojo = spy(this.mojo);
 
-    mojo.setExecutable("ijhttp");
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);

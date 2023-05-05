@@ -44,7 +44,8 @@ Content-Type: application/json
 
 ## Usage
 
-**Important!** The plugin does not contain the HTTP client: you need to install it by yourself then add to `PATH`.
+**Important!** The plugin does not contain the HTTP client: you need to install it by yourself
+then add to `PATH`. You can also set the full path to the ijhttp via the parameter `executable`.
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by/ijhttp-maven-plugin)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by/ijhttp-maven-plugin)
@@ -80,6 +81,8 @@ Example of full configuration:
 </plugin>
 ```
 
+To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
+
 ## Contributing
 
 Please read [Contributing](contributing.md).
@@ -104,7 +107,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)  
+[Apache License v2.0](LICENSE)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
