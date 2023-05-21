@@ -1,7 +1,7 @@
 variables:
   MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dmaven.compiler.showWarnings=false -Dmaven.compiler.debug=false -Dorg.slf4j.simpleLogger.showDateTime=true -Dorg.slf4j.simpleLogger.dateTimeFormat=HH:mm:ss:SSS"
 
-image: maven:3-openjdk-17
+image: maven:3.9.0-amazoncorretto-17
 
 include:
   - template: Security/SAST.gitlab-ci.yml
