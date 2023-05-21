@@ -557,7 +557,7 @@
     <maven-minimal.version>3.8.5</maven-minimal.version>
     <mockito.version>5.3.1</mockito.version>
     <plugin-api.version>3.8.7</plugin-api.version>
-    <plugin-annotations.version>3.8.2</plugin-annotations.version>
+    <plugin-annotations.version>3.9.0</plugin-annotations.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <revision>1.0.0</revision>
