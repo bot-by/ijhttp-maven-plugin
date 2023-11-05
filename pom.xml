@@ -555,7 +555,7 @@
     <javadoc-plugin.version>3.6.0</javadoc-plugin.version>
     <junit-jupiter.version>5.10.0</junit-jupiter.version>
     <maven-minimal.version>3.8.5</maven-minimal.version>
-    <mockito.version>5.6.0</mockito.version>
+    <mockito.version>5.7.0</mockito.version>
     <plugin-annotations.version>3.10.1</plugin-annotations.version>
     <plugin-api.version>3.9.4</plugin-api.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
