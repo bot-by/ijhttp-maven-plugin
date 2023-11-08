@@ -376,7 +376,7 @@ public class RunMojo extends AbstractMojo {
     }
     if (nonNull(environmentVariables)) {
       environmentVariables.forEach(
-          variable -> commandLine.addArgument(ENV_VARIABLES).addArgument(variable));
+          variable -> commandLine.addArgument(ENV_VARIABLES).addArgument(variable, false));
     }
   }
 
@@ -443,7 +443,7 @@ public class RunMojo extends AbstractMojo {
     }
     if (nonNull(privateEnvironmentVariables)) {
       privateEnvironmentVariables.forEach(
-          variable -> commandLine.addArgument(PRIVATE_ENV_VARIABLES).addArgument(variable));
+          variable -> commandLine.addArgument(PRIVATE_ENV_VARIABLES).addArgument(variable, false));
     }
   }
 

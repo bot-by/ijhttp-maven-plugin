@@ -410,8 +410,10 @@ class RunMojoFastTest {
   @DisplayName("Multi-value arguments")
   @ParameterizedTest
   @CsvSource(value = {"single environment variable,abc=123,N/A,--env-variables/abc=123/*",
+      "environment variable with spaces,abc=name surname,N/A,--env-variables/abc=name surname/*",
       "multi environment variables,abc=123/qwerty=xzy,N/A,--env-variables/abc=123/--env-variables/qwerty=xzy/*",
       "single private environment variable,N/A,qwerty=xzy,--private-env-variables/qwerty=xzy/*",
+      "private environment variable with spaces,N/A,qwerty=xzy abc,--private-env-variables/qwerty=xzy abc/*",
       "multi environment variables,N/A,abc=123/qwerty=xzy,--private-env-variables/abc=123/--private-env-variables/qwerty=xzy/*"}, nullValues = "N/A")
   void multiValueArguments(String testName,
       @ConvertWith(SlashyStringToListConverter.class) List<String> environmentVariables,
