@@ -86,6 +86,7 @@ public class RunMojo extends AbstractMojo {
   private static final String LOG_LEVEL = "--log-level";
   private static final String PRIVATE_ENV_FILE = "--private-env-file";
   private static final String PRIVATE_ENV_VARIABLES = "--private-env-variables";
+  private static final String PROXY = "--proxy";
   private static final String REPORT = "--report";
   private static final String SOCKET_TIMEOUT = "--socket-timeout";
 
@@ -101,6 +102,7 @@ public class RunMojo extends AbstractMojo {
   private File outputFile;
   private File privateEnvironmentFile;
   private List<String> privateEnvironmentVariables;
+  private String proxy;
   private boolean quietLogs;
   private boolean report;
   private boolean skip;
@@ -276,6 +278,17 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
+   * Proxy URI.
+   * <p>
+   * Proxy setting in format {@code scheme://login:password@host:port}, <em>scheme<em> can be
+   * <em>socks<em> for SOCKS or <em>http<em> for HTTP.
+   */
+  @Parameter(property = "ijhttp.proxy")
+  public void setProxy(String proxy) {
+    this.proxy = proxy;
+  }
+
+  /**
    * When combined with {@code ijhttp.useMavenLogger=true}, prints all executed program output at
    * debug level instead of the default info level to the Maven logger.
    *
@@ -355,6 +368,7 @@ public class RunMojo extends AbstractMojo {
     environmentName(commandLine);
     environment(commandLine);
     privateEnvironment(commandLine);
+    proxy(commandLine);
     requests(commandLine);
 
     return commandLine;
@@ -444,6 +458,12 @@ public class RunMojo extends AbstractMojo {
     if (nonNull(privateEnvironmentVariables)) {
       privateEnvironmentVariables.forEach(
           variable -> commandLine.addArgument(PRIVATE_ENV_VARIABLES).addArgument(variable, false));
+    }
+  }
+
+  private void proxy(CommandLine commandLine) {
+    if (nonNull(proxy)) {
+      commandLine.addArgument(PROXY).addArgument(proxy, false);
     }
   }
 

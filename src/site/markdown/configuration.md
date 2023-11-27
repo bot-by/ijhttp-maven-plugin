@@ -33,6 +33,8 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
 - **privateEnvironmentFile** - Name of the private environment file,
   e.g. `http-client.private.env.json`.
 - **privateEnvironmentVariables** - Private environment variables.
+- **proxy** - Proxy URI. Proxy setting in format `scheme://login:password@host:port`,
+  _scheme_ can be _socks_ for SOCKS or _http_ for HTTP.
 - **quietLog** - When combined with `useMavenLogger=true`, prints all executed program
   output at `DEBUG` level instead of the default `INFO` level to the Maven logger.
 - **report** - Creates report about execution in JUnit XML Format. Puts it in folder `reports`
