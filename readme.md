@@ -47,6 +47,7 @@ Content-Type: application/json
 
 **Important!** The plugin does not contain the HTTP client: you need to install it by yourself
 then add to `PATH`. You can also set the full path to the ijhttp via the parameter `executable`.
+The [IntelliJ HTTP Client Demo][demo] has some examples how to download the HTTP client.
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.maven-plugin/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.maven-plugin/ijhttp-maven-plugin)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by.maven-plugin/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.maven-plugin/ijhttp-maven-plugin)

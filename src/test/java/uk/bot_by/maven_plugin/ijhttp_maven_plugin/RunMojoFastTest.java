@@ -407,18 +407,42 @@ class RunMojoFastTest {
         arrayContaining(equalTo(argumentName), endsWith(argumentValue), equalTo("*")));
   }
 
+  @DisplayName("Single-value arguments")
+  @ParameterizedTest
+  @CsvSource(value = {"HTTP proxy,http://localhost:3128/,--proxy|http://localhost:3128/|*",
+      "SOCKS proxy,socks://localhost:9050,--proxy|socks://localhost:9050|*"})
+  void singleValueArguments(String testName, String proxy,
+      @ConvertWith(PipedStringToListConverter.class) List<String> expectedArguments)
+      throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setProxy(proxy);
+    when(file.getCanonicalPath()).thenReturn("*");
+
+    // when
+    var commandLine = mojo.getCommandLine();
+
+    // then
+    var arguments = commandLine.getArguments();
+
+    assertThat(testName, arguments, arrayContaining(expectedArguments.toArray()));
+  }
+
   @DisplayName("Multi-value arguments")
   @ParameterizedTest
-  @CsvSource(value = {"single environment variable,abc=123,N/A,--env-variables/abc=123/*",
-      "environment variable with spaces,abc=name surname,N/A,--env-variables/abc=name surname/*",
-      "multi environment variables,abc=123/qwerty=xzy,N/A,--env-variables/abc=123/--env-variables/qwerty=xzy/*",
-      "single private environment variable,N/A,qwerty=xzy,--private-env-variables/qwerty=xzy/*",
-      "private environment variable with spaces,N/A,qwerty=xzy abc,--private-env-variables/qwerty=xzy abc/*",
-      "multi environment variables,N/A,abc=123/qwerty=xzy,--private-env-variables/abc=123/--private-env-variables/qwerty=xzy/*"}, nullValues = "N/A")
+  @CsvSource(value = {"single environment variable,abc=123,N/A,--env-variables|abc=123|*",
+      "environment variable with spaces,abc=name surname,N/A,--env-variables|abc=name surname|*",
+      "multi environment variables,abc=123|qwerty=xzy,N/A,--env-variables|abc=123|--env-variables|qwerty=xzy|*",
+      "single private environment variable,N/A,qwerty=xzy,--private-env-variables|qwerty=xzy|*",
+      "private environment variable with spaces,N/A,qwerty=xzy abc,--private-env-variables|qwerty=xzy abc|*",
+      "multi environment variables,N/A,abc=123|qwerty=xzy,--private-env-variables|abc=123|--private-env-variables|qwerty=xzy|*"}, nullValues = "N/A")
   void multiValueArguments(String testName,
-      @ConvertWith(SlashyStringToListConverter.class) List<String> environmentVariables,
-      @ConvertWith(SlashyStringToListConverter.class) List<String> privateEnvironmentVariables,
-      @ConvertWith(SlashyStringToListConverter.class) List<String> expectedArguments)
+      @ConvertWith(PipedStringToListConverter.class) List<String> environmentVariables,
+      @ConvertWith(PipedStringToListConverter.class) List<String> privateEnvironmentVariables,
+      @ConvertWith(PipedStringToListConverter.class) List<String> expectedArguments)
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
@@ -485,7 +509,7 @@ class RunMojoFastTest {
     assertThat("files", arguments, arrayContaining("*"));
   }
 
-  static class SlashyStringToListConverter extends SimpleArgumentConverter {
+  static class PipedStringToListConverter extends SimpleArgumentConverter {
 
     @Override
     protected Object convert(Object source, Class<?> targetType)
@@ -501,7 +525,7 @@ class RunMojoFastTest {
 
       var slashyString = (String) source;
 
-      return List.of(slashyString.split("/"));
+      return List.of(slashyString.split("\\|"));
     }
 
   }

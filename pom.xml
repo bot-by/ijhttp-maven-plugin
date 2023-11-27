@@ -560,7 +560,7 @@
     <plugin-api.version>3.9.4</plugin-api.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <revision>1.0.1</revision>
+    <revision>1.1.0</revision>
     <sha1/>
   </properties>
   <scm>
