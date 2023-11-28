@@ -356,15 +356,21 @@ public class RunMojo extends AbstractMojo {
 
   @VisibleForTesting
   CommandLine getCommandLine() throws IOException, MojoExecutionException {
-    if (isNull(files)) {
-      throw new MojoExecutionException("files are required");
-    }
 
     var builder = new CommandLineBuilder();
 
-    if (nonNull(connectTimeout)) {
-      builder.connectTimeout(connectTimeout);
-    }
+    environment(builder);
+    executable(builder);
+    files(builder);
+    flags(builder);
+    logLevel(builder);
+    proxy(builder);
+    timeouts(builder);
+
+    return builder.getCommandLine();
+  }
+
+  private void environment(CommandLineBuilder builder) {
     if (nonNull(environmentName)) {
       builder.environmentName(environmentName);
     }
@@ -374,29 +380,51 @@ public class RunMojo extends AbstractMojo {
     if (nonNull(environmentVariables)) {
       builder.environmentVariables(environmentVariables);
     }
-    builder.executable(executable);
-    builder.dockerMode(dockerMode);
-    builder.files(files);
-    builder.insecure(insecure);
-    builder.logLevel(logLevel);
     if (nonNull(privateEnvironmentFile)) {
       builder.privateEnvironmentFile(privateEnvironmentFile);
     }
     if (nonNull(privateEnvironmentVariables)) {
       builder.privateEnvironmentVariables(privateEnvironmentVariables);
     }
-    if (nonNull(proxy)) {
-      builder.proxy(proxy);
+  }
+
+  private void executable(CommandLineBuilder builder) {
+    builder.executable(executable);
+  }
+
+  private void files(CommandLineBuilder builder) throws MojoExecutionException {
+    if (isNull(files)) {
+      throw new MojoExecutionException("files are required");
     }
+    builder.files(files);
+  }
+
+  private void flags(CommandLineBuilder builder) {
+    builder.dockerMode(dockerMode);
+    builder.insecure(insecure);
     builder.report(report);
     if (nonNull(reportPath)) {
       builder.reportPath(reportPath);
     }
+  }
+
+  private void logLevel(CommandLineBuilder builder) {
+    builder.logLevel(logLevel);
+  }
+
+  private void proxy(CommandLineBuilder builder) {
+    if (nonNull(proxy)) {
+      builder.proxy(proxy);
+    }
+  }
+
+  private void timeouts(CommandLineBuilder builder) {
+    if (nonNull(connectTimeout)) {
+      builder.connectTimeout(connectTimeout);
+    }
     if (nonNull(socketTimeout)) {
       builder.socketTimeout(socketTimeout);
     }
-
-    return builder.getCommandLine();
   }
 
   @VisibleForTesting
