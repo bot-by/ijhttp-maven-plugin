@@ -105,6 +105,7 @@ public class RunMojo extends AbstractMojo {
   private String proxy;
   private boolean quietLogs;
   private boolean report;
+  private File reportPath;
   private boolean skip;
   private Integer socketTimeout;
   private Integer timeout;
@@ -301,12 +302,23 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * Creates report about execution in JUnit XML Format. Puts it in folder {@code reports } in the
-   * current directory. Defaults to <em>false</em>.
+   * Creates report about execution in JUnit XML Format. Defaults to <em>false</em>.
+   *
+   * @see RunMojo#setReportPath(File)
    */
   @Parameter(property = "ijhttp.report", defaultValue = "false")
   public void setReport(boolean report) {
     this.report = report;
+  }
+
+  /**
+   * Path to a report folder. Default value {@code reports } in the current directory.
+   *
+   * @see RunMojo#setReport(boolean)
+   */
+  @Parameter(property = "ijhttp.report-path")
+  public void setReportPath(File reportPath) {
+    this.reportPath = reportPath;
   }
 
   /**
@@ -400,7 +412,7 @@ public class RunMojo extends AbstractMojo {
     }
   }
 
-  private void flags(CommandLine commandLine) {
+  private void flags(CommandLine commandLine) throws IOException {
     if (dockerMode) {
       commandLine.addArgument(DOCKER_MODE);
     }
@@ -409,6 +421,9 @@ public class RunMojo extends AbstractMojo {
     }
     if (report) {
       commandLine.addArgument(REPORT);
+      if (nonNull(reportPath)) {
+        commandLine.addArgument(reportPath.getCanonicalPath());
+      }
     }
   }
 

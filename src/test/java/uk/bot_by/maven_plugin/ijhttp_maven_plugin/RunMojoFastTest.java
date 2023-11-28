@@ -384,10 +384,12 @@ class RunMojoFastTest {
 
   @DisplayName("File arguments")
   @ParameterizedTest
-  @CsvSource(value = {"environment file,env.json,N/A,env.json,--env-file",
-      "private environment file,N/A,private-env.json,private-env.json,--private-env-file"}, nullValues = "N/A")
+  @CsvSource(value = {"environment file,env.json,N/A,N/A,env.json,--env-file",
+      "private environment file,N/A,private-env.json,N/A,private-env.json,--private-env-file",
+      "report path,N/A,N/A,report-path,report-path,--report"}, nullValues = "N/A")
   void fileArguments(String testName, File environmentFile, File privateEnvironmentFile,
-      String argumentValue, String argumentName) throws IOException, MojoExecutionException {
+      File reportPath, String argumentValue, String argumentName)
+      throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
 
@@ -395,6 +397,10 @@ class RunMojoFastTest {
     mojo.setFiles(Collections.singletonList(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentFile(privateEnvironmentFile);
+    if (nonNull(reportPath)) {
+      mojo.setReport(true);
+    }
+    mojo.setReportPath(reportPath);
     when(file.getCanonicalPath()).thenReturn("*");
 
     // when
