@@ -77,19 +77,6 @@ import org.jetbrains.annotations.VisibleForTesting;
 @Mojo(name = "run", defaultPhase = LifecyclePhase.INTEGRATION_TEST, requiresProject = false)
 public class RunMojo extends AbstractMojo {
 
-  private static final String CONNECT_TIMEOUT = "--connect-timeout";
-  private static final String DOCKER_MODE = "--docker-mode";
-  private static final String ENV_FILE = "--env-file";
-  private static final String ENV = "--env";
-  private static final String ENV_VARIABLES = "--env-variables";
-  private static final String INSECURE = "--insecure";
-  private static final String LOG_LEVEL = "--log-level";
-  private static final String PRIVATE_ENV_FILE = "--private-env-file";
-  private static final String PRIVATE_ENV_VARIABLES = "--private-env-variables";
-  private static final String PROXY = "--proxy";
-  private static final String REPORT = "--report";
-  private static final String SOCKET_TIMEOUT = "--socket-timeout";
-
   private Integer connectTimeout;
   private boolean dockerMode;
   private File environmentFile;
@@ -115,7 +102,7 @@ public class RunMojo extends AbstractMojo {
   /**
    * Run HTTP requests.
    *
-   * @throws MojoExecutionException if a error happens
+   * @throws MojoExecutionException if an error happens
    * @throws MojoFailureException   if a failure happens
    */
   @Override
@@ -369,21 +356,47 @@ public class RunMojo extends AbstractMojo {
 
   @VisibleForTesting
   CommandLine getCommandLine() throws IOException, MojoExecutionException {
-    var commandLine = new CommandLine(executable);
-
     if (isNull(files)) {
       throw new MojoExecutionException("files are required");
     }
-    flags(commandLine);
-    logLevel(commandLine);
-    timeouts(commandLine);
-    environmentName(commandLine);
-    environment(commandLine);
-    privateEnvironment(commandLine);
-    proxy(commandLine);
-    requests(commandLine);
 
-    return commandLine;
+    var builder = new CommandLineBuilder();
+
+    if (nonNull(connectTimeout)) {
+      builder.connectTimeout(connectTimeout);
+    }
+    if (nonNull(environmentName)) {
+      builder.environmentName(environmentName);
+    }
+    if (nonNull(environmentFile)) {
+      builder.environmentFile(environmentFile);
+    }
+    if (nonNull(environmentVariables)) {
+      builder.environmentVariables(environmentVariables);
+    }
+    builder.executable(executable);
+    builder.dockerMode(dockerMode);
+    builder.files(files);
+    builder.insecure(insecure);
+    builder.logLevel(logLevel);
+    if (nonNull(privateEnvironmentFile)) {
+      builder.privateEnvironmentFile(privateEnvironmentFile);
+    }
+    if (nonNull(privateEnvironmentVariables)) {
+      builder.privateEnvironmentVariables(privateEnvironmentVariables);
+    }
+    if (nonNull(proxy)) {
+      builder.proxy(proxy);
+    }
+    builder.report(report);
+    if (nonNull(reportPath)) {
+      builder.reportPath(reportPath);
+    }
+    if (nonNull(socketTimeout)) {
+      builder.socketTimeout(socketTimeout);
+    }
+
+    return builder.getCommandLine();
   }
 
   @VisibleForTesting
@@ -394,37 +407,6 @@ public class RunMojo extends AbstractMojo {
     handleWorkingDirectory(executor);
 
     return executor;
-  }
-
-  private void environment(CommandLine commandLine) throws IOException {
-    if (nonNull(environmentFile)) {
-      commandLine.addArgument(ENV_FILE).addArgument(environmentFile.getCanonicalPath());
-    }
-    if (nonNull(environmentVariables)) {
-      environmentVariables.forEach(
-          variable -> commandLine.addArgument(ENV_VARIABLES).addArgument(variable, false));
-    }
-  }
-
-  private void environmentName(CommandLine commandLine) {
-    if (nonNull(environmentName) && !environmentName.isBlank()) {
-      commandLine.addArgument(ENV).addArgument(environmentName);
-    }
-  }
-
-  private void flags(CommandLine commandLine) throws IOException {
-    if (dockerMode) {
-      commandLine.addArgument(DOCKER_MODE);
-    }
-    if (insecure) {
-      commandLine.addArgument(INSECURE);
-    }
-    if (report) {
-      commandLine.addArgument(REPORT);
-      if (nonNull(reportPath)) {
-        commandLine.addArgument(reportPath.getCanonicalPath());
-      }
-    }
   }
 
   private void handleWatchdog(DefaultExecutor executor) {
@@ -451,40 +433,6 @@ public class RunMojo extends AbstractMojo {
     }
     if (getLog().isDebugEnabled()) {
       getLog().debug("Working directory: " + executor.getWorkingDirectory());
-    }
-  }
-
-  private void logLevel(CommandLine commandLine) {
-    switch (logLevel) {
-      case HEADERS:
-      case VERBOSE:
-        commandLine.addArgument(LOG_LEVEL).addArgument(logLevel.name());
-      case BASIC:
-      default:
-        // do nothing
-    }
-  }
-
-  private void privateEnvironment(CommandLine commandLine) throws IOException {
-    if (nonNull(privateEnvironmentFile)) {
-      commandLine.addArgument(PRIVATE_ENV_FILE)
-          .addArgument(privateEnvironmentFile.getCanonicalPath());
-    }
-    if (nonNull(privateEnvironmentVariables)) {
-      privateEnvironmentVariables.forEach(
-          variable -> commandLine.addArgument(PRIVATE_ENV_VARIABLES).addArgument(variable, false));
-    }
-  }
-
-  private void proxy(CommandLine commandLine) {
-    if (nonNull(proxy)) {
-      commandLine.addArgument(PROXY).addArgument(proxy, false);
-    }
-  }
-
-  private void requests(CommandLine commandLine) throws IOException {
-    for (File file : files) {
-      commandLine.addArgument(file.getCanonicalPath());
     }
   }
 
@@ -541,34 +489,6 @@ public class RunMojo extends AbstractMojo {
         executor.getStreamHandler().stop();
       }
     }
-  }
-
-  private void timeouts(CommandLine commandLine) {
-    if (nonNull(connectTimeout)) {
-      commandLine.addArgument(CONNECT_TIMEOUT).addArgument(connectTimeout.toString());
-    }
-    if (nonNull(socketTimeout)) {
-      commandLine.addArgument(SOCKET_TIMEOUT).addArgument(socketTimeout.toString());
-    }
-  }
-
-  /**
-   * Logging levels.
-   */
-  public enum LogLevel {
-    /**
-     * Print out HTTP request filename, names and values of public variables, names of private
-     * variables, names and URLs of requests.
-     */
-    BASIC,
-    /**
-     * Add to BASIC level HTTP headers.
-     */
-    HEADERS,
-    /**
-     * Add to HEADERS level request and response bodies, execution statistics.
-     */
-    VERBOSE
   }
 
 }

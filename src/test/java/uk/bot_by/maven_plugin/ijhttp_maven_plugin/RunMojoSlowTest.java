@@ -33,7 +33,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.bot_by.maven_plugin.ijhttp_maven_plugin.RunMojo.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("slow")
