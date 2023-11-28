@@ -50,7 +50,7 @@ class CommandLineBuilderFastTest {
   @Test
   void simpleRun() throws IOException {
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = builder.build();
 
     // then
     var arguments = commandLine.getArguments();
