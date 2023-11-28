@@ -99,7 +99,7 @@ class RunMojoFastTest {
     // when
     var exception = assertThrows(MojoExecutionException.class, mojo::execute);
 
-    // then
+    // th en
     assertEquals("files are required", exception.getMessage());
   }
 
@@ -412,7 +412,7 @@ class RunMojoFastTest {
         arrayContaining(equalTo(argumentName), endsWith(argumentValue), equalTo("*")));
   }
 
-  @DisplayName("Single-value arguments")
+  @DisplayName("Proxy")
   @ParameterizedTest
   @CsvSource(value = {"HTTP proxy,http://localhost:3128/,--proxy|http://localhost:3128/|*",
       "SOCKS proxy,socks://localhost:9050,--proxy|socks://localhost:9050|*"})
