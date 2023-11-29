@@ -1,4 +1,4 @@
-package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
+package uk.bot_by.ijhttp_tools.maven_plugin;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -48,6 +47,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.bot_by.ijhttp_core.core.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")
@@ -87,7 +87,7 @@ class RunMojoFastTest {
     mojo.execute();
 
     // then
-    verify(logger).info(anyString());
+    verify(logger).info("skipping execute as per configuration");
   }
 
   @DisplayName("Files are required")
@@ -99,7 +99,7 @@ class RunMojoFastTest {
     // when
     var exception = assertThrows(MojoExecutionException.class, mojo::execute);
 
-    // th en
+    // then
     assertEquals("files are required", exception.getMessage());
   }
 

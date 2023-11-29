@@ -1,4 +1,4 @@
-package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
+package uk.bot_by.ijhttp_tools.maven_plugin;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringStartsWith.startsWith;
@@ -33,6 +33,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import uk.bot_by.ijhttp_core.core.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("slow")
@@ -147,7 +148,7 @@ class RunMojoSlowTest {
 
     files.add(file);
 
-    mojo.setExecutable("./mvnw");
+    mojo.setExecutable("sleep");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
@@ -168,7 +169,7 @@ class RunMojoSlowTest {
 
     files.add(file);
 
-    mojo.setExecutable("./mvnw");
+    mojo.setExecutable("sleep");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setUseMavenLogger(true);

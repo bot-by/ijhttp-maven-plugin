@@ -1,4 +1,4 @@
-package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
+package uk.bot_by.ijhttp_core.core;
 
 /**
  * Logging levels.

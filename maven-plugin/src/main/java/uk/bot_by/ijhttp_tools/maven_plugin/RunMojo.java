@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package uk.bot_by.maven_plugin.ijhttp_maven_plugin;
+package uk.bot_by.ijhttp_tools.maven_plugin;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -38,6 +38,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.jetbrains.annotations.VisibleForTesting;
+import uk.bot_by.ijhttp_core.core.CommandLineBuilder;
+import uk.bot_by.ijhttp_core.core.LogLevel;
 
 /**
  * Run integration tests using IntelliJ HTTP Client.
