@@ -173,11 +173,11 @@ class RunMojoSlowTest {
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn("--version");
+    when(file.getCanonicalPath()).thenReturn("--version2");
     when(mojo.getExecutor()).thenAnswer(invocationOnMock -> {
       var executor = new DefaultExecutor();
 
-      executor.setExitValue(1);
+      executor.setExitValue(2);
 
       return executor;
     });
