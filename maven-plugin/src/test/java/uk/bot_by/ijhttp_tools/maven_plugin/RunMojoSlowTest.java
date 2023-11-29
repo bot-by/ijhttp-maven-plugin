@@ -148,20 +148,21 @@ class RunMojoSlowTest {
 
     files.add(file);
 
-    mojo.setExecutable("ls");
+    mojo.setExecutable("./test-exit-code.sh");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn("--version");
+    when(file.getCanonicalPath()).thenReturn("0");
 
     // when
     assertDoesNotThrow(mojo::execute);
   }
 
   @DisplayName("stderr")
-  @Test
-  void stderr() throws IOException, MojoExecutionException {
+  @ParameterizedTest
+  @ValueSource(ints = {1, 2})
+  void stderr(int exitCode) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
     var files = new ArrayList<File>();
@@ -169,15 +170,15 @@ class RunMojoSlowTest {
 
     files.add(file);
 
-    mojo.setExecutable("ls");
+    mojo.setExecutable("./test-exit-code.sh");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn("--version2");
+    when(file.getCanonicalPath()).thenReturn(Integer.toString(exitCode));
     when(mojo.getExecutor()).thenAnswer(invocationOnMock -> {
       var executor = new DefaultExecutor();
 
-      executor.setExitValue(2);
+      executor.setExitValue(exitCode);
 
       return executor;
     });
