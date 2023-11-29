@@ -148,7 +148,7 @@ class RunMojoSlowTest {
 
     files.add(file);
 
-    mojo.setExecutable("sleep");
+    mojo.setExecutable("ls");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
@@ -169,7 +169,7 @@ class RunMojoSlowTest {
 
     files.add(file);
 
-    mojo.setExecutable("sleep");
+    mojo.setExecutable("ls");
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setUseMavenLogger(true);
