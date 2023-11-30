@@ -193,7 +193,7 @@ class CommandLineBuilderFastTest {
   @DisplayName("File arguments: report, IDEA-339395")
   @ParameterizedTest
   @CsvSource(value = {"report path,N/A,N/A,report-path,report-path,--report"}, nullValues = "N/A")
-  void fileArguments_report(String testName, File environmentFile, File privateEnvironmentFile,
+  void fileArgumentsAndReport(String testName, File environmentFile, File privateEnvironmentFile,
       File reportPath, String argumentValue, String argumentName) throws IOException {
     // given
     if (nonNull(environmentFile)) {
