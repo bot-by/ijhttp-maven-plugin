@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>working-directory</artifactId>
+  <artifactId>simple-run-without-report</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -11,15 +11,15 @@
           <execution>
             <configuration>
               <files>
-                <file>src/test/resources/simple-run.http</file>
+                <file>simple-run.http</file>
               </files>
               <report>true</report>
-              <workingDirectory>test-working-directory</workingDirectory>
+              <reportPath>target/ijhttp-reports</reportPath>
             </configuration>
             <goals>
               <goal>run</goal>
             </goals>
-            <id>run-in-another-directory</id>
+            <id>simple-run-without-report</id>
           </execution>
         </executions>
         <groupId>@project.groupId@</groupId>
@@ -52,7 +52,7 @@
       </plugin>
     </plugins>
   </build>
-  <description>The test of an alternate working directory.</description>
+  <description>A simple IT verifying the basic use case with report and a custom report path.</description>
   <groupId>uk.bot-by.maven-plugin.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <properties>

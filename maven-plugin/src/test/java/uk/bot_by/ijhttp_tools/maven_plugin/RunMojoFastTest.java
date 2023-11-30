@@ -4,6 +4,7 @@ import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.ArrayMatching.arrayContaining;
+import static org.hamcrest.collection.ArrayMatching.arrayContainingInAnyOrder;
 import static org.hamcrest.collection.IsArrayWithSize.arrayWithSize;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.StringEndsWith.endsWith;
@@ -378,14 +379,13 @@ class RunMojoFastTest {
     // then
     var arguments = commandLine.getArguments();
 
-    assertThat(testName, arguments, arrayContaining(argumentName, "*"));
+    assertThat(testName, arguments, arrayContainingInAnyOrder(argumentName, "*"));
   }
 
   @DisplayName("File arguments")
   @ParameterizedTest
   @CsvSource(value = {"environment file,env.json,N/A,N/A,env.json,--env-file",
-      "private environment file,N/A,private-env.json,N/A,private-env.json,--private-env-file",
-      "report path,N/A,N/A,report-path,report-path,--report"}, nullValues = "N/A")
+      "private environment file,N/A,private-env.json,N/A,private-env.json,--private-env-file"}, nullValues = "N/A")
   void fileArguments(String testName, File environmentFile, File privateEnvironmentFile,
       File reportPath, String argumentValue, String argumentName)
       throws IOException, MojoExecutionException {
@@ -410,6 +410,35 @@ class RunMojoFastTest {
 
     assertThat(testName, arguments,
         arrayContaining(equalTo(argumentName), endsWith(argumentValue), equalTo("*")));
+  }
+
+  @DisplayName("File arguments: report, IDEA-339395")
+  @ParameterizedTest
+  @CsvSource(value = {"report path,N/A,N/A,report-path,report-path,--report"}, nullValues = "N/A")
+  void fileArguments_report(String testName, File environmentFile, File privateEnvironmentFile,
+      File reportPath, String argumentValue, String argumentName)
+      throws IOException, MojoExecutionException {
+    // given
+    var file = mock(File.class);
+
+    mojo.setEnvironmentFile(environmentFile);
+    mojo.setFiles(Collections.singletonList(file));
+    mojo.setLogLevel(LogLevel.BASIC);
+    mojo.setPrivateEnvironmentFile(privateEnvironmentFile);
+    if (nonNull(reportPath)) {
+      mojo.setReport(true);
+    }
+    mojo.setReportPath(reportPath);
+    when(file.getCanonicalPath()).thenReturn("*");
+
+    // when
+    var commandLine = mojo.getCommandLine();
+
+    // then
+    var arguments = commandLine.getArguments();
+
+    assertThat(testName, arguments,
+        arrayContaining(equalTo("*"), equalTo(argumentName), endsWith(argumentValue)));
   }
 
   @DisplayName("Proxy")

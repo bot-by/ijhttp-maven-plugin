@@ -221,8 +221,8 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>uk.bot-by.ijhttp-tools</groupId>
         <artifactId>ijhttp-core</artifactId>
+        <groupId>uk.bot-by.ijhttp-tools</groupId>
         <version>1.0.0-SNAPSHOT</version>
       </dependency>
       <dependency>
@@ -309,35 +309,38 @@
   <profiles>
     <profile>
       <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <configuration>
-              <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-              <goals>
-                <goal>clean</goal>
-                <goal>verify</goal>
-              </goals>
-              <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-              <pomIncludes>
-                <pomInclude>*/pom.xml</pomInclude>
-              </pomIncludes>
-              <postBuildHookScript>verify</postBuildHookScript>
-              <settingsFile>src/it/settings.xml</settingsFile>
-            </configuration>
-            <executions>
-              <execution>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <artifactId>maven-invoker-plugin</artifactId>
+              <configuration>
+                <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                 <goals>
-                  <goal>install</goal>
-                  <goal>run</goal>
+                  <goal>clean</goal>
+                  <goal>verify</goal>
                 </goals>
-                <id>integration-test</id>
-              </execution>
-            </executions>
-            <groupId>org.apache.maven.plugins</groupId>
-            <version>3.6.0</version>
-          </plugin>
-        </plugins>
+                <invokerPropertiesFile>invoker.properties</invokerPropertiesFile>
+                <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                <pomIncludes>
+                  <pomInclude>*/pom.xml</pomInclude>
+                </pomIncludes>
+                <postBuildHookScript>verify</postBuildHookScript>
+                <settingsFile>src/it/settings.xml</settingsFile>
+              </configuration>
+              <executions>
+                <execution>
+                  <goals>
+                    <goal>install</goal>
+                    <goal>run</goal>
+                  </goals>
+                  <id>integration-test</id>
+                </execution>
+              </executions>
+              <groupId>org.apache.maven.plugins</groupId>
+              <version>3.6.0</version>
+            </plugin>
+          </plugins>
+        </pluginManagement>
       </build>
       <id>run-its</id>
     </profile>
@@ -392,14 +395,6 @@
               <doclint>none</doclint>
               <isOffline>false</isOffline>
               <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-              <links>
-                <link>
-                  https://javadoc.io/doc/org.apache.maven/maven-plugin-api/${plugin-api.version}
-                </link>
-                <link>
-                  https://javadoc.io/doc/org.apache.maven.plugin-tools/maven-plugin-annotations/${plugin-annotations.version}
-                </link>
-              </links>
               <show>public</show>
               <top><![CDATA[
 <link rel="stylesheet" type="text/css" href="{@docRoot}/resources/prism.css"/>

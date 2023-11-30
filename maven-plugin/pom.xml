@@ -149,6 +149,40 @@
   <prerequisites>
     <maven>${maven-minimal.version}</maven>
   </prerequisites>
+  <profiles>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+        </plugins>
+      </build>
+      <id>run-its</id>
+    </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <links>
+                <link>
+                  https://javadoc.io/doc/org.apache.maven/maven-plugin-api/${plugin-api.version}
+                </link>
+                <link>
+                  https://javadoc.io/doc/org.apache.maven.plugin-tools/maven-plugin-annotations/${plugin-annotations.version}
+                </link>
+              </links>
+            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+        </plugins>
+      </build>
+      <id>javadocs</id>
+    </profile>
+  </profiles>
   <properties>
     <plugin-annotations.version>3.10.2</plugin-annotations.version>
     <plugin-api.version>3.9.4</plugin-api.version>

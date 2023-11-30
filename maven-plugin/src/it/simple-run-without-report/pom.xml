@@ -50,7 +50,7 @@
       </plugin>
     </plugins>
   </build>
-  <description>A simple IT verifying the basic use case.</description>
+  <description>A simple IT verifying the basic use case without report.</description>
   <groupId>uk.bot-by.maven-plugin.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <properties>

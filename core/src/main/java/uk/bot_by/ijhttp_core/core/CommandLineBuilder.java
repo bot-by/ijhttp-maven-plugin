@@ -198,6 +198,9 @@ public class CommandLineBuilder {
     privateEnvironment(commandLine);
     proxy(commandLine);
     requests(commandLine);
+    // As workaround for IDEA-339395
+    // https://youtrack.jetbrains.com/issue/IDEA-339395/HTTP-Client-CLI-order-of-the-parameter-report-interferes-on-interpretation-of-other-parameters
+    report(commandLine);
 
     return commandLine;
   }
@@ -224,12 +227,6 @@ public class CommandLineBuilder {
     }
     if (insecure) {
       commandLine.addArgument(INSECURE);
-    }
-    if (report) {
-      commandLine.addArgument(REPORT);
-      if (nonNull(reportPath)) {
-        commandLine.addArgument(reportPath.getCanonicalPath());
-      }
     }
   }
 
@@ -258,6 +255,15 @@ public class CommandLineBuilder {
   private void proxy(CommandLine commandLine) {
     if (nonNull(proxy)) {
       commandLine.addArgument(PROXY).addArgument(proxy, false);
+    }
+  }
+
+  private void report(CommandLine commandLine) throws IOException {
+    if (report) {
+      commandLine.addArgument(REPORT);
+      if (nonNull(reportPath)) {
+        commandLine.addArgument(reportPath.getCanonicalPath(), false);
+      }
     }
   }
 
