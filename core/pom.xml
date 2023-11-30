@@ -91,7 +91,7 @@
   <parent>
     <artifactId>ijhttp-parent</artifactId>
     <groupId>uk.bot-by.ijhttp-tools</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>${revision}${changelist}${sha1}</version>
   </parent>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

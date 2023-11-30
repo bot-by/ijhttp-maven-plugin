@@ -221,11 +221,6 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <artifactId>ijhttp-core</artifactId>
-        <groupId>uk.bot-by.ijhttp-tools</groupId>
-        <version>1.0.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
         <artifactId>annotations</artifactId>
         <groupId>org.jetbrains</groupId>
         <scope>provided</scope>
@@ -510,6 +505,7 @@
     </profile>
   </profiles>
   <properties>
+    <changelist>-SNAPSHOT</changelist>
     <github.release.url>https://github.com/bot-by/ijhttp-maven-plugin/releases</github.release.url>
     <gitlab.release.url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/releases
     </gitlab.release.url>
@@ -520,6 +516,14 @@
     <mockito.version>5.7.0</mockito.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <revision>1.0.0</revision>
+    <sha1/>
   </properties>
-  <version>1.0.0-SNAPSHOT</version>
+  <scm>
+    <connection>scm:git:https://gitlab.com/bot-by/ijhttp-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@gitlab.com:bot-by/ijhttp-maven-plugin.git</developerConnection>
+    <url>https://gitlab.com/bot-by/ijhttp-maven-plugin</url>
+  </scm>
+  <url>https://gitlab.com/bot-by/ijhttp-maven-plugin</url>
+  <version>${revision}${changelist}${sha1}</version>
 </project>
