@@ -41,10 +41,10 @@ sast:
 
 spotbugs-sast:
   variables:
-    MAVEN_REPO_PATH: '.m2/repository'
+    MAVEN_REPO_PATH: '$CI_PROJECT_DIR/.m2/repository'
     SAST_JAVA_VERSION: 17
   before_script:
-    - rm -rf src/it
+    - rm -rf maven-plugin/src/it
 
 coverage:
   stage: verify

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright 2023 Vitalij Berdinskih
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+	    http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <artifactId>ijhttp-maven-plugin</artifactId>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <groupId>org.codehaus.mojo</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <configuration>
+          <goalPrefix>ijhttp</goalPrefix>
+          <helpPackageName>uk.bot_by.ijhttp_tools.maven_plugin</helpPackageName>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+            <id>mojo-descriptor</id>
+          </execution>
+          <execution>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+            <id>help-goal</id>
+          </execution>
+        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <version>${plugin-annotations.version}</version>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>uk/bot_by/ijhttp_tools/maven_plugin/HelpMojo.class</exclude>
+          </excludes>
+        </configuration>
+        <groupId>org.jacoco</groupId>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <artifactId>ijhttp-core</artifactId>
+      <groupId>uk.bot-by.ijhttp-tools</groupId>
+      <version>${revision}${changelist}${sha1}</version>
+    </dependency>
+    <dependency>
+      <artifactId>maven-plugin-api</artifactId>
+      <groupId>org.apache.maven</groupId>
+      <scope>provided</scope>
+      <version>${plugin-api.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <scope>provided</scope>
+      <version>${plugin-annotations.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>annotations</artifactId>
+      <groupId>org.jetbrains</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>commons-exec</artifactId>
+      <groupId>org.apache.commons</groupId>
+    </dependency>
+    <!-- test -->
+    <dependency>
+      <artifactId>junit-jupiter-api</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>junit-jupiter-params</artifactId>
+      <groupId>org.junit.jupiter</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>mockito-core</artifactId>
+      <groupId>org.mockito</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <groupId>org.mockito</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>hamcrest</artifactId>
+      <groupId>org.hamcrest</groupId>
+    </dependency>
+  </dependencies>
+  <modelVersion>4.0.0</modelVersion>
+  <name>IntelliJ HTTP Client Tools : Maven Plugin</name>
+  <organization>
+    <name>bot-by</name>
+    <url>https://bot-by.uk</url>
+  </organization>
+  <packaging>maven-plugin</packaging>
+  <parent>
+    <artifactId>ijhttp-parent</artifactId>
+    <groupId>uk.bot-by.ijhttp-tools</groupId>
+    <version>${revision}${changelist}${sha1}</version>
+  </parent>
+  <prerequisites>
+    <maven>${maven-minimal.version}</maven>
+  </prerequisites>
+  <profiles>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+        </plugins>
+      </build>
+      <id>run-its</id>
+    </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <links>
+                <link>
+                  https://javadoc.io/doc/org.apache.maven/maven-plugin-api/${plugin-api.version}
+                </link>
+                <link>
+                  https://javadoc.io/doc/org.apache.maven.plugin-tools/maven-plugin-annotations/${plugin-annotations.version}
+                </link>
+              </links>
+            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+        </plugins>
+      </build>
+      <id>javadocs</id>
+    </profile>
+  </profiles>
+  <properties>
+    <plugin-annotations.version>3.10.2</plugin-annotations.version>
+    <plugin-api.version>3.9.4</plugin-api.version>
+  </properties>
+  <version>${revision}${changelist}${sha1}</version>
+</project>
