@@ -1,6 +1,6 @@
 /public/
-/target/
-/.flattened-pom.xml
+target
+.flattened-pom.xml
 
 *~
 
