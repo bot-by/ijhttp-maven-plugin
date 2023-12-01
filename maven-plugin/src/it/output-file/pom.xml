@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <artifactId>simple-run</artifactId>
+  <artifactId>output-file</artifactId>
   <build>
     <plugins>
       <plugin>
@@ -53,7 +53,7 @@
     </plugins>
   </build>
   <description>The test of redirecting of output to a file.</description>
-  <groupId>uk.bot-by.maven-plugin.it</groupId>
+  <groupId>uk.bot-by.ijhttp-tools.maven-plugin.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

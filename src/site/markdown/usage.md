@@ -11,7 +11,7 @@ There is one goal **run**. Add the plugin to your POM, example of full configura
 
 ```language-xml
 <plugin>
-  <groupId>uk.bot-by.maven-plugin</groupId>
+  <groupId>uk.bot-by.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
   <version><!-- search on Maven Central --></version>
   <executions>
