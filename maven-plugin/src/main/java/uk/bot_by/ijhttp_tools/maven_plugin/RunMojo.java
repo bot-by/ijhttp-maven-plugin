@@ -38,8 +38,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.jetbrains.annotations.VisibleForTesting;
-import uk.bot_by.ijhttp_core.core.CommandLineBuilder;
-import uk.bot_by.ijhttp_core.core.LogLevel;
+import uk.bot_by.ijhttp_tools.cli_builder.CommandLineBuilder;
+import uk.bot_by.ijhttp_tools.cli_builder.LogLevel;
 
 /**
  * Run integration tests using IntelliJ HTTP Client.

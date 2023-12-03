@@ -1,4 +1,4 @@
-package uk.bot_by.ijhttp_core.core;
+package uk.bot_by.ijhttp_tools.cli_builder;
 
 /**
  * Logging levels.
