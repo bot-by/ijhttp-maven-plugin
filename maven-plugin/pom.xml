@@ -85,7 +85,7 @@
   </build>
   <dependencies>
     <dependency>
-      <artifactId>ijhttp-cli-builder</artifactId>
+      <artifactId>ijhttp-command-line</artifactId>
       <groupId>uk.bot-by.ijhttp-tools</groupId>
       <version>${revision}${changelist}${sha1}</version>
     </dependency>
@@ -151,6 +151,7 @@
     <maven>${maven-minimal.version}</maven>
   </prerequisites>
   <profiles>
+    <!--
     <profile>
       <build>
         <plugins>
@@ -162,6 +163,7 @@
       </build>
       <id>run-its</id>
     </profile>
+    -->
     <profile>
       <build>
         <plugins>

@@ -1,4 +1,4 @@
-package uk.bot_by.ijhttp_tools.cli_builder;
+package uk.bot_by.ijhttp_tools.command_line;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -33,17 +33,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")
-class CommandLineBuilderFastTest {
+class HttpClientCommandLineFastTest {
 
   @Mock
   private File file;
 
-  CommandLineBuilder builder;
+  HttpClientCommandLine httpClientCommandLine;
 
   @BeforeEach
   void setUp() throws IOException {
-    builder = new CommandLineBuilder();
-    builder.files(Collections.singletonList(file));
+    httpClientCommandLine = new HttpClientCommandLine();
+    httpClientCommandLine.files(Collections.singletonList(file));
     when(file.getCanonicalPath()).thenReturn("*");
   }
 
@@ -51,7 +51,7 @@ class CommandLineBuilderFastTest {
   @Test
   void simpleRun() throws IOException {
     // when
-    var commandLine = builder.build();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -65,10 +65,10 @@ class CommandLineBuilderFastTest {
   @ValueSource(strings = {"   ", "envname"})
   void environmentName(String name) throws IOException {
     // given
-    builder.environmentName(name);
+    httpClientCommandLine.environmentName(name);
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -86,10 +86,10 @@ class CommandLineBuilderFastTest {
   @Test
   void quotedEnvironmentName() throws IOException {
     // given
-    builder.environmentName("environment name");
+    httpClientCommandLine.environmentName("environment name");
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -105,10 +105,10 @@ class CommandLineBuilderFastTest {
   void loggerLevels(LogLevel logLevel, int howMuchArguments, String logLevelName)
       throws IOException {
     // given
-    builder.logLevel(logLevel);
+    httpClientCommandLine.logLevel(logLevel);
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -127,14 +127,14 @@ class CommandLineBuilderFastTest {
       String argumentValue, String argumentName) throws IOException {
     // given
     if (nonNull(connectTimeout)) {
-      builder.connectTimeout(connectTimeout);
+      httpClientCommandLine.connectTimeout(connectTimeout);
     }
     if (nonNull(socketTimeout)) {
-      builder.socketTimeout(socketTimeout);
+      httpClientCommandLine.socketTimeout(socketTimeout);
     }
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -149,12 +149,12 @@ class CommandLineBuilderFastTest {
   void flagArguments(String testName, boolean dockerMode, boolean insecure, boolean report,
       String argumentName) throws IOException {
     // given
-    builder.dockerMode(dockerMode);
-    builder.insecure(insecure);
-    builder.report(report);
+    httpClientCommandLine.dockerMode(dockerMode);
+    httpClientCommandLine.insecure(insecure);
+    httpClientCommandLine.report(report);
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -170,18 +170,18 @@ class CommandLineBuilderFastTest {
       File reportPath, String argumentValue, String argumentName) throws IOException {
     // given
     if (nonNull(environmentFile)) {
-      builder.environmentFile(environmentFile);
+      httpClientCommandLine.environmentFile(environmentFile);
     }
     if (nonNull(privateEnvironmentFile)) {
-      builder.privateEnvironmentFile(privateEnvironmentFile);
+      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile);
     }
     if (nonNull(reportPath)) {
-      builder.report(true);
-      builder.reportPath(reportPath);
+      httpClientCommandLine.report(true);
+      httpClientCommandLine.reportPath(reportPath);
     }
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -197,18 +197,18 @@ class CommandLineBuilderFastTest {
       File reportPath, String argumentValue, String argumentName) throws IOException {
     // given
     if (nonNull(environmentFile)) {
-      builder.environmentFile(environmentFile);
+      httpClientCommandLine.environmentFile(environmentFile);
     }
     if (nonNull(privateEnvironmentFile)) {
-      builder.privateEnvironmentFile(privateEnvironmentFile);
+      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile);
     }
     if (nonNull(reportPath)) {
-      builder.report(true);
-      builder.reportPath(reportPath);
+      httpClientCommandLine.report(true);
+      httpClientCommandLine.reportPath(reportPath);
     }
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -225,10 +225,10 @@ class CommandLineBuilderFastTest {
       @ConvertWith(PipedStringToListConverter.class) List<String> expectedArguments)
       throws IOException {
     // given
-    builder.proxy(proxy);
+    httpClientCommandLine.proxy(proxy);
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -251,14 +251,14 @@ class CommandLineBuilderFastTest {
       throws IOException {
     // given
     if (nonNull(environmentVariables)) {
-      builder.environmentVariables(environmentVariables);
+      httpClientCommandLine.environmentVariables(environmentVariables);
     }
     if (nonNull(privateEnvironmentVariables)) {
-      builder.privateEnvironmentVariables(privateEnvironmentVariables);
+      httpClientCommandLine.privateEnvironmentVariables(privateEnvironmentVariables);
     }
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();
@@ -281,14 +281,14 @@ class CommandLineBuilderFastTest {
       throws IOException {
     // given
     if (nonNull(environmentVariables)) {
-      environmentVariables.forEach(builder::environmentVariable);
+      environmentVariables.forEach(httpClientCommandLine::environmentVariable);
     }
     if (nonNull(privateEnvironmentVariables)) {
-      privateEnvironmentVariables.forEach(builder::privateEnvironmentVariable);
+      privateEnvironmentVariables.forEach(httpClientCommandLine::privateEnvironmentVariable);
     }
 
     // when
-    var commandLine = builder.getCommandLine();
+    var commandLine = httpClientCommandLine.getCommandLine();
 
     // then
     var arguments = commandLine.getArguments();

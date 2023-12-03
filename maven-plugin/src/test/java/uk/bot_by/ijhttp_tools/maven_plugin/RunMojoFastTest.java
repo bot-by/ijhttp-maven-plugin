@@ -48,7 +48,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import uk.bot_by.ijhttp_tools.cli_builder.LogLevel;
+import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
 @ExtendWith(MockitoExtension.class)
 @Tag("fast")

@@ -1,4 +1,4 @@
-package uk.bot_by.ijhttp_tools.cli_builder;
+package uk.bot_by.ijhttp_tools.command_line;
 
 /**
  * Logging levels.

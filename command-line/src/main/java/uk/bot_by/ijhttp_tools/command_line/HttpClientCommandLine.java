@@ -1,4 +1,4 @@
-package uk.bot_by.ijhttp_tools.cli_builder;
+package uk.bot_by.ijhttp_tools.command_line;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
@@ -10,7 +10,7 @@ import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.jetbrains.annotations.NotNull;
 
-public class CommandLineBuilder {
+public class HttpClientCommandLine {
 
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
   private static final String DOCKER_MODE = "--docker-mode";
@@ -178,10 +178,6 @@ public class CommandLineBuilder {
    */
   public void socketTimeout(@NotNull Integer socketTimeout) {
     this.socketTimeout = socketTimeout;
-  }
-
-  public CommandLine build() throws IllegalArgumentException, IOException {
-    return getCommandLine();
   }
 
   public CommandLine getCommandLine() throws IllegalArgumentException, IOException {

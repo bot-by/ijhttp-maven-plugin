@@ -1,4 +1,4 @@
-package uk.bot_by.ijhttp_tools.cli_builder;
+package uk.bot_by.ijhttp_tools.command_line;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,20 +9,20 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 @Tag("fast")
-public class CommandLineBuilderSmokeTest {
+public class HttpClientCommandLineSmokeTest {
 
-  CommandLineBuilder builder;
+  HttpClientCommandLine builder;
 
   @BeforeEach
   void setUp() {
-    builder = new CommandLineBuilder();
+    builder = new HttpClientCommandLine();
   }
 
   @DisplayName("Files are required")
   @Test
   void filesAreRequired() {
     // when
-    var exception = assertThrows(IllegalStateException.class, builder::build);
+    var exception = assertThrows(IllegalStateException.class, builder::getCommandLine);
 
     // then
     assertEquals("files are required", exception.getMessage());
