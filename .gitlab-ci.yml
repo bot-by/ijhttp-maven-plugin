@@ -9,7 +9,8 @@ include:
 cache:
   paths:
     - .m2/repository
-    - target
+    - cli-builder/target
+    - maven-plugin/target
 
 stages:
   - build
