@@ -23,7 +23,7 @@ class HttpClientCommandLineApplicationTests {
   @Autowired
   private HttpClientCommandLine httpClientCommandLine;
 
-	@Test
+  @Test
   void httpClientCommandLine() throws IOException {
     // given
     var files = Collections.singletonList(Path.of("echo.http").toFile());
