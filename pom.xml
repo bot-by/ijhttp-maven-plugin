@@ -296,7 +296,7 @@
   </licenses>
   <modelVersion>4.0.0</modelVersion>
   <modules>
-    <module>core</module>
+    <module>cli-builder</module>
     <module>maven-plugin</module>
   </modules>
   <name>IntelliJ HTTP Client Tools</name>
