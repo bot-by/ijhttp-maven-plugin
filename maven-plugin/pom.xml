@@ -85,7 +85,7 @@
   </build>
   <dependencies>
     <dependency>
-      <artifactId>ijhttp-core</artifactId>
+      <artifactId>ijhttp-cli-builder</artifactId>
       <groupId>uk.bot-by.ijhttp-tools</groupId>
       <version>${revision}${changelist}${sha1}</version>
     </dependency>

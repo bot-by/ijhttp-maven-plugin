@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - The proxy feature
 - The report path
-- Split Maven plugin and core module
+- Split Maven plugin and CLI builder modules
 
 ## 1.0.1 - 2023-11-08
 ### Fixed
