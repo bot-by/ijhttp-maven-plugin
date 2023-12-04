@@ -11,6 +11,7 @@ cache:
     - .m2/repository
     - command-line/target
     - maven-plugin/target
+    - spring-boot-test/target
 
 stages:
   - build
@@ -47,6 +48,7 @@ spotbugs-sast:
   before_script:
     - rm -rf command-line/src/it
     - rm -rf maven-plugin/src/it
+    - rm -rf spring-boot-test/src/it
 
 coverage:
   stage: verify
