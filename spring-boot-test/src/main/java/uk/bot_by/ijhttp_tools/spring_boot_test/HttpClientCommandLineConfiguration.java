@@ -15,9 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 
-@ConditionalOnWebApplication(
-    type = Type.SERVLET
-)
+@ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(HttpClientCommandLineParameters.class)
 public class HttpClientCommandLineConfiguration {
 
@@ -41,12 +39,29 @@ public class HttpClientCommandLineConfiguration {
   @Bean
   HttpClientCommandLine httpClientCommandLine(HttpClientCommandLineParameters parameters) {
     logger.debug("HTTP Client parameters {}", parameters);
+
     var httpClientCommandLine = new HttpClientCommandLine();
 
-    if (nonNull(parameters.getConnectTimeout())) {
-      httpClientCommandLine.connectTimeout(parameters.getConnectTimeout());
-    }
+    copyBooleanParametersAndLogLevelAndExecutable(parameters, httpClientCommandLine);
+    handleEnvironment(parameters, httpClientCommandLine);
+    handleFileParameters(parameters, httpClientCommandLine);
+    handleProxy(parameters, httpClientCommandLine);
+    handleTimeout(parameters, httpClientCommandLine);
+
+    return httpClientCommandLine;
+  }
+
+  private void copyBooleanParametersAndLogLevelAndExecutable(
+      HttpClientCommandLineParameters parameters, HttpClientCommandLine httpClientCommandLine) {
     httpClientCommandLine.dockerMode(parameters.isDockerMode());
+    httpClientCommandLine.executable(parameters.getExecutable());
+    httpClientCommandLine.insecure(parameters.isInsecure());
+    httpClientCommandLine.logLevel(parameters.getLogLevel());
+    httpClientCommandLine.report(parameters.isReport());
+  }
+
+  private static void handleEnvironment(HttpClientCommandLineParameters parameters,
+      HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(parameters.getEnvironmentFile())) {
       httpClientCommandLine.environmentFile(parameters.getEnvironmentFile());
     }
@@ -56,14 +71,6 @@ public class HttpClientCommandLineConfiguration {
     if (nonNull(parameters.getEnvironmentVariables())) {
       httpClientCommandLine.environmentVariables(parameters.getEnvironmentVariables());
     }
-    if (nonNull(parameters.getExecutable())) {
-      httpClientCommandLine.executable(parameters.getExecutable());
-    }
-    if (nonNull(parameters.getFiles())) {
-      httpClientCommandLine.files(parameters.getFiles());
-    }
-    httpClientCommandLine.insecure(parameters.isInsecure());
-    httpClientCommandLine.logLevel(parameters.getLogLevel());
     if (nonNull(parameters.getPrivateEnvironmentFile())) {
       httpClientCommandLine.privateEnvironmentFile(parameters.getPrivateEnvironmentFile());
     }
@@ -71,18 +78,33 @@ public class HttpClientCommandLineConfiguration {
       httpClientCommandLine.privateEnvironmentVariables(
           parameters.getPrivateEnvironmentVariables());
     }
+  }
+
+  private static void handleFileParameters(HttpClientCommandLineParameters parameters,
+      HttpClientCommandLine httpClientCommandLine) {
+    if (nonNull(parameters.getFiles())) {
+      httpClientCommandLine.files(parameters.getFiles());
+    }
+    if (nonNull(parameters.getReportPath())) {
+      httpClientCommandLine.reportPath(parameters.getReportPath());
+    }
+  }
+
+  private static void handleProxy(HttpClientCommandLineParameters parameters,
+      HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(parameters.getProxy())) {
       httpClientCommandLine.proxy(parameters.getProxy());
     }
-    httpClientCommandLine.report(parameters.isReport());
-    if (nonNull(parameters.getReportPath())) {
-      httpClientCommandLine.reportPath(parameters.getReportPath());
+  }
+
+  private static void handleTimeout(HttpClientCommandLineParameters parameters,
+      HttpClientCommandLine httpClientCommandLine) {
+    if (nonNull(parameters.getConnectTimeout())) {
+      httpClientCommandLine.connectTimeout(parameters.getConnectTimeout());
     }
     if (nonNull(parameters.getSocketTimeout())) {
       httpClientCommandLine.socketTimeout(parameters.getSocketTimeout());
     }
-
-    return httpClientCommandLine;
   }
 
 }

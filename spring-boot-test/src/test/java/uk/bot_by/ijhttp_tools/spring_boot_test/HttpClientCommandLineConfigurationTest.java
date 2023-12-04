@@ -63,7 +63,7 @@ class HttpClientCommandLineConfigurationTest {
 
     // then
     verify(parameters).isDockerMode();
-    verify(parameters, times(2)).getExecutable();
+    verify(parameters).getExecutable();
     verify(parameters).isInsecure();
     verify(parameters).getLogLevel();
     verify(parameters).isReport();
@@ -105,7 +105,7 @@ class HttpClientCommandLineConfigurationTest {
 
     // then
     verify(parameters).isDockerMode();
-    verify(parameters, times(2)).getExecutable();
+    verify(parameters).getExecutable();
     verify(parameters).isInsecure();
     verify(parameters).getLogLevel();
     verify(parameters).isReport();
