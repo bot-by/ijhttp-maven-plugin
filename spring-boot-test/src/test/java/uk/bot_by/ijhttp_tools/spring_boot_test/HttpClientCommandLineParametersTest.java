@@ -3,8 +3,10 @@ package uk.bot_by.ijhttp_tools.spring_boot_test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
+@Tag("fast")
 class HttpClientCommandLineParametersTest {
 
   @DisplayName("toString()")
