@@ -34,17 +34,26 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <annotationProcessorPaths>
+            <path>
+              <artifactId>spring-boot-configuration-processor</artifactId>
+              <groupId>org.springframework.boot</groupId>
+              <version>${configuration-processor.version}</version>
+            </path>
+          </annotationProcessorPaths>
+        </configuration>
         <groupId>org.apache.maven.plugins</groupId>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
         <configuration>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>ch.qos.logback:logback-classic</classpathDependencyExclude>
             <classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
           </classpathDependencyExcludes>
         </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
@@ -52,13 +61,13 @@
       </plugin>
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
         <configuration>
           <classpathDependencyExcludes>
             <classpathDependencyExclude>ch.qos.logback:logback-classic</classpathDependencyExclude>
             <classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
           </classpathDependencyExcludes>
         </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
       <plugin>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -80,6 +89,12 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
       <version>3.2.0</version>
+    </dependency>
+    <dependency>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <optional>true</optional>
+      <version>${configuration-processor.version}</version>
     </dependency>
     <dependency>
       <artifactId>slf4j-api</artifactId>
@@ -139,4 +154,7 @@
       <id>run-its</id>
     </profile>
   </profiles>
+  <properties>
+    <configuration-processor.version>3.2.0</configuration-processor.version>
+  </properties>
 </project>

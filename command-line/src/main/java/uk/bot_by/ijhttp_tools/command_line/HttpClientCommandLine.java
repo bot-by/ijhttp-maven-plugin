@@ -25,6 +25,9 @@ import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * HTTP Client parameters.
+ */
 public class HttpClientCommandLine {
 
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
