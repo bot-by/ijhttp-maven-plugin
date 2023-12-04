@@ -17,6 +17,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
 @Tag("fast")
 class HttpClientCommandLineConfigurationTest {
@@ -29,10 +32,11 @@ class HttpClientCommandLineConfigurationTest {
   }
 
   @DisplayName("Default executor")
-  @Test
-  void defaultExecutor() {
+  @ParameterizedTest
+  @ValueSource(ints = {-1, 0})
+  void defaultExecutor(int timeout) {
     // when
-    var executor = configuration.executor(0);
+    var executor = configuration.executor(timeout);
 
     // then
     assertAll("Default executor without watchdog",
@@ -88,6 +92,12 @@ class HttpClientCommandLineConfigurationTest {
     // given
     var file = new File(".");
     var parameters = spy(new HttpClientCommandLineParameters());
+
+    parameters.setDockerMode(true);
+    parameters.setExecutable("test.sh");
+    parameters.setInsecure(true);
+    parameters.setLogLevel(LogLevel.VERBOSE);
+    parameters.setReport(true);
 
     parameters.setConnectTimeout(1);
     parameters.setEnvironmentFile(file);
