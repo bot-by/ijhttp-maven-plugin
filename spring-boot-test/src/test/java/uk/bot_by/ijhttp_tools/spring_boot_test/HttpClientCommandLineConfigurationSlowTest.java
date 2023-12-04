@@ -72,7 +72,6 @@ class HttpClientCommandLineConfigurationSlowTest {
   void httpClientCommandLine() {
     // given
     var file = new File(".");
-    var logger = LoggerFactory.getLogger(configuration.getClass());
     var parameters = spy(new HttpClientCommandLineParameters());
 
     parameters.setFiles(List.of(file));
