@@ -1,28 +1,26 @@
 package uk.bot_by.ijhttp_tools.spring_boot_test;
 
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.isA;
+import static org.hamcrest.collection.ArrayMatching.arrayContaining;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
 import java.util.List;
-import org.apache.commons.exec.DefaultExecutor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
-@Tag("fast")
-class HttpClientCommandLineConfigurationTest {
+@Tag("slow")
+class HttpClientCommandLineConfigurationSlowTest {
 
   private HttpClientCommandLineConfiguration configuration;
 
@@ -31,36 +29,14 @@ class HttpClientCommandLineConfigurationTest {
     configuration = new HttpClientCommandLineConfiguration();
   }
 
-  @DisplayName("Default executor")
-  @ParameterizedTest
-  @ValueSource(ints = {-1, 0})
-  void defaultExecutor(int timeout) {
-    // when
-    var executor = configuration.executor(timeout);
-
-    // then
-    assertAll("Default executor without watchdog",
-        () -> assertThat("class", executor, isA(DefaultExecutor.class)),
-        () -> assertNull(executor.getWatchdog(), "watchdog"));
-  }
-
-  @DisplayName("Watchdog")
-  @Test
-  void watchdog() {
-    // when
-    var executor = configuration.executor(1);
-
-    // then
-    assertAll("Default executor with watchdog",
-        () -> assertThat("class", executor, isA(DefaultExecutor.class)),
-        () -> assertNotNull(executor.getWatchdog(), "watchdog"));
-  }
-
   @DisplayName("HTTP Client Command Line")
   @Test
   void httpClientCommandLine() {
     // given
+    var file = new File(".");
     var parameters = spy(new HttpClientCommandLineParameters());
+
+    parameters.setFiles(List.of(file));
 
     // when
     var httpClientCommandLine = configuration.httpClientCommandLine(parameters);
@@ -76,14 +52,17 @@ class HttpClientCommandLineConfigurationTest {
     verify(parameters).getEnvironmentFile();
     verify(parameters).getEnvironmentName();
     verify(parameters).getEnvironmentVariables();
-    verify(parameters).getFiles();
+    verify(parameters, times(2)).getFiles();
     verify(parameters).getPrivateEnvironmentFile();
     verify(parameters).getPrivateEnvironmentVariables();
     verify(parameters).getProxy();
     verify(parameters).getReportPath();
     verify(parameters).getSocketTimeout();
 
-    assertNotNull(httpClientCommandLine);
+    assertAll("Default HTTP Client Command Client", () -> assertNotNull(httpClientCommandLine),
+        () -> assertEquals("ijhttp", httpClientCommandLine.getCommandLine().getExecutable()),
+        () -> assertThat(httpClientCommandLine.getCommandLine().getArguments(),
+            arrayContaining(endsWith("spring-boot-test"))));
   }
 
   @DisplayName("Configured HTTP Client Command Line")
@@ -102,10 +81,10 @@ class HttpClientCommandLineConfigurationTest {
     parameters.setConnectTimeout(1);
     parameters.setEnvironmentFile(file);
     parameters.setEnvironmentName("name");
-    parameters.setEnvironmentVariables(List.of("name"));
+    parameters.setEnvironmentVariables(List.of("public"));
     parameters.setFiles(List.of(file));
     parameters.setPrivateEnvironmentFile(file);
-    parameters.setPrivateEnvironmentVariables(List.of("private name"));
+    parameters.setPrivateEnvironmentVariables(List.of("private"));
     parameters.setProxy("proxy");
     parameters.setReportPath(file);
     parameters.setSocketTimeout(2);
@@ -131,7 +110,17 @@ class HttpClientCommandLineConfigurationTest {
     verify(parameters, times(2)).getReportPath();
     verify(parameters, times(2)).getSocketTimeout();
 
-    assertNotNull(httpClientCommandLine);
+    assertAll("Configured HTTP Client Command Client", () -> assertNotNull(httpClientCommandLine),
+        () -> assertEquals("test.sh", httpClientCommandLine.getCommandLine().getExecutable()),
+        () -> assertThat(httpClientCommandLine.getCommandLine().getArguments(),
+            arrayContaining(equalTo("--docker-mode"), equalTo("--insecure"), equalTo("--log-level"),
+                equalTo("VERBOSE"), equalTo("--connect-timeout"), equalTo("1"),
+                equalTo("--socket-timeout"), equalTo("2"), equalTo("--env"), equalTo("name"),
+                equalTo("--env-file"), endsWith("spring-boot-test"), equalTo("--env-variables"),
+                equalTo("public"), equalTo("--private-env-file"), endsWith("spring-boot-test"),
+                equalTo("--private-env-variables"), equalTo("private"), equalTo("--proxy"),
+                equalTo("proxy"), endsWith("spring-boot-test"), equalTo("--report"),
+                endsWith("spring-boot-test"))));
   }
 
 }
