@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteException;
@@ -110,7 +109,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
@@ -133,7 +132,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
@@ -157,7 +156,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
@@ -181,7 +180,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
     var watchdog = mock(ExecuteWatchdog.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
@@ -210,7 +209,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
     var watchdog = mock(ExecuteWatchdog.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setTimeout(1234567);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -246,7 +245,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -268,7 +267,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentName(name);
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -294,7 +293,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentName("environment name");
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -317,7 +316,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(logLevel);
     when(file.getCanonicalPath()).thenReturn("*");
 
@@ -343,7 +342,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setConnectTimeout(connectTimeout);
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setSocketTimeout(socketTimeout);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -367,7 +366,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setDockerMode(dockerMode);
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setInsecure(insecure);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setReport(report);
@@ -393,7 +392,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentFile(environmentFile);
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentFile(privateEnvironmentFile);
     if (nonNull(reportPath)) {
@@ -422,7 +421,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentFile(environmentFile);
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentFile(privateEnvironmentFile);
     if (nonNull(reportPath)) {
@@ -451,7 +450,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setProxy(proxy);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -482,7 +481,7 @@ class RunMojoFastTest {
     var file = mock(File.class);
 
     mojo.setEnvironmentVariables(environmentVariables);
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentVariables(privateEnvironmentVariables);
     when(file.getCanonicalPath()).thenReturn("*");
@@ -524,7 +523,7 @@ class RunMojoFastTest {
     // given
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
     mojo.setUseMavenLogger(true);

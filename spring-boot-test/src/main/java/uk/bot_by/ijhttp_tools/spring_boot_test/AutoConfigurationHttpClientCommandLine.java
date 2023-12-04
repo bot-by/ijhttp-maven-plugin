@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
 public @interface AutoConfigurationHttpClientCommandLine {
 
   /**
-   * The timeout for the process in milliseconds.
+   * The timeout for the process in milliseconds. It must be greater than 0.
    *
    * @return process timeout
    */

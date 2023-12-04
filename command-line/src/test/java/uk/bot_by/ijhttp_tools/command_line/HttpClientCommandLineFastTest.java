@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +42,7 @@ class HttpClientCommandLineFastTest {
   @BeforeEach
   void setUp() throws IOException {
     httpClientCommandLine = new HttpClientCommandLine();
-    httpClientCommandLine.files(Collections.singletonList(file));
+    httpClientCommandLine.files(List.of(file));
     when(file.getCanonicalPath()).thenReturn("*");
   }
 

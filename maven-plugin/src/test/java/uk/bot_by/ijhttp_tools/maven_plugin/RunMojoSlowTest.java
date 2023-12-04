@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
@@ -102,7 +102,7 @@ class RunMojoSlowTest {
     var outputFile = Files.createTempFile("http-client-", ".log");
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setOutputFile(outputFile.toFile());
     when(file.getCanonicalPath()).thenReturn("*");
@@ -125,7 +125,7 @@ class RunMojoSlowTest {
     var outputFile = Path.of(parentDirectories.toString(), "http-client.log");
     var file = mock(File.class);
 
-    mojo.setFiles(Collections.singletonList(file));
+    mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setOutputFile(outputFile.toFile());
     when(file.getCanonicalPath()).thenReturn("*");
