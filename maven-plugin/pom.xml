@@ -151,7 +151,6 @@
     <maven>${maven-minimal.version}</maven>
   </prerequisites>
   <profiles>
-    <!--
     <profile>
       <build>
         <plugins>
@@ -163,7 +162,6 @@
       </build>
       <id>run-its</id>
     </profile>
-    -->
     <profile>
       <build>
         <plugins>

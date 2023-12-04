@@ -1,0 +1,7 @@
+ijhttp:
+  timeout: 9000
+
+spring:
+  jackson:
+    visibility:
+      field: any

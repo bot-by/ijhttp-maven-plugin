@@ -38,7 +38,7 @@ class HttpClientCommandLineFastTest {
   @Mock
   private File file;
 
-  HttpClientCommandLine httpClientCommandLine;
+  private HttpClientCommandLine httpClientCommandLine;
 
   @BeforeEach
   void setUp() throws IOException {

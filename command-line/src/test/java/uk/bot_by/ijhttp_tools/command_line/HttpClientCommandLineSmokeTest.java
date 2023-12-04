@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 @Tag("fast")
 public class HttpClientCommandLineSmokeTest {
 
-  HttpClientCommandLine builder;
+  private HttpClientCommandLine builder;
 
   @BeforeEach
   void setUp() {

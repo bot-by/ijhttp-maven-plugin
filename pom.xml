@@ -326,19 +326,12 @@
   <modules>
     <module>command-line</module>
     <module>maven-plugin</module>
+    <module>spring-boot-test</module>
   </modules>
   <name>IntelliJ HTTP Client Tools</name>
   <packaging>pom</packaging>
   <profiles>
     <profile>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-invoker-plugin</artifactId>
-            <groupId>org.apache.maven.plugins</groupId>
-          </plugin>
-        </plugins>
-      </build>
       <id>run-its</id>
     </profile>
     <profile>

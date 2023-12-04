@@ -1,0 +1,4 @@
+spring:
+  jackson:
+    visibility:
+      field: any
