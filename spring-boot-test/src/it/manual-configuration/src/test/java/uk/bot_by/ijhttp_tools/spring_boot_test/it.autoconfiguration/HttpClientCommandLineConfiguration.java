@@ -5,7 +5,6 @@ import org.apache.commons.exec.Executor;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
-
 @TestConfiguration
 public class HttpClientCommandLineConfiguration {
 

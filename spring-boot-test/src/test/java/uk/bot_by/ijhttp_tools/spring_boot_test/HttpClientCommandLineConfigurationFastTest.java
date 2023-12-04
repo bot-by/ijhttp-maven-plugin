@@ -1,6 +1,5 @@
 package uk.bot_by.ijhttp_tools.spring_boot_test;
 
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.isA;
 import static org.junit.jupiter.api.Assertions.assertAll;
