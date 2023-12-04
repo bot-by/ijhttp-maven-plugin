@@ -78,6 +78,34 @@
           <version>3.2.2</version>
         </plugin>
         <plugin>
+          <artifactId>maven-invoker-plugin</artifactId>
+          <configuration>
+            <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+            <goals>
+              <goal>clean</goal>
+              <goal>verify</goal>
+            </goals>
+            <invokerPropertiesFile>invoker.properties</invokerPropertiesFile>
+            <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+            <pomIncludes>
+              <pomInclude>*/pom.xml</pomInclude>
+            </pomIncludes>
+            <postBuildHookScript>verify</postBuildHookScript>
+            <settingsFile>src/it/settings.xml</settingsFile>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>install</goal>
+                <goal>run</goal>
+              </goals>
+              <id>integration-test</id>
+            </execution>
+          </executions>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>3.6.0</version>
+        </plugin>
+        <plugin>
           <artifactId>jacoco-maven-plugin</artifactId>
           <executions>
             <execution>
@@ -296,47 +324,14 @@
   </licenses>
   <modelVersion>4.0.0</modelVersion>
   <modules>
-    <module>cli-builder</module>
+    <module>command-line</module>
     <module>maven-plugin</module>
+    <module>spring-boot-test</module>
   </modules>
   <name>IntelliJ HTTP Client Tools</name>
   <packaging>pom</packaging>
   <profiles>
     <profile>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <artifactId>maven-invoker-plugin</artifactId>
-              <configuration>
-                <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
-                <goals>
-                  <goal>clean</goal>
-                  <goal>verify</goal>
-                </goals>
-                <invokerPropertiesFile>invoker.properties</invokerPropertiesFile>
-                <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
-                <pomIncludes>
-                  <pomInclude>*/pom.xml</pomInclude>
-                </pomIncludes>
-                <postBuildHookScript>verify</postBuildHookScript>
-                <settingsFile>src/it/settings.xml</settingsFile>
-              </configuration>
-              <executions>
-                <execution>
-                  <goals>
-                    <goal>install</goal>
-                    <goal>run</goal>
-                  </goals>
-                  <id>integration-test</id>
-                </execution>
-              </executions>
-              <groupId>org.apache.maven.plugins</groupId>
-              <version>3.6.0</version>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
       <id>run-its</id>
     </profile>
     <profile>

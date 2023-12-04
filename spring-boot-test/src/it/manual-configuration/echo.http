@@ -1,0 +1,7 @@
+### Echo test
+GET http://localhost:8080/echo
+Accept: application/json
+Test: Manual-Configuration
+Manual-Timeout: {{timeout}}
+
+###

@@ -38,8 +38,8 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.jetbrains.annotations.VisibleForTesting;
-import uk.bot_by.ijhttp_tools.cli_builder.CommandLineBuilder;
-import uk.bot_by.ijhttp_tools.cli_builder.LogLevel;
+import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
+import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
 /**
  * Run integration tests using IntelliJ HTTP Client.
@@ -359,73 +359,73 @@ public class RunMojo extends AbstractMojo {
   @VisibleForTesting
   CommandLine getCommandLine() throws IOException, MojoExecutionException {
 
-    var builder = new CommandLineBuilder();
+    var httpClientCommandLine = new HttpClientCommandLine();
 
-    environment(builder);
-    executable(builder);
-    files(builder);
-    flags(builder);
-    logLevel(builder);
-    proxy(builder);
-    timeouts(builder);
+    environment(httpClientCommandLine);
+    executable(httpClientCommandLine);
+    files(httpClientCommandLine);
+    flags(httpClientCommandLine);
+    logLevel(httpClientCommandLine);
+    proxy(httpClientCommandLine);
+    timeouts(httpClientCommandLine);
 
-    return builder.getCommandLine();
+    return httpClientCommandLine.getCommandLine();
   }
 
-  private void environment(CommandLineBuilder builder) {
+  private void environment(HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(environmentName)) {
-      builder.environmentName(environmentName);
+      httpClientCommandLine.environmentName(environmentName);
     }
     if (nonNull(environmentFile)) {
-      builder.environmentFile(environmentFile);
+      httpClientCommandLine.environmentFile(environmentFile);
     }
     if (nonNull(environmentVariables)) {
-      builder.environmentVariables(environmentVariables);
+      httpClientCommandLine.environmentVariables(environmentVariables);
     }
     if (nonNull(privateEnvironmentFile)) {
-      builder.privateEnvironmentFile(privateEnvironmentFile);
+      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile);
     }
     if (nonNull(privateEnvironmentVariables)) {
-      builder.privateEnvironmentVariables(privateEnvironmentVariables);
+      httpClientCommandLine.privateEnvironmentVariables(privateEnvironmentVariables);
     }
   }
 
-  private void executable(CommandLineBuilder builder) {
-    builder.executable(executable);
+  private void executable(HttpClientCommandLine httpClientCommandLine) {
+    httpClientCommandLine.executable(executable);
   }
 
-  private void files(CommandLineBuilder builder) throws MojoExecutionException {
+  private void files(HttpClientCommandLine httpClientCommandLine) throws MojoExecutionException {
     if (isNull(files)) {
       throw new MojoExecutionException("files are required");
     }
-    builder.files(files);
+    httpClientCommandLine.files(files);
   }
 
-  private void flags(CommandLineBuilder builder) {
-    builder.dockerMode(dockerMode);
-    builder.insecure(insecure);
-    builder.report(report);
+  private void flags(HttpClientCommandLine httpClientCommandLine) {
+    httpClientCommandLine.dockerMode(dockerMode);
+    httpClientCommandLine.insecure(insecure);
+    httpClientCommandLine.report(report);
     if (nonNull(reportPath)) {
-      builder.reportPath(reportPath);
+      httpClientCommandLine.reportPath(reportPath);
     }
   }
 
-  private void logLevel(CommandLineBuilder builder) {
-    builder.logLevel(logLevel);
+  private void logLevel(HttpClientCommandLine httpClientCommandLine) {
+    httpClientCommandLine.logLevel(logLevel);
   }
 
-  private void proxy(CommandLineBuilder builder) {
+  private void proxy(HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(proxy)) {
-      builder.proxy(proxy);
+      httpClientCommandLine.proxy(proxy);
     }
   }
 
-  private void timeouts(CommandLineBuilder builder) {
+  private void timeouts(HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(connectTimeout)) {
-      builder.connectTimeout(connectTimeout);
+      httpClientCommandLine.connectTimeout(connectTimeout);
     }
     if (nonNull(socketTimeout)) {
-      builder.socketTimeout(socketTimeout);
+      httpClientCommandLine.socketTimeout(socketTimeout);
     }
   }
 

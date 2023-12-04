@@ -9,8 +9,9 @@ include:
 cache:
   paths:
     - .m2/repository
-    - cli-builder/target
+    - command-line/target
     - maven-plugin/target
+    - spring-boot-test/target
 
 stages:
   - build
@@ -46,11 +47,12 @@ spotbugs-sast:
     SAST_JAVA_VERSION: 17
   before_script:
     - rm -rf maven-plugin/src/it
+    - rm -rf spring-boot-test/src/it
 
 coverage:
   stage: verify
   script:
-    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' cli-builder/target/site/jacoco/jacoco.csv maven-plugin/target/site/jacoco/jacoco.csv
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' command-line/target/site/jacoco/jacoco.csv maven-plugin/target/site/jacoco/jacoco.csv spring-boot-test/target/site/jacoco/jacoco.csv
   coverage: '/(\d+\.?\d*) \% covered/'
   rules:
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_BRANCH && $CI_COMMIT_TAG == null
@@ -58,7 +60,7 @@ coverage:
 codacy:
   stage: verify
   script:
-    - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r cli-builder/target/site/jacoco/jacoco.xml -r maven-plugin/target/site/jacoco/jacoco.xml
+    - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r command-line/target/site/jacoco/jacoco.xml -r maven-plugin/target/site/jacoco/jacoco.xml -r spring-boot-test/target/site/jacoco/jacoco.xml
   rules:
     - if: $CODACY_PROJECT_TOKEN && $CI_COMMIT_TAG == null
 

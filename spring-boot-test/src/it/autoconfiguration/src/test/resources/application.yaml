@@ -1,0 +1,9 @@
+ijhttp:
+  parameters:
+    files1:
+      - echo.http
+
+spring:
+  jackson:
+    visibility:
+      field: any
