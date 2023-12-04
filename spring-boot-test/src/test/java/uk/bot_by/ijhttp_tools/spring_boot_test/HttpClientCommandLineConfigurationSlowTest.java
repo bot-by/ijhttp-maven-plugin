@@ -7,26 +7,64 @@ import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
 @Tag("slow")
 class HttpClientCommandLineConfigurationSlowTest {
 
   private HttpClientCommandLineConfiguration configuration;
+  private Logger logger;
 
   @BeforeEach
   void setUp() {
     configuration = new HttpClientCommandLineConfiguration();
+    logger = LoggerFactory.getLogger(configuration.getClass());
+  }
+
+  @AfterEach
+  void tearDown() {
+    clearInvocations(logger);
+  }
+
+  @DisplayName("Default executor")
+  @Test
+  void defaultExecutor() {
+    // when
+    configuration.executor(-1);
+
+    // then
+    verifyNoInteractions(logger);
+  }
+
+  @DisplayName("Logged timeout")
+  @Test
+  void loggerTimeout() {
+    // given
+    when(logger.isDebugEnabled()).thenReturn(true);
+
+    // when
+    configuration.executor(1);
+
+    // then
+    verify(logger).isDebugEnabled();
+    verify(logger).debug(anyString());
   }
 
   @DisplayName("HTTP Client Command Line")
@@ -34,6 +72,7 @@ class HttpClientCommandLineConfigurationSlowTest {
   void httpClientCommandLine() {
     // given
     var file = new File(".");
+    var logger = LoggerFactory.getLogger(configuration.getClass());
     var parameters = spy(new HttpClientCommandLineParameters());
 
     parameters.setFiles(List.of(file));

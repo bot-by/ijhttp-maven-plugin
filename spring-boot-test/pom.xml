@@ -39,6 +39,12 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
+        <configuration>
+          <classpathDependencyExcludes>
+            <classpathDependencyExclude>ch.qos.logback:logback-classic</classpathDependencyExclude>
+            <classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
+          </classpathDependencyExcludes>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
@@ -47,6 +53,12 @@
       <plugin>
         <artifactId>maven-failsafe-plugin</artifactId>
         <groupId>org.apache.maven.plugins</groupId>
+        <configuration>
+          <classpathDependencyExcludes>
+            <classpathDependencyExclude>ch.qos.logback:logback-classic</classpathDependencyExclude>
+            <classpathDependencyExclude>ch.qos.logback:logback-core</classpathDependencyExclude>
+          </classpathDependencyExcludes>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -98,6 +110,12 @@
     <dependency>
       <artifactId>hamcrest</artifactId>
       <groupId>org.hamcrest</groupId>
+    </dependency>
+    <dependency>
+      <artifactId>mock-slf4j-impl</artifactId>
+      <groupId>com.ocarlsen.test</groupId>
+      <scope>test</scope>
+      <version>2.0.0</version>
     </dependency>
   </dependencies>
   <modelVersion>4.0.0</modelVersion>
