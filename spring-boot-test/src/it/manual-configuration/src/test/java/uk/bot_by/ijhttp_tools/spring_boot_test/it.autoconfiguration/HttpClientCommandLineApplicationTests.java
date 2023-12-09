@@ -36,6 +36,7 @@ class HttpClientCommandLineApplicationTests {
     httpClientCommandLine.files(files);
     httpClientCommandLine.logLevel(LogLevel.VERBOSE);
     httpClientCommandLine.environmentVariable(String.format("timeout=%s", timeout));
+    httpClientCommandLine.report(true);
 
     // when
     var exitCode = executor.execute(httpClientCommandLine.getCommandLine());

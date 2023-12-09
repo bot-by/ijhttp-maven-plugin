@@ -1,7 +1,7 @@
-# IntelliJ HTTP Client Maven Plugin
+# HTTP Client Maven Plugin
 
-A Maven Plugin  to run HTTP requests through the [IntelliJ HTTP Client][http-client] on
-the <em>integration-test</em> phase.
+A Maven Plugin  to run HTTP requests on the <em>integration-test</em> phase
+using the [IntelliJ HTTP Client][http-client].
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
@@ -21,11 +21,12 @@ Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 ![Screenshot](screenshot.png)
 ## Getting started
 
-Originally the HTTP Client plugin allows to create, edit, and execute HTTP requests directly in the
-IntelliJ IDEA code editor. The HTTP Client is also [available as a CLI tool][cli-tool].
+Originally the IntelliJ HTTP Client plugin allows to create, edit, and execute HTTP requests
+directly in the IntelliJ IDEA code editor.
+The IntelliJ HTTP Client is also [available as a CLI tool][cli-tool].
 
-The plugin allows to run HTTP requests through the IntelliJ HTTP Client on
-the <em>integration-test</em> phase. The [HTTP Request in Editor Specification][specification]
+The plugin allows to run HTTP requests on the <em>integration-test</em> phase
+using the IntelliJ HTTP Client. The [HTTP Request in Editor Specification][specification]
 describes format these files.
 
 Example requests:
@@ -47,7 +48,7 @@ Content-Type: application/json
 
 **Important!** The plugin does not contain the HTTP client: you need to install it by yourself
 then add to `PATH`. You can also set the full path to the ijhttp via the parameter `executable`.
-The [IntelliJ HTTP Client Demo][demo] has some examples how to download the HTTP client.
+The [HTTP Client Demo][demo] has some examples how to download the HTTP client.
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.maven-plugin/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.maven-plugin/ijhttp-maven-plugin)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by.maven-plugin/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.maven-plugin/ijhttp-maven-plugin)
@@ -85,7 +86,7 @@ Example of full configuration:
 
 To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
 
-You can play with [IntelliJ HTTP Client Demo][demo].
+You can play with [HTTP Client Demo][demo].
 
 ## Contributing
 
@@ -111,7 +112,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)  
+[Apache License v2.0](LICENSE)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html

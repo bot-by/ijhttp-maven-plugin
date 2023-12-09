@@ -1,19 +1,19 @@
-# Contributing to IntelliJ HTTP Client Maven Plugin
+# Contributing to HTTP Client Maven Plugin
 
-**IntelliJ HTTP Client Maven Plugin** is an open-source project and all contributions are welcome
+**HTTP Client Maven Plugin** is an open-source project and all contributions are welcome
 to assist with its development and maintenance.
 
 ## Issues (bug and feature tracker)
 
 Please report any bugs found, feature requests or other issues on
-**IntelliJ HTTP Client Maven Plugin** [GitLab tracker][gitlab-issues]
+**HTTP Client Maven Plugin** [GitLab tracker][gitlab-issues]
 or [GitHub tracker][github-issues].
 
 When creating a new issue, try following [necolas's guidelines][issue-guidelines].
 
 ## Fork, patch and contribute code
 
-Feel free to fork **IntelliJ HTTP Client Maven Plugin**'s repository at [GitLab][bot-gitlab]
+Feel free to fork **HTTP Client Maven Plugin**'s repository at [GitLab][bot-gitlab]
 or [GitHub][bot-github] for your own use and updates.
 
 Contribute your fixes and new features back to the main codebase using

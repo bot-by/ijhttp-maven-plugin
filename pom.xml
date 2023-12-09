@@ -328,7 +328,7 @@
     <module>maven-plugin</module>
     <module>spring-boot-test</module>
   </modules>
-  <name>IntelliJ HTTP Client Tools</name>
+  <name>HTTP Client Tools</name>
   <packaging>pom</packaging>
   <profiles>
     <profile>

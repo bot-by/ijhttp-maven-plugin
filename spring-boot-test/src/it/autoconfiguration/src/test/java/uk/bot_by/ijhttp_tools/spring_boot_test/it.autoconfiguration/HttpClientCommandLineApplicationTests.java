@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
-import uk.bot_by.ijhttp_tools.spring_boot_test.AutoConfigurationHttpClientCommandLine;
+import uk.bot_by.ijhttp_tools.spring_boot_test.AutoConfigureHttpClientCommandLine;
 
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-@AutoConfigurationHttpClientCommandLine(timeout = 7000)
+@AutoConfigureHttpClientCommandLine(timeout = 7000)
 class HttpClientCommandLineApplicationTests {
 
   @Autowired

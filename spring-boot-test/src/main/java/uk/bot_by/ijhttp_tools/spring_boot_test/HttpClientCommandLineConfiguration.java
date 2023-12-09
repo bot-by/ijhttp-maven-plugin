@@ -92,6 +92,14 @@ public class HttpClientCommandLineConfiguration {
     }
   }
 
+  /**
+   * Provides an executor.
+   * <p>
+   * If the timeout parameter is greater than 0 then a watchdog will be added to an executor.
+   *
+   * @param timeout the timeout for the process in milliseconds. It must be greater than 0.
+   * @return the configured executor
+   */
   @Bean
   @ConditionalOnMissingBean
   Executor executor(@Value("${ijhttp.timeout:-1}") int timeout) {
@@ -107,6 +115,12 @@ public class HttpClientCommandLineConfiguration {
     return executor;
   }
 
+  /**
+   * The builder-style component to prepare command line.
+   *
+   * @param parameters command line parameters from Spring Boot properties.
+   * @return the command line component.
+   */
   @Bean
   HttpClientCommandLine httpClientCommandLine(HttpClientCommandLineParameters parameters) {
     logger.debug("HTTP Client parameters {}", parameters);

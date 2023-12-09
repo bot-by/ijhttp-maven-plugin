@@ -34,7 +34,7 @@
 <meta name="theme-color" content="#ffffff">
     ]]></head>
     <links>
-      <item name="IntelliJ HTTP Client" href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"/>
+      <item name="HTTP Client" href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"/>
     </links>
     <menu name="General Info" inherit="top">
       <item name="Usage" href="./usage.html"/>

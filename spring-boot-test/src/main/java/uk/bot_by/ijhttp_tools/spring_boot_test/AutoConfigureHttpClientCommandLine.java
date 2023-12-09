@@ -24,13 +24,16 @@ import java.lang.annotation.Target;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
 
+/**
+ * HTTP Client Command Line autoconfiguration.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited
 @ImportAutoConfiguration
 @PropertyMapping("ijhttp")
-public @interface AutoConfigurationHttpClientCommandLine {
+public @interface AutoConfigureHttpClientCommandLine {
 
   /**
    * The timeout for the process in milliseconds. It must be greater than 0.
