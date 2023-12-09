@@ -73,8 +73,6 @@ public class HttpClientCommandLineParameters {
   private File privateEnvironmentFile;
   /**
    * Private environment variables.
-   *
-   * @see #environmentVariables
    */
   private List<String> privateEnvironmentVariables;
   /**
@@ -86,14 +84,10 @@ public class HttpClientCommandLineParameters {
   private String proxy;
   /**
    * Creates report about execution in JUnit XML Format. Defaults to <em>false</em>.
-   *
-   * @see #setReportPath(File)
    */
   private boolean report;
   /**
    * Path to a report folder. Default value <em>reports</em> in the current directory.
-   *
-   * @see #setReport(boolean)
    */
   private File reportPath;
   /**

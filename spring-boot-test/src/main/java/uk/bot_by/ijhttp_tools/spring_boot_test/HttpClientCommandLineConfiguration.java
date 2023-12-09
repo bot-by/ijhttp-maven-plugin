@@ -36,6 +36,15 @@ public class HttpClientCommandLineConfiguration {
 
   private final Logger logger = LoggerFactory.getLogger(HttpClientCommandLineConfiguration.class);
 
+  private static void copyBooleanParametersAndLogLevelAndExecutable(
+      HttpClientCommandLineParameters parameters, HttpClientCommandLine httpClientCommandLine) {
+    httpClientCommandLine.dockerMode(parameters.isDockerMode());
+    httpClientCommandLine.executable(parameters.getExecutable());
+    httpClientCommandLine.insecure(parameters.isInsecure());
+    httpClientCommandLine.logLevel(parameters.getLogLevel());
+    httpClientCommandLine.report(parameters.isReport());
+  }
+
   private static void handleEnvironment(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(parameters.getEnvironmentFile())) {
@@ -85,7 +94,7 @@ public class HttpClientCommandLineConfiguration {
 
   @Bean
   @ConditionalOnMissingBean
-  Executor executor(@Value("${ijhttp.timeout:0}") int timeout) {
+  Executor executor(@Value("${ijhttp.timeout:-1}") int timeout) {
     var executor = new DefaultExecutor();
 
     if (timeout > 0) {
@@ -111,15 +120,6 @@ public class HttpClientCommandLineConfiguration {
     handleTimeout(parameters, httpClientCommandLine);
 
     return httpClientCommandLine;
-  }
-
-  private void copyBooleanParametersAndLogLevelAndExecutable(
-      HttpClientCommandLineParameters parameters, HttpClientCommandLine httpClientCommandLine) {
-    httpClientCommandLine.dockerMode(parameters.isDockerMode());
-    httpClientCommandLine.executable(parameters.getExecutable());
-    httpClientCommandLine.insecure(parameters.isInsecure());
-    httpClientCommandLine.logLevel(parameters.getLogLevel());
-    httpClientCommandLine.report(parameters.isReport());
   }
 
 }

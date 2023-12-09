@@ -26,7 +26,7 @@ import org.apache.commons.exec.CommandLine;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * HTTP Client parameters.
+ * HTTP Client command line parameters.
  */
 public class HttpClientCommandLine {
 
@@ -198,6 +198,13 @@ public class HttpClientCommandLine {
     this.socketTimeout = socketTimeout;
   }
 
+  /**
+   * Get command line.
+   *
+   * @return command line
+   * @throws IllegalArgumentException if HTTP files are missed
+   * @throws IOException if path to HTTP or environment files or report directory is wrong
+   */
   public CommandLine getCommandLine() throws IllegalArgumentException, IOException {
     var commandLine = new CommandLine(executable);
 
