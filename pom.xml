@@ -383,9 +383,6 @@
 							]]></bottom>
               <docfilessubdirs>true</docfilessubdirs>
               <doclint>none</doclint>
-              <!--
-              <isOffline>false</isOffline>
-              -->
               <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
               <show>public</show>
               <top><![CDATA[
@@ -508,7 +505,7 @@
     <gitlab.release.url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/releases
     </gitlab.release.url>
     <java.version>17</java.version>
-    <javadoc-plugin.version>3.6.2</javadoc-plugin.version>
+    <javadoc-plugin.version>3.6.3</javadoc-plugin.version>
     <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
     <junit-jupiter.version>5.10.1</junit-jupiter.version>
     <maven-minimal.version>3.8.5</maven-minimal.version>
