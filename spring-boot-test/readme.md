@@ -24,7 +24,7 @@ Content-Type: application/json
 
 ## Configuration
 
-**Important!** The plugin does not contain the [HTTP client][cli-tool]:
+**Important!** The autoconfiguration does not contain the [HTTP client][cli-tool]:
 you need to install it by yourself then add to `PATH`. You can also set the full path to the ijhttp
 via the parameter `executable`. The [HTTP Client Demo][demo] has some examples how to download
 the HTTP client.
@@ -74,7 +74,7 @@ class HttpClientCommandLineApplicationTests {
   }
 
 }
-````
+```
 
 You can play with [HTTP Client Demo][demo].
 

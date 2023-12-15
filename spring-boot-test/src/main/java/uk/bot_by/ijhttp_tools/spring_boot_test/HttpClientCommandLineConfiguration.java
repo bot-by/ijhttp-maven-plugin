@@ -30,6 +30,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 
+/**
+ * HTTP Client configuration provides {@linkplain org.apache.commons.exec.Executor executor} and
+ * {@linkplain uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine command line} beans.
+ */
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(HttpClientCommandLineParameters.class)
 public class HttpClientCommandLineConfiguration {
@@ -97,7 +101,7 @@ public class HttpClientCommandLineConfiguration {
    * <p>
    * If the timeout parameter is greater than 0 then a watchdog will be added to an executor.
    *
-   * @param timeout the timeout for the process in milliseconds. It must be greater than 0.
+   * @param timeout The timeout for the process in milliseconds.
    * @return the configured executor
    */
   @Bean
@@ -118,7 +122,7 @@ public class HttpClientCommandLineConfiguration {
   /**
    * The builder-style component to prepare command line.
    *
-   * @param parameters command line parameters from Spring Boot properties.
+   * @param parameters Command line parameters from Spring Boot properties.
    * @return the command line component.
    */
   @Bean
