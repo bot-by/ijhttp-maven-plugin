@@ -30,11 +30,24 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 
+/**
+ * HTTP Client configuration provides {@linkplain org.apache.commons.exec.Executor executor} and
+ * {@linkplain uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine command line} beans.
+ */
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(HttpClientCommandLineParameters.class)
 public class HttpClientCommandLineConfiguration {
 
   private final Logger logger = LoggerFactory.getLogger(HttpClientCommandLineConfiguration.class);
+
+  private static void copyBooleanParametersAndLogLevelAndExecutable(
+      HttpClientCommandLineParameters parameters, HttpClientCommandLine httpClientCommandLine) {
+    httpClientCommandLine.dockerMode(parameters.isDockerMode());
+    httpClientCommandLine.executable(parameters.getExecutable());
+    httpClientCommandLine.insecure(parameters.isInsecure());
+    httpClientCommandLine.logLevel(parameters.getLogLevel());
+    httpClientCommandLine.report(parameters.isReport());
+  }
 
   private static void handleEnvironment(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
@@ -83,9 +96,17 @@ public class HttpClientCommandLineConfiguration {
     }
   }
 
+  /**
+   * Provides an executor.
+   * <p>
+   * If the timeout parameter is greater than 0 then a watchdog will be added to an executor.
+   *
+   * @param timeout The timeout for the process in milliseconds.
+   * @return the configured executor
+   */
   @Bean
   @ConditionalOnMissingBean
-  Executor executor(@Value("${ijhttp.timeout:0}") int timeout) {
+  Executor executor(@Value("${ijhttp.timeout:-1}") int timeout) {
     var executor = new DefaultExecutor();
 
     if (timeout > 0) {
@@ -98,6 +119,12 @@ public class HttpClientCommandLineConfiguration {
     return executor;
   }
 
+  /**
+   * The builder-style component to prepare command line.
+   *
+   * @param parameters Command line parameters from Spring Boot properties.
+   * @return the command line component.
+   */
   @Bean
   HttpClientCommandLine httpClientCommandLine(HttpClientCommandLineParameters parameters) {
     logger.debug("HTTP Client parameters {}", parameters);
@@ -111,15 +138,6 @@ public class HttpClientCommandLineConfiguration {
     handleTimeout(parameters, httpClientCommandLine);
 
     return httpClientCommandLine;
-  }
-
-  private void copyBooleanParametersAndLogLevelAndExecutable(
-      HttpClientCommandLineParameters parameters, HttpClientCommandLine httpClientCommandLine) {
-    httpClientCommandLine.dockerMode(parameters.isDockerMode());
-    httpClientCommandLine.executable(parameters.getExecutable());
-    httpClientCommandLine.insecure(parameters.isInsecure());
-    httpClientCommandLine.logLevel(parameters.getLogLevel());
-    httpClientCommandLine.report(parameters.isReport());
   }
 
 }

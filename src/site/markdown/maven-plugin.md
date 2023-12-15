@@ -1,10 +1,23 @@
-# Configuration
+# Maven Plugin
+
+**Important!** The plugin does not contain the HTTP client: you need to install it by yourself
+then add to `PATH`. You can also set the full path to the ijhttp via the parameter `executable`.
+The [HTTP Client Demo][demo] has some examples how to download the HTTP client.
+
+[![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
+[![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
+
+There is one goal **run**.
+To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
+
+## Parameters
 
 The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them.
 
 - **connectTimeout** - Number of milliseconds for connection. Defaults to _3000_.
 - **dockerMode** - Enables Docker mode. Treat `localhost` as `host.docker.internal`. Defaults to _false_.
 - **environmentFile** - Name of the public environment file, e.g. `http-client.env.json`.
+- **environmentName** - Name of the environment in a configuration file.
 - **environmentVariables** - Public environment variables.
   Example:
   ```language-xml
@@ -15,7 +28,6 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   </environmentVariables>
   ...
   ```
-- **environmentName** - Name of the environment in a configuration file.
 - **executable** - The executable. Can be a full path or the name of the executable. Defaults to _ijhttp_.
 - **files** - HTTP file paths. They are required.
   Example:
@@ -39,6 +51,7 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   output at `DEBUG` level instead of the default `INFO` level to the Maven logger.
 - **report** - Creates report about execution in JUnit XML Format. Puts it in folder `reports`
   in the current directory. Defaults to _false_.
+- **reportPath** - Path to a report folder. Default value {@code reports } in the current directory.
 - **skip** - Skip the execution. Defaults to _false_.
 - **socketTimeout** - Number of milliseconds for socket read. Defaults to _10000_.
 - **timeout** - Number of milliseconds for execution.
@@ -46,3 +59,34 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   to the Maven logger as `INFO` and `ERROR` level logs, respectively.
 - **workingDirectory** - The working directory. This is optional: if not specified, the current
   directory will be used.
+
+## Example of configuration
+
+```language-xml
+<plugin>
+  <groupId>uk.bot-by.ijhttp-tools</groupId>
+  <artifactId>ijhttp-maven-plugin</artifactId>
+  <version><!-- search on Maven Central --></version>
+  <executions>
+    <execution>
+      <configuration>
+       <environmentFile>public-env.json</environmentFile>
+       <environmentName>dev</environmentName>
+       <files>
+         <file>sample-1-queries.http</file>
+         <file>sample-2-queries.http</file>
+       </files>
+       <logLevel>HEADERS</logLevel>
+       <report>true</report>
+       <workingDirectory>target</workingDirectory>
+      </configuration>
+      <goals>
+        <goal>run</goal>
+      </goals>
+      <id>simple-run-with-report</id>
+    </execution>
+  </executions>
+</plugin>
+```
+
+[demo]: https://gitlab.com/vitalijr2/ijhttp-demo

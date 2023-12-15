@@ -136,7 +136,7 @@
     </dependency>
   </dependencies>
   <modelVersion>4.0.0</modelVersion>
-  <name>IntelliJ HTTP Client Tools : Maven Plugin</name>
+  <name>HTTP Client Tools : Maven Plugin</name>
   <organization>
     <name>bot-by</name>
     <url>https://bot-by.uk</url>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ijhttp tools, command line</title>
+</head>
+<body>
+<p>Originally the <a
+    href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html">IntelliJ HTTP
+  Client</a> plugin allows to create, edit, and execute HTTP requests directly in the
+  IntelliJ IDEA code editor. The IntelliJ HTTP Client is also <a
+      href="https://www.jetbrains.com/help/idea/http-client-cli.html">available as a CLI tool</a>.
+</p>
+<p>The command line artifact has the builder-style component
+  <a href="./uk/bot_by/ijhttp_tools/command_line/HttpClientCommandLine.html">
+    <code class="language-java">HttpClientCommandLine</code></a> to prepare command line
+  to run this CLI tool.</p>
+<p>There are Maven Plugin
+  <a href="https://gitlab.com/bot-by/ijhttp-maven-plugin/-/tree/main/maven-plugin">
+    ijhttp-maven-plugin</a> and Spring Boot Test autoconfiguration
+  <a href="https://gitlab.com/bot-by/ijhttp-maven-plugin/-/tree/mai/spring-boot-test">
+    ijhttp-spring-boot-test</a> to run HTTP requests on the <em>integration-test</em> phase using
+  the IntelliJ HTTP Client.</p>
+<p>The
+  <a href="https://github.com/JetBrains/http-request-in-editor-spec">HTTP Request in Editor
+    Specification</a> describes format these files.</p>
+<p>Example requests:</p>
+<pre><code class="language-apex">
+  GET https://example.com/api/get
+
+  ### Add an item
+  POST https://example.com/api/add
+  Content-Type: application/json
+
+  {
+    "name": "entity",
+    "value": "content"
+  }
+</code></pre>
+</body>
+</html>

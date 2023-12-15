@@ -21,29 +21,86 @@ import java.util.StringJoiner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
+/**
+ * HTTP Client parameters.
+ *
+ * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
+ */
 @ConfigurationProperties(prefix = "ijhttp.parameters")
 public class HttpClientCommandLineParameters {
 
+  /**
+   * Number of milliseconds for connection. Defaults to <em>3000</em>.
+   */
   private Integer connectTimeout;
+  /**
+   * Enables Docker mode. Treat <em>localhost</em> as <em>host.docker.internal</em>. Defaults to
+   * <em>false</em>.
+   */
   private boolean dockerMode;
+  /**
+   * Name of the public environment file, e.g. <em>http-client.env.json</em>.
+   */
   private File environmentFile;
+  /**
+   * Public environment variables.
+   */
   private List<String> environmentVariables;
+  /**
+   * Name of the environment in a configuration file.
+   */
   private String environmentName;
+  /**
+   * The executable. Can be a full path or the name of the executable. Defaults to
+   * <em>ijhttp</em>.
+   */
   private String executable = "ijhttp";
+  /**
+   * HTTP file paths. They are required.
+   */
   private List<File> files;
+  /**
+   * Allow insecure SSL connection. Defaults to <em>false</em>.
+   */
   private boolean insecure;
+  /**
+   * Logging level: BASIC, HEADERS, VERBOSE. Defaults to <em>BASIC</em>.
+   */
   private LogLevel logLevel = LogLevel.BASIC;
+  /**
+   * Name of the private environment file, e.g. <em>http-client.private.env.json</em>.
+   */
   private File privateEnvironmentFile;
+  /**
+   * Private environment variables.
+   */
   private List<String> privateEnvironmentVariables;
+  /**
+   * Proxy URI.
+   * <p>
+   * Proxy setting in format <em>scheme://login:password@host:port</em>, <em>scheme<em> can be
+   * <em>socks<em> for <strong>SOCKS</strong> or <em>http<em> for <strong>HTTP</strong>.
+   */
   private String proxy;
+  /**
+   * Creates report about execution in JUnit XML Format. Defaults to <em>false</em>.
+   */
   private boolean report;
+  /**
+   * Path to a report folder. Default value <em>reports</em> in the current directory.
+   */
   private File reportPath;
+  /**
+   * Number of milliseconds for socket read. Defaults to <em>10000</em>.
+   */
   private Integer socketTimeout;
 
   public Integer getConnectTimeout() {
     return connectTimeout;
   }
-
+  /**
+   * Number of milliseconds for connection. Defaults to <em>3000</em>.
+   */
   public void setConnectTimeout(Integer connectTimeout) {
     this.connectTimeout = connectTimeout;
   }
@@ -51,7 +108,10 @@ public class HttpClientCommandLineParameters {
   public boolean isDockerMode() {
     return dockerMode;
   }
-
+  /**
+   * Enables Docker mode. Treat <em>localhost</em> as <em>host.docker.internal</em>. Defaults to
+   * <em>false</em>.
+   */
   public void setDockerMode(boolean dockerMode) {
     this.dockerMode = dockerMode;
   }
@@ -59,7 +119,9 @@ public class HttpClientCommandLineParameters {
   public File getEnvironmentFile() {
     return environmentFile;
   }
-
+  /**
+   * Name of the public environment file.
+   */
   public void setEnvironmentFile(File environmentFile) {
     this.environmentFile = environmentFile;
   }
@@ -67,7 +129,9 @@ public class HttpClientCommandLineParameters {
   public List<String> getEnvironmentVariables() {
     return environmentVariables;
   }
-
+  /**
+   * Public environment variables.
+   */
   public void setEnvironmentVariables(List<String> environmentVariables) {
     this.environmentVariables = environmentVariables;
   }
@@ -75,7 +139,9 @@ public class HttpClientCommandLineParameters {
   public String getEnvironmentName() {
     return environmentName;
   }
-
+  /**
+   * Name of the environment in a configuration file.
+   */
   public void setEnvironmentName(String environmentName) {
     this.environmentName = environmentName;
   }
@@ -83,7 +149,10 @@ public class HttpClientCommandLineParameters {
   public String getExecutable() {
     return executable;
   }
-
+  /**
+   * The executable. Can be a full path or the name of the executable. Defaults to
+   * <em>ijhttp</em>.
+   */
   public void setExecutable(String executable) {
     this.executable = executable;
   }
@@ -91,7 +160,9 @@ public class HttpClientCommandLineParameters {
   public List<File> getFiles() {
     return files;
   }
-
+  /**
+   * HTTP file paths. They are required.
+   */
   public void setFiles(List<File> files) {
     this.files = files;
   }
@@ -99,7 +170,9 @@ public class HttpClientCommandLineParameters {
   public boolean isInsecure() {
     return insecure;
   }
-
+  /**
+   * Allow insecure SSL connection. Defaults to <em>false</em>.
+   */
   public void setInsecure(boolean insecure) {
     this.insecure = insecure;
   }
@@ -107,7 +180,9 @@ public class HttpClientCommandLineParameters {
   public LogLevel getLogLevel() {
     return logLevel;
   }
-
+  /**
+   * Logging level: BASIC, HEADERS, VERBOSE. Defaults to <em>BASIC</em>.
+   */
   public void setLogLevel(LogLevel logLevel) {
     this.logLevel = logLevel;
   }
@@ -115,7 +190,9 @@ public class HttpClientCommandLineParameters {
   public File getPrivateEnvironmentFile() {
     return privateEnvironmentFile;
   }
-
+  /**
+   * Name of the private environment file.
+   */
   public void setPrivateEnvironmentFile(File privateEnvironmentFile) {
     this.privateEnvironmentFile = privateEnvironmentFile;
   }
@@ -123,7 +200,9 @@ public class HttpClientCommandLineParameters {
   public List<String> getPrivateEnvironmentVariables() {
     return privateEnvironmentVariables;
   }
-
+  /**
+   * Private environment variables.
+   */
   public void setPrivateEnvironmentVariables(List<String> privateEnvironmentVariables) {
     this.privateEnvironmentVariables = privateEnvironmentVariables;
   }
@@ -131,7 +210,12 @@ public class HttpClientCommandLineParameters {
   public String getProxy() {
     return proxy;
   }
-
+  /**
+   * Proxy URI.
+   * <p>
+   * Proxy setting in format <em>scheme://login:password@host:port</em>, <em>scheme<em> can be
+   * <em>socks<em> for <strong>SOCKS</strong> or <em>http<em> for <strong>HTTP</strong>.
+   */
   public void setProxy(String proxy) {
     this.proxy = proxy;
   }
@@ -139,7 +223,9 @@ public class HttpClientCommandLineParameters {
   public boolean isReport() {
     return report;
   }
-
+  /**
+   * Creates report about execution in JUnit XML Format. Defaults to <em>false</em>.
+   */
   public void setReport(boolean report) {
     this.report = report;
   }
@@ -147,7 +233,9 @@ public class HttpClientCommandLineParameters {
   public File getReportPath() {
     return reportPath;
   }
-
+  /**
+   * Path to a report folder. Default value <em>reports</em> in the current directory.
+   */
   public void setReportPath(File reportPath) {
     this.reportPath = reportPath;
   }
@@ -155,7 +243,9 @@ public class HttpClientCommandLineParameters {
   public Integer getSocketTimeout() {
     return socketTimeout;
   }
-
+  /**
+   * Number of milliseconds for socket read. Defaults to <em>10000</em>.
+   */
   public void setSocketTimeout(Integer socketTimeout) {
     this.socketTimeout = socketTimeout;
   }

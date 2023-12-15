@@ -25,6 +25,25 @@ import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * HTTP Client command line parameters.
+ * <p>
+ * The minimal configuration contains HTTP files only:
+ * <pre><code class="language-java">
+ * var commandLine = new HttpClientCommandLine();
+ * var executor = new DefaultExecutor();
+ * var files = Path.of("orders.http").toFile();
+ * var products = Path.of("products.http").toFile();
+ * var checkout = Path.of("checkout.http").toFile();
+ *
+ * commandLine.files(List.of(files, products, checkout));
+ * executor.execute(commandLine.getCommandLine());
+ * </code></pre>
+ * <p>
+ * IntelliJ HTTP Client uses <code>--report</code> as boolean option and parameter with a file
+ * value. The component implements it by two methods: {@link #report(boolean)} and
+ * {@link #reportPath(java.io.File)}.
+ */
 public class HttpClientCommandLine {
 
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
@@ -195,6 +214,14 @@ public class HttpClientCommandLine {
     this.socketTimeout = socketTimeout;
   }
 
+  /**
+   * Get command line.
+   *
+   * @return command line
+   * @throws IllegalArgumentException if HTTP files are missed
+   * @throws IOException              if path to HTTP or environment files or report directory is
+   *                                  wrong
+   */
   public CommandLine getCommandLine() throws IllegalArgumentException, IOException {
     var commandLine = new CommandLine(executable);
 

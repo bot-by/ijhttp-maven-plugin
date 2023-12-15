@@ -86,11 +86,34 @@
     </dependency>
   </dependencies>
   <modelVersion>4.0.0</modelVersion>
-  <name>IntelliJ HTTP Client Tools : CLI Builder</name>
+  <name>HTTP Client Tools : Command Line</name>
   <packaging>jar</packaging>
   <parent>
     <artifactId>ijhttp-parent</artifactId>
     <groupId>uk.bot-by.ijhttp-tools</groupId>
     <version>${revision}${changelist}${sha1}</version>
   </parent>
+  <profiles>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+              <links>
+                <link>
+                  https://javadoc.io/doc/org.apache.commons/commons-exec/${commons-exec.version}
+                </link>
+                <link>
+                  https://javadoc.io/doc/org.jetbrains/annotations/${jetbrains-annotations.version}
+                </link>
+              </links>
+            </configuration>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+        </plugins>
+      </build>
+      <id>javadocs</id>
+    </profile>
+  </profiles>
 </project>

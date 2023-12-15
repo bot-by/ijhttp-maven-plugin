@@ -1,18 +1,24 @@
-# IntelliJ HTTP Client, Maven Plugin
+# ijhttp tools: Maven Plugin and Spring Boot Test autoconfiguration
 
-A Maven Plugin  to run HTTP requests through the [IntelliJ HTTP Client][http-client] on
-the _integration-test_ phase.
+I had started with Maven Plugin to run HTTP requests on the <em>integration-test</em> phase
+using the [IntelliJ HTTP Client][http-client]. Later I added Spring Boot Test autoconfiguration,
+thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
 
-[![Codacy Grade](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
+[![Java Version](https://img.shields.io/static/v1?label=java&message=17&color=blue&logo=java&logoColor=E23D28)](https://www.oracle.com/java/technologies/downloads/#java17)
 
 ## Getting started
 
-Originally the HTTP Client plugin allows to create, edit, and execute HTTP requests directly in the
-IntelliJ IDEA code editor. The HTTP Client is also [available as a CLI tool][cli-tool].
+Originally the IntelliJ HTTP Client plugin allows to create, edit, and execute HTTP requests
+directly in the IntelliJ IDEA code editor.
+The IntelliJ HTTP Client is also [available as a CLI tool][cli-tool].
 
-The plugin allows to run HTTP requests through the IntelliJ HTTP Client on
-the _integration-test_ phase. The [HTTP Request in Editor Specification][specification]
+The plugin allows to run HTTP requests on the <em>integration-test</em> phase
+using the IntelliJ HTTP Client. The autoconfiguration allows to run them with Spring Boot Test,
+you don't need to package and run whole application.
+
+The [HTTP Request in Editor Specification][specification]
 describes format these files.
 
 Example requests:
@@ -30,15 +36,19 @@ Content-Type: application/json
 }
 ```
 
-* [Usage][]
-* [Configuration][]
+* [Maven Plugin][maven-plugin]
+* [Spring Boot Test autoconfiguration][autoconfiguration]
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+
+[GoncaloPT]: https://github.com/GoncaloPT "Gonçalo Silva"
+
+[leverage-test]: https://github.com/bot-by/ijhttp-maven-plugin/issues/51 "Leverage test instead of using main app"
 
 [cli-tool]: https://www.jetbrains.com/help/idea/http-client-cli.html
 
 [specification]: https://github.com/JetBrains/http-request-in-editor-spec
 
-[Usage]: usage.html
+[maven-plugin]: maven-plugin.html
 
-[Configuration]: configuration.html
+[autoconfiguration]: autoconfiguration.html
