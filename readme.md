@@ -11,11 +11,15 @@ thanks @GoncaloPT for [his idea][leverage-test].
 Table of Contents
 =================
 
-* [Getting started](#getting-started)
-* [Usage](#usage)
-* [Contributing](#contributing)
-* [History](#history)
-* [License](#license)
+* [ijhttp tools: Maven Plugin and Spring Boot Test autoconfiguration](#ijhttp-tools-maven-plugin-and-spring-boot-test-autoconfiguration)
+* [Table of Contents](#table-of-contents)
+   * [Getting started](#getting-started)
+   * [Usage](#usage)
+      * [Maven Plugin](#maven-plugin)
+      * [Spring Boot Test autoconfiguration](#spring-boot-test-autoconfiguration)
+   * [Contributing](#contributing)
+   * [History](#history)
+   * [License](#license)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -169,7 +173,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)
+[Apache License v2.0](LICENSE)  
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
