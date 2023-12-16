@@ -11,8 +11,6 @@ thanks @GoncaloPT for [his idea][leverage-test].
 Table of Contents
 =================
 
-* [ijhttp tools: Maven Plugin and Spring Boot Test autoconfiguration](#ijhttp-tools-maven-plugin-and-spring-boot-test-autoconfiguration)
-* [Table of Contents](#table-of-contents)
    * [Getting started](#getting-started)
    * [Usage](#usage)
       * [Maven Plugin](#maven-plugin)
