@@ -51,6 +51,13 @@
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <Created-By>${project.organization.name}</Created-By>
+              </manifestEntries>
+            </archive>
+          </configuration>
           <groupId>org.apache.maven.plugins</groupId>
           <version>3.3.0</version>
         </plugin>
@@ -328,41 +335,15 @@
     <module>maven-plugin</module>
     <module>spring-boot-test</module>
   </modules>
-  <name>HTTP Client Tools</name>
+  <name>ijhttp tools</name>
+  <organization>
+    <name>bot-by</name>
+    <url>https://bot-by.uk</url>
+  </organization>
   <packaging>pom</packaging>
   <profiles>
     <profile>
       <id>run-its</id>
-    </profile>
-    <profile>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>sign-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-            <groupId>org.simplify4u.plugins</groupId>
-            <version>1.0.1</version>
-          </plugin>
-          <plugin>
-            <artifactId>nexus-staging-maven-plugin</artifactId>
-            <configuration>
-              <autoReleaseAfterClose>false</autoReleaseAfterClose>
-              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-              <serverId>ossrh</serverId>
-            </configuration>
-            <extensions>true</extensions>
-            <groupId>org.sonatype.plugins</groupId>
-            <version>1.6.13</version>
-          </plugin>
-        </plugins>
-      </build>
-      <id>sign-and-deploy</id>
     </profile>
     <profile>
       <build>
@@ -407,6 +388,7 @@
     </profile>
     <profile>
       <build>
+        <defaultGoal>clean deploy</defaultGoal>
         <plugins>
           <plugin>
             <artifactId>maven-source-plugin</artifactId>
@@ -421,17 +403,41 @@
             <groupId>org.apache.maven.plugins</groupId>
             <version>3.3.0</version>
           </plugin>
+          <plugin>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <autoReleaseAfterClose>false</autoReleaseAfterClose>
+              <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+              <serverId>ossrh</serverId>
+            </configuration>
+            <extensions>true</extensions>
+            <groupId>org.sonatype.plugins</groupId>
+            <version>1.6.13</version>
+          </plugin>
+          <plugin>
+            <artifactId>sign-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <groupId>org.simplify4u.plugins</groupId>
+            <version>1.0.1</version>
+          </plugin>
         </plugins>
       </build>
-      <id>sources</id>
+      <id>release</id>
     </profile>
     <profile>
       <build>
+        <defaultGoal>site site:stage</defaultGoal>
         <plugins>
           <plugin>
             <artifactId>maven-site-plugin</artifactId>
             <configuration>
-              <stagingDirectory>../public</stagingDirectory>
+              <stagingDirectory>public</stagingDirectory>
             </configuration>
             <dependencies>
               <dependency>

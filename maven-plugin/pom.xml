@@ -135,12 +135,11 @@
       <groupId>org.hamcrest</groupId>
     </dependency>
   </dependencies>
+  <description>The plugin allows to run HTTP requests on the integration-test phase
+    using the IntelliJ HTTP Client.
+  </description>
   <modelVersion>4.0.0</modelVersion>
-  <name>HTTP Client Tools : Maven Plugin</name>
-  <organization>
-    <name>bot-by</name>
-    <url>https://bot-by.uk</url>
-  </organization>
+  <name>ijhttp tools : Maven Plugin</name>
   <packaging>maven-plugin</packaging>
   <parent>
     <artifactId>ijhttp-parent</artifactId>
