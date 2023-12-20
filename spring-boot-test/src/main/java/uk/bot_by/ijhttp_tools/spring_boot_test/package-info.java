@@ -1,5 +1,5 @@
 /**
- * HTTP Client autoconfiguration.
+ * Spring Boot Test autoconfiguration allows to run HTTP requests using the IntelliJ HTTP Client.
  *
  * <dl>
  *   <dt>{@link uk.bot_by.ijhttp_tools.spring_boot_test.AutoConfigureHttpClientCommandLine}</dt>

@@ -98,6 +98,7 @@ public class HttpClientCommandLineParameters {
   public Integer getConnectTimeout() {
     return connectTimeout;
   }
+
   /**
    * Number of milliseconds for connection. Defaults to <em>3000</em>.
    */
@@ -108,6 +109,7 @@ public class HttpClientCommandLineParameters {
   public boolean isDockerMode() {
     return dockerMode;
   }
+
   /**
    * Enables Docker mode. Treat <em>localhost</em> as <em>host.docker.internal</em>. Defaults to
    * <em>false</em>.
@@ -119,6 +121,7 @@ public class HttpClientCommandLineParameters {
   public File getEnvironmentFile() {
     return environmentFile;
   }
+
   /**
    * Name of the public environment file.
    */
@@ -129,6 +132,7 @@ public class HttpClientCommandLineParameters {
   public List<String> getEnvironmentVariables() {
     return environmentVariables;
   }
+
   /**
    * Public environment variables.
    */
@@ -139,6 +143,7 @@ public class HttpClientCommandLineParameters {
   public String getEnvironmentName() {
     return environmentName;
   }
+
   /**
    * Name of the environment in a configuration file.
    */
@@ -149,6 +154,7 @@ public class HttpClientCommandLineParameters {
   public String getExecutable() {
     return executable;
   }
+
   /**
    * The executable. Can be a full path or the name of the executable. Defaults to
    * <em>ijhttp</em>.
@@ -160,6 +166,7 @@ public class HttpClientCommandLineParameters {
   public List<File> getFiles() {
     return files;
   }
+
   /**
    * HTTP file paths. They are required.
    */
@@ -170,6 +177,7 @@ public class HttpClientCommandLineParameters {
   public boolean isInsecure() {
     return insecure;
   }
+
   /**
    * Allow insecure SSL connection. Defaults to <em>false</em>.
    */
@@ -180,6 +188,7 @@ public class HttpClientCommandLineParameters {
   public LogLevel getLogLevel() {
     return logLevel;
   }
+
   /**
    * Logging level: BASIC, HEADERS, VERBOSE. Defaults to <em>BASIC</em>.
    */
@@ -190,6 +199,7 @@ public class HttpClientCommandLineParameters {
   public File getPrivateEnvironmentFile() {
     return privateEnvironmentFile;
   }
+
   /**
    * Name of the private environment file.
    */
@@ -200,6 +210,7 @@ public class HttpClientCommandLineParameters {
   public List<String> getPrivateEnvironmentVariables() {
     return privateEnvironmentVariables;
   }
+
   /**
    * Private environment variables.
    */
@@ -210,6 +221,7 @@ public class HttpClientCommandLineParameters {
   public String getProxy() {
     return proxy;
   }
+
   /**
    * Proxy URI.
    * <p>
@@ -223,6 +235,7 @@ public class HttpClientCommandLineParameters {
   public boolean isReport() {
     return report;
   }
+
   /**
    * Creates report about execution in JUnit XML Format. Defaults to <em>false</em>.
    */
@@ -233,6 +246,7 @@ public class HttpClientCommandLineParameters {
   public File getReportPath() {
     return reportPath;
   }
+
   /**
    * Path to a report folder. Default value <em>reports</em> in the current directory.
    */
@@ -243,6 +257,7 @@ public class HttpClientCommandLineParameters {
   public Integer getSocketTimeout() {
     return socketTimeout;
   }
+
   /**
    * Number of milliseconds for socket read. Defaults to <em>10000</em>.
    */

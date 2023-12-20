@@ -37,13 +37,12 @@
       <item name="HTTP Client" href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"/>
     </links>
     <menu name="General Info" inherit="top">
-      <item name="Usage" href="./usage.html"/>
+      <item name="Change Log" href="./changelog.html"/>
       <item name="Contributing" href="./contributing.html"/>
     </menu>
     <menu name="Documentation" inherit="bottom">
-      <item name="Usage" href="./usage.html"/>
-      <item name="Configuration" href="./configuration.html"/>
-      <item name="Contributing" href="./contributing.html"/>
+      <item name="Maven Plugin" href="./maven-plugin.html"/>
+      <item name="Spring Boot Test" href="./autoconfiguration.html"/>
       <item name="Javadocs" href="./apidocs/"/>
     </menu>
     <menu name="Info and reports" inherit="bottom">

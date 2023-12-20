@@ -133,8 +133,11 @@
       <version>2.0.0</version>
     </dependency>
   </dependencies>
+  <description>The Spring Boot Test autoconfiguration to run HTTP requests on the integration-test
+    phase using the IntelliJ HTTP Client.
+  </description>
   <modelVersion>4.0.0</modelVersion>
-  <name>HTTP Client Tools : Spring Boot Test</name>
+  <name>ijhttp tools : Spring Boot Test</name>
   <packaging>jar</packaging>
   <parent>
     <artifactId>ijhttp-parent</artifactId>

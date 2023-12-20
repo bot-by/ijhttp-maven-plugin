@@ -29,9 +29,9 @@ Originally the IntelliJ HTTP Client plugin allows to create, edit, and execute H
 directly in the IntelliJ IDEA code editor.
 The IntelliJ HTTP Client is also [available as a CLI tool][cli-tool].
 
-The plugin allows to run HTTP requests on the <em>integration-test</em> phase
-using the IntelliJ HTTP Client. The autoconfiguration allows to run them with Spring Boot Test,
-you don't need to package and run whole application.
+The Maven plugin allows to run HTTP requests on the <em>integration-test</em> phase
+using the IntelliJ HTTP Client. The Spring Boot Test autoconfiguration allows to run them with
+Spring Boot Test, you don't need to package and run whole application.
 
 The [HTTP Request in Editor Specification][specification]
 describes format these files.
