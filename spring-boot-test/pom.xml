@@ -39,7 +39,7 @@
             <path>
               <artifactId>spring-boot-configuration-processor</artifactId>
               <groupId>org.springframework.boot</groupId>
-              <version>${configuration-processor.version}</version>
+              <version>${spring-boot.version}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>
@@ -88,7 +88,7 @@
     <dependency>
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
-      <version>3.2.0</version>
+      <version>${spring-boot.version}</version>
     </dependency>
     <dependency>
       <!--
@@ -104,7 +104,7 @@
       <artifactId>spring-boot-configuration-processor</artifactId>
       <groupId>org.springframework.boot</groupId>
       <optional>true</optional>
-      <version>${configuration-processor.version}</version>
+      <version>${spring-boot.version}</version>
     </dependency>
     <dependency>
       <artifactId>slf4j-api</artifactId>
@@ -177,10 +177,10 @@
                   https://javadoc.io/doc/org.apache.commons/commons-exec/${commons-exec.version}
                 </link>
                 <link>
-                  https://javadoc.io/doc/org.springframework.boot/spring-boot-autoconfigure/${configuration-processor.version}
+                  https://javadoc.io/doc/org.springframework.boot/spring-boot-autoconfigure/${spring-boot.version}
                 </link>
                 <link>
-                  https://javadoc.io/doc/org.springframework.boot/spring-boot-test-autoconfigure/${configuration-processor.version}
+                  https://javadoc.io/doc/org.springframework.boot/spring-boot-test-autoconfigure/${spring-boot.version}
                 </link>
               </links>
             </configuration>
@@ -192,6 +192,6 @@
     </profile>
   </profiles>
   <properties>
-    <configuration-processor.version>3.2.0</configuration-processor.version>
+    <spring-boot.version>3.2.1</spring-boot.version>
   </properties>
 </project>
