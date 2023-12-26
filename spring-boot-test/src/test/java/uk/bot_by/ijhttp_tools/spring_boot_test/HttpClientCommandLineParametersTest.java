@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -33,7 +33,7 @@ class HttpClientCommandLineParametersTest {
   @Test
   void customValues() throws IOException {
     // given
-    var file = mock(File.class);
+    var file = mock(Path.class);
     var parameters = new HttpClientCommandLineParameters();
 
     parameters.setDockerMode(true);

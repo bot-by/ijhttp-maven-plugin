@@ -15,7 +15,7 @@
  */
 package uk.bot_by.ijhttp_tools.spring_boot_test;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.StringJoiner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -41,7 +41,7 @@ public class HttpClientCommandLineParameters {
   /**
    * Name of the public environment file, e.g. <em>http-client.env.json</em>.
    */
-  private File environmentFile;
+  private Path environmentFile;
   /**
    * Public environment variables.
    */
@@ -58,7 +58,7 @@ public class HttpClientCommandLineParameters {
   /**
    * HTTP file paths. They are required.
    */
-  private List<File> files;
+  private List<Path> files;
   /**
    * Allow insecure SSL connection. Defaults to <em>false</em>.
    */
@@ -70,7 +70,7 @@ public class HttpClientCommandLineParameters {
   /**
    * Name of the private environment file, e.g. <em>http-client.private.env.json</em>.
    */
-  private File privateEnvironmentFile;
+  private Path privateEnvironmentFile;
   /**
    * Private environment variables.
    */
@@ -89,7 +89,7 @@ public class HttpClientCommandLineParameters {
   /**
    * Path to a report folder. Default value <em>reports</em> in the current directory.
    */
-  private File reportPath;
+  private Path reportPath;
   /**
    * Number of milliseconds for socket read. Defaults to <em>10000</em>.
    */
@@ -118,14 +118,14 @@ public class HttpClientCommandLineParameters {
     this.dockerMode = dockerMode;
   }
 
-  public File getEnvironmentFile() {
+  public Path getEnvironmentFile() {
     return environmentFile;
   }
 
   /**
    * Name of the public environment file.
    */
-  public void setEnvironmentFile(File environmentFile) {
+  public void setEnvironmentFile(Path environmentFile) {
     this.environmentFile = environmentFile;
   }
 
@@ -163,14 +163,14 @@ public class HttpClientCommandLineParameters {
     this.executable = executable;
   }
 
-  public List<File> getFiles() {
+  public List<Path> getFiles() {
     return files;
   }
 
   /**
    * HTTP file paths. They are required.
    */
-  public void setFiles(List<File> files) {
+  public void setFiles(List<Path> files) {
     this.files = files;
   }
 
@@ -196,14 +196,14 @@ public class HttpClientCommandLineParameters {
     this.logLevel = logLevel;
   }
 
-  public File getPrivateEnvironmentFile() {
+  public Path getPrivateEnvironmentFile() {
     return privateEnvironmentFile;
   }
 
   /**
    * Name of the private environment file.
    */
-  public void setPrivateEnvironmentFile(File privateEnvironmentFile) {
+  public void setPrivateEnvironmentFile(Path privateEnvironmentFile) {
     this.privateEnvironmentFile = privateEnvironmentFile;
   }
 
@@ -243,14 +243,14 @@ public class HttpClientCommandLineParameters {
     this.report = report;
   }
 
-  public File getReportPath() {
+  public Path getReportPath() {
     return reportPath;
   }
 
   /**
    * Path to a report folder. Default value <em>reports</em> in the current directory.
    */
-  public void setReportPath(File reportPath) {
+  public void setReportPath(Path reportPath) {
     this.reportPath = reportPath;
   }
 

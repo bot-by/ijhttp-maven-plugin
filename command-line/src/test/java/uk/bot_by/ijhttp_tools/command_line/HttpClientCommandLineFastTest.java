@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +35,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class HttpClientCommandLineFastTest {
 
   @Mock
-  private File file;
+  private Path file;
 
   private HttpClientCommandLine httpClientCommandLine;
 
@@ -43,7 +43,7 @@ class HttpClientCommandLineFastTest {
   void setUp() throws IOException {
     httpClientCommandLine = new HttpClientCommandLine();
     httpClientCommandLine.files(file);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toString()).thenReturn("*");
   }
 
   @DisplayName("Simple run without arguments")
@@ -178,8 +178,8 @@ class HttpClientCommandLineFastTest {
   @ParameterizedTest
   @CsvSource(value = {"environment file,env.json,N/A,N/A,env.json,--env-file",
       "private environment file,N/A,private-env.json,N/A,private-env.json,--private-env-file"}, nullValues = "N/A")
-  void fileArguments(String testName, File environmentFile, File privateEnvironmentFile,
-      File reportPath, String argumentValue, String argumentName) throws IOException {
+  void fileArguments(String testName, Path environmentFile, Path privateEnvironmentFile,
+      Path reportPath, String argumentValue, String argumentName) throws IOException {
     // given
     if (nonNull(environmentFile)) {
       httpClientCommandLine.environmentFile(environmentFile);
@@ -205,8 +205,8 @@ class HttpClientCommandLineFastTest {
   @DisplayName("File arguments: report, IDEA-339395")
   @ParameterizedTest
   @CsvSource(value = {"report path,N/A,N/A,report-path,report-path,--report"}, nullValues = "N/A")
-  void fileArgumentsAndReport(String testName, File environmentFile, File privateEnvironmentFile,
-      File reportPath, String argumentValue, String argumentName) throws IOException {
+  void fileArgumentsAndReport(String testName, Path environmentFile, Path privateEnvironmentFile,
+      Path reportPath, String argumentValue, String argumentName) throws IOException {
     // given
     if (nonNull(environmentFile)) {
       httpClientCommandLine.environmentFile(environmentFile);

@@ -18,7 +18,6 @@ package uk.bot_by.ijhttp_tools.command_line;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,7 +46,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>
  * IntelliJ HTTP Client uses <code>--report</code> as boolean option and parameter with a file
  * value. The component implements it by two methods: {@link #report(boolean)} and
- * {@link #reportPath(java.io.File)}.
+ * {@link #reportPath(Path)}.
  */
 public class HttpClientCommandLine {
 
@@ -75,19 +74,19 @@ public class HttpClientCommandLine {
   private Integer connectTimeout;
   private Path[] directories = new Path[0];
   private boolean dockerMode;
-  private File environmentFile;
+  private Path environmentFile;
   private List<String> environmentVariables;
   private String environmentName;
   private String executable = "ijhttp";
-  private File[] files = new File[0];
+  private Path[] files = new Path[0];
   private boolean insecure;
   private LogLevel logLevel = LogLevel.BASIC;
   private int maxDepth = Integer.MAX_VALUE;
-  private File privateEnvironmentFile;
+  private Path privateEnvironmentFile;
   private List<String> privateEnvironmentVariables;
   private String proxy;
   private boolean report;
-  private File reportPath;
+  private Path reportPath;
   private Integer socketTimeout;
 
   /**
@@ -100,7 +99,7 @@ public class HttpClientCommandLine {
   /**
    * HTTP file paths. One of {@code files} or {@code directories} are required.
    *
-   * @see #files(File...)
+   * @see #files(Path...)
    */
   public void directories(@NotNull Path... directories) {
     this.directories = directories;
@@ -117,7 +116,7 @@ public class HttpClientCommandLine {
   /**
    * Name of the public environment file, e.g. {@code http-client.env.json}.
    */
-  public void environmentFile(@NotNull File environmentFile) {
+  public void environmentFile(@NotNull Path environmentFile) {
     this.environmentFile = environmentFile;
   }
 
@@ -159,7 +158,7 @@ public class HttpClientCommandLine {
    *
    * @see #directories(Path...)
    */
-  public void files(File... files) {
+  public void files(Path... files) {
     this.files = files;
   }
 
@@ -187,7 +186,7 @@ public class HttpClientCommandLine {
   /**
    * Name of the private environment file, e.g. {@code http-client.private.env.json}.
    */
-  public void privateEnvironmentFile(@NotNull File privateEnvironmentFile) {
+  public void privateEnvironmentFile(@NotNull Path privateEnvironmentFile) {
     this.privateEnvironmentFile = privateEnvironmentFile;
   }
 
@@ -225,7 +224,7 @@ public class HttpClientCommandLine {
   /**
    * Creates report about execution in JUnit XML Format. Defaults to <em>false</em>.
    *
-   * @see #reportPath(File)
+   * @see #reportPath(Path)
    */
   public void report(boolean report) {
     this.report = report;
@@ -236,7 +235,7 @@ public class HttpClientCommandLine {
    *
    * @see #report(boolean)
    */
-  public void reportPath(@NotNull File reportPath) {
+  public void reportPath(@NotNull Path reportPath) {
     this.reportPath = reportPath;
   }
 
@@ -278,7 +277,7 @@ public class HttpClientCommandLine {
 
   private void environment(CommandLine commandLine) throws IOException {
     if (nonNull(environmentFile)) {
-      commandLine.addArgument(ENV_FILE).addArgument(environmentFile.getCanonicalPath());
+      commandLine.addArgument(ENV_FILE).addArgument(environmentFile.toString());
     }
     if (nonNull(environmentVariables)) {
       environmentVariables.forEach(
@@ -315,7 +314,7 @@ public class HttpClientCommandLine {
   private void privateEnvironment(CommandLine commandLine) throws IOException {
     if (nonNull(privateEnvironmentFile)) {
       commandLine.addArgument(PRIVATE_ENV_FILE)
-          .addArgument(privateEnvironmentFile.getCanonicalPath());
+          .addArgument(privateEnvironmentFile.toString());
     }
     if (nonNull(privateEnvironmentVariables)) {
       privateEnvironmentVariables.forEach(
@@ -333,19 +332,19 @@ public class HttpClientCommandLine {
     if (report) {
       commandLine.addArgument(REPORT);
       if (nonNull(reportPath)) {
-        commandLine.addArgument(reportPath.getCanonicalPath(), false);
+        commandLine.addArgument(reportPath.toString(), false);
       }
     }
   }
 
   private void requests(CommandLine commandLine) throws IOException {
-    for (File file : files) {
-      commandLine.addArgument(file.getCanonicalPath());
+    for (Path file : files) {
+      commandLine.addArgument(file.toString());
     }
     for (Path directory : directories) {
       try (Stream<Path> pathStream = Files.find(directory, maxDepth, REQUEST_FILE)) {
         for (Path path : pathStream.toList()) {
-          commandLine.addArgument(path.toFile().getCanonicalPath());
+          commandLine.addArgument(path.toString());
         }
       }
     }

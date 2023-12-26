@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -377,13 +378,13 @@ public class RunMojo extends AbstractMojo {
       httpClientCommandLine.environmentName(environmentName);
     }
     if (nonNull(environmentFile)) {
-      httpClientCommandLine.environmentFile(environmentFile);
+      httpClientCommandLine.environmentFile(environmentFile.toPath());
     }
     if (nonNull(environmentVariables)) {
       httpClientCommandLine.environmentVariables(environmentVariables);
     }
     if (nonNull(privateEnvironmentFile)) {
-      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile);
+      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile.toPath());
     }
     if (nonNull(privateEnvironmentVariables)) {
       httpClientCommandLine.privateEnvironmentVariables(privateEnvironmentVariables);
@@ -399,7 +400,7 @@ public class RunMojo extends AbstractMojo {
       throw new MojoExecutionException("files are required");
     }
     // TODO: replace list with array
-    httpClientCommandLine.files(files.toArray(new File[0]));
+    httpClientCommandLine.files(files.stream().map(File::toPath).toArray(Path[]::new));
   }
 
   private void flags(HttpClientCommandLine httpClientCommandLine) {
@@ -407,7 +408,7 @@ public class RunMojo extends AbstractMojo {
     httpClientCommandLine.insecure(insecure);
     httpClientCommandLine.report(report);
     if (nonNull(reportPath)) {
-      httpClientCommandLine.reportPath(reportPath);
+      httpClientCommandLine.reportPath(reportPath.toPath());
     }
   }
 

@@ -17,7 +17,7 @@ package uk.bot_by.ijhttp_tools.spring_boot_test;
 
 import static java.util.Objects.nonNull;
 
-import java.io.File;
+import java.nio.file.Path;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
@@ -74,7 +74,7 @@ public class HttpClientCommandLineConfiguration {
       HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(parameters.getFiles())) {
       // TODO: replace list with array
-      httpClientCommandLine.files(parameters.getFiles().toArray(new File[0]));
+      httpClientCommandLine.files(parameters.getFiles().toArray(new Path[0]));
     }
     if (nonNull(parameters.getReportPath())) {
       httpClientCommandLine.reportPath(parameters.getReportPath());

@@ -31,9 +31,7 @@ class HttpClientCommandLineApplicationTests {
   @Test
   void httpClientCommandLine() throws IOException {
     // given
-    var files = List.of(Path.of("echo.http").toFile());
-
-    httpClientCommandLine.files(files);
+    httpClientCommandLine.files(Path.of("echo.http"));
     httpClientCommandLine.logLevel(LogLevel.VERBOSE);
     httpClientCommandLine.environmentVariable(String.format("timeout=%s", timeout));
     httpClientCommandLine.report(true);
