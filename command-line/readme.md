@@ -20,7 +20,7 @@ executor.execute(commandLine.getCommandLine());
 
 ## Directories
 
-**IntelliJ HTTP Client** wanted HTTP files to work.
+**IntelliJ HTTP Client** needs HTTP files to work.
 With **HTTP Client Command Line** you can set directories that contain such files.
 
 The same example as above but with directories looks like:
