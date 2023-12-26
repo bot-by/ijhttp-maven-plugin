@@ -73,7 +73,6 @@ public class HttpClientCommandLineConfiguration {
   private static void handleFileParameters(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(parameters.getFiles())) {
-      // TODO: replace list with array
       httpClientCommandLine.files(parameters.getFiles().toArray(new Path[0]));
     }
     if (nonNull(parameters.getReportPath())) {

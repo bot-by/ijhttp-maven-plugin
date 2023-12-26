@@ -399,7 +399,6 @@ public class RunMojo extends AbstractMojo {
     if (isNull(files)) {
       throw new MojoExecutionException("files are required");
     }
-    // TODO: replace list with array
     httpClientCommandLine.files(files.stream().map(File::toPath).toArray(Path[]::new));
   }
 

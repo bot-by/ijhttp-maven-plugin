@@ -36,11 +36,11 @@ import org.jetbrains.annotations.NotNull;
  * <pre><code class="language-java">
  * var commandLine = new HttpClientCommandLine();
  * var executor = new DefaultExecutor();
- * var files = Path.of("orders.http").toFile();
- * var products = Path.of("products.http").toFile();
- * var checkout = Path.of("checkout.http").toFile();
+ * var orders = Path.of("orders.http");
+ * var products = Path.of("products.http");
+ * var checkout = Path.of("checkout.http");
  *
- * commandLine.files(List.of(files, products, checkout));
+ * commandLine.files(orders, products, checkout);
  * executor.execute(commandLine.getCommandLine());
  * </code></pre>
  * <p>
