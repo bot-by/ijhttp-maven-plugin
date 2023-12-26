@@ -58,6 +58,11 @@ to install it by yourself then add to `PATH`. You can also set the full path to 
 via the parameter `executable`. The [HTTP Client Demo][demo] has some examples
 how to download the HTTP client.
 
+### Directories
+
+**IntelliJ HTTP Client** needs HTTP files to work.
+With **HTTP Client Command Line** you can set directories that contain such files.
+
 ### Maven Plugin
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
@@ -171,7 +176,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)  
+[Apache License v2.0](LICENSE)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
