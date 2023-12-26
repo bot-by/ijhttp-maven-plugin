@@ -9,7 +9,7 @@ describes format these files.
 
 Example of test request:
 
-```apex
+```http
 GET https://example.com/api/get
 
 ### Add an item

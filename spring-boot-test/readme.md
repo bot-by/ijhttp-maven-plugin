@@ -9,7 +9,7 @@ The [HTTP Request in Editor Specification][specification] describes format these
 
 Example of test request:
 
-```apex
+```http
 GET https://example.com/api/get
 
 ### Add an item

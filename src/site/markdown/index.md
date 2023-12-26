@@ -23,7 +23,7 @@ describes format these files.
 
 Example requests:
 
-```apex
+```http
 GET https://example.com/api/get
 
 ### Add an item
