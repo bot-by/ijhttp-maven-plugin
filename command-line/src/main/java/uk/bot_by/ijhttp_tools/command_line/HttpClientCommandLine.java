@@ -97,7 +97,7 @@ public class HttpClientCommandLine {
   }
 
   /**
-   * HTTP file paths. One of {@code files} or {@code directories} are required.
+   * Directories to look up HTTP files. One of {@code files} or {@code directories} are required.
    *
    * @see #files(Path...)
    */
