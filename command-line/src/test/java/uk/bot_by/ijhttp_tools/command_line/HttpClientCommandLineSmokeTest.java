@@ -70,4 +70,21 @@ public class HttpClientCommandLineSmokeTest {
         arrayContainingInAnyOrder(endsWith("bing.http"), endsWith("google.http")));
   }
 
+  @DisplayName("Max-depth")
+  @Test
+  void maxDepth() throws IOException {
+    // given
+    var folder = Paths.get("src/test/resources/folder");
+    var directoryWithSubdirectory = Paths.get("src/test/resources/directory");
+
+    builder.directories(folder, directoryWithSubdirectory);
+    builder.maxDepth(1);
+
+    // when
+    var commandLine = assertDoesNotThrow(builder::getCommandLine);
+
+    // then
+    assertThat(commandLine.getArguments(), arrayContaining(endsWith("google.http")));
+  }
+
 }
