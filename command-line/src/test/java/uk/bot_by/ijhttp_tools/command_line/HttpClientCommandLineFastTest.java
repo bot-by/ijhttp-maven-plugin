@@ -58,6 +58,19 @@ class HttpClientCommandLineFastTest {
     assertThat("files", arguments, arrayContaining("*"));
   }
 
+  @DisplayName("Executable")
+  @Test
+  void executable() throws IOException {
+    // given
+    httpClientCommandLine.executable("abc");
+
+    // when
+    var commandLine = httpClientCommandLine.getCommandLine();
+
+    // then
+    assertEquals("abc", commandLine.getExecutable());
+  }
+
   @DisplayName("Environment name")
   @ParameterizedTest
   @EmptySource
