@@ -42,7 +42,7 @@ class HttpClientCommandLineFastTest {
   @BeforeEach
   void setUp() throws IOException {
     httpClientCommandLine = new HttpClientCommandLine();
-    httpClientCommandLine.files(List.of(file));
+    httpClientCommandLine.files(file);
     when(file.getCanonicalPath()).thenReturn("*");
   }
 

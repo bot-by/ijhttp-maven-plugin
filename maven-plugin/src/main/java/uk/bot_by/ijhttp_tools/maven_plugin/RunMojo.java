@@ -398,7 +398,8 @@ public class RunMojo extends AbstractMojo {
     if (isNull(files)) {
       throw new MojoExecutionException("files are required");
     }
-    httpClientCommandLine.files(files);
+    // TODO: replace list with array
+    httpClientCommandLine.files(files.toArray(new File[0]));
   }
 
   private void flags(HttpClientCommandLine httpClientCommandLine) {

@@ -20,8 +20,13 @@ import static java.util.Objects.nonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.stream.Stream;
 import org.apache.commons.exec.CommandLine;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,6 +51,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class HttpClientCommandLine {
 
+  // Request files
+  private static final String HTTP_EXTENSION = ".http";
+  private static final String REST_EXTENSION = ".rest";
+  private static final BiPredicate<Path, BasicFileAttributes> REQUEST_FILE = ((path, attributes) ->
+      Files.isRegularFile(path) && (path.getFileName().toString().endsWith(HTTP_EXTENSION)
+          || path.getFileName().toString().endsWith(REST_EXTENSION)));
+
+  // Parameters
   private static final String CONNECT_TIMEOUT = "--connect-timeout";
   private static final String DOCKER_MODE = "--docker-mode";
   private static final String ENV = "--env";
@@ -60,14 +73,16 @@ public class HttpClientCommandLine {
   private static final String SOCKET_TIMEOUT = "--socket-timeout";
 
   private Integer connectTimeout;
+  private Path[] directories = new Path[0];
   private boolean dockerMode;
   private File environmentFile;
   private List<String> environmentVariables;
   private String environmentName;
   private String executable = "ijhttp";
-  private List<File> files;
+  private File[] files = new File[0];
   private boolean insecure;
   private LogLevel logLevel = LogLevel.BASIC;
+  private int maxDepth = Integer.MAX_VALUE;
   private File privateEnvironmentFile;
   private List<String> privateEnvironmentVariables;
   private String proxy;
@@ -80,6 +95,15 @@ public class HttpClientCommandLine {
    */
   public void connectTimeout(@NotNull Integer connectTimeout) {
     this.connectTimeout = connectTimeout;
+  }
+
+  /**
+   * HTTP file paths. One of {@code files} or {@code directories} are required.
+   *
+   * @see #files(File...)
+   */
+  public void directories(@NotNull Path... directories) {
+    this.directories = directories;
   }
 
   /**
@@ -131,9 +155,11 @@ public class HttpClientCommandLine {
   }
 
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. One of {@code files} or {@code directories} are required.
+   *
+   * @see #directories(Path...)
    */
-  public void files(@NotNull List<File> files) {
+  public void files(File... files) {
     this.files = files;
   }
 
@@ -149,6 +175,13 @@ public class HttpClientCommandLine {
    */
   public void logLevel(@NotNull LogLevel logLevel) {
     this.logLevel = logLevel;
+  }
+
+  /**
+   * The maximum depth of a directory tree to traverse. Default value {@link Integer#MAX_VALUE}.
+   */
+  public void maxDepth(int maxDepth) {
+    this.maxDepth = maxDepth;
   }
 
   /**
@@ -225,7 +258,7 @@ public class HttpClientCommandLine {
   public CommandLine getCommandLine() throws IllegalArgumentException, IOException {
     var commandLine = new CommandLine(executable);
 
-    if (isNull(files)) {
+    if (0 == files.length && 0 == directories.length) {
       throw new IllegalStateException("files are required");
     }
     flags(commandLine);
@@ -308,6 +341,13 @@ public class HttpClientCommandLine {
   private void requests(CommandLine commandLine) throws IOException {
     for (File file : files) {
       commandLine.addArgument(file.getCanonicalPath());
+    }
+    for (Path directory : directories) {
+      try (Stream<Path> pathStream = Files.find(directory, maxDepth, REQUEST_FILE)) {
+        for (Path path : pathStream.toList()) {
+          commandLine.addArgument(path.toFile().getCanonicalPath());
+        }
+      }
     }
   }
 
