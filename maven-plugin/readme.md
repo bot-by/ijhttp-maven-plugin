@@ -9,7 +9,7 @@ describes format these files.
 
 Example of test request:
 
-```language-apex
+```apex
 GET https://example.com/api/get
 
 ### Add an item
@@ -33,7 +33,7 @@ There is one goal **run**. To use it add the plugin to your POM.
 
 Example of full configuration:
 
-```language-xml
+```xml
 <plugin>
   <groupId>uk.bot-by.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
