@@ -44,6 +44,10 @@ Example of full configuration:
   <executions>
     <execution>
       <configuration>
+       <!-- At least one file or directory is required. -->
+       <directories>
+         <directory>src/test/resources</directory>
+       </directories>
        <environmentFile>public-env.json</environmentFile>
        <environmentName>dev</environmentName>
        <files>

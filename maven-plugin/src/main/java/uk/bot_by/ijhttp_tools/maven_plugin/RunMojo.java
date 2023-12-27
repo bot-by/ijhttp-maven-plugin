@@ -159,7 +159,7 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * Directories to look up HTTP files. One of {@code files} or {@code directories} are required.
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
    * <p>
    * Example:
    * <pre><code class="language-xml">
@@ -228,7 +228,7 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
    * <p>
    * Example:
    * <pre><code class="language-xml">

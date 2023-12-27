@@ -99,7 +99,7 @@ public class HttpClientCommandLine {
   }
 
   /**
-   * Directories to look up HTTP files. One of {@code files} or {@code directories} are required.
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
    *
    * @see #files(Path...)
    * @since 1.2.0
@@ -157,7 +157,7 @@ public class HttpClientCommandLine {
   }
 
   /**
-   * HTTP file paths. One of {@code files} or {@code directories} are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
    *
    * @see #directories(Path...)
    */
