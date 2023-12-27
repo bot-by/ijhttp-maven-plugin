@@ -102,6 +102,7 @@ public class HttpClientCommandLine {
    * Directories to look up HTTP files. One of {@code files} or {@code directories} are required.
    *
    * @see #files(Path...)
+   * @since 1.2.0
    */
   public void directories(@NotNull Path... directories) {
     this.directories = directories;

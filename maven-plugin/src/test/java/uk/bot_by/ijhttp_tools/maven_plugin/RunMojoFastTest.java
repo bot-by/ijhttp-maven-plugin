@@ -104,9 +104,9 @@ class RunMojoFastTest {
     assertEquals("files are required", exception.getMessage());
   }
 
-  @DisplayName("Run")
+  @DisplayName("Files")
   @Test
-  void run() throws IOException, MojoExecutionException, MojoFailureException {
+  void files() throws IOException, MojoExecutionException, MojoFailureException {
     // given
     var file = mock(File.class);
     var path = mock(Path.class);

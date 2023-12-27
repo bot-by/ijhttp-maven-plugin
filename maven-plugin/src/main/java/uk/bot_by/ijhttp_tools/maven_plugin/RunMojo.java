@@ -81,6 +81,7 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 public class RunMojo extends AbstractMojo {
 
   private Integer connectTimeout;
+  private List<File> directories;
   private boolean dockerMode;
   private File environmentFile;
   private List<String> environmentVariables;
@@ -152,8 +153,27 @@ public class RunMojo extends AbstractMojo {
    * Number of milliseconds for connection. Defaults to <em>3000</em>.
    */
   @Parameter(property = "ijhttp.connect-timeout")
+
   public void setConnectTimeout(Integer connectTimeout) {
     this.connectTimeout = connectTimeout;
+  }
+
+  /**
+   * Directories to look up HTTP files. One of {@code files} or {@code directories} are required.
+   * <p>
+   * Example:
+   * <pre><code class="language-xml">
+   *   &lt;files&gt;
+   *     &lt;file&gt;simple-run.http&lt;/file&gt;
+   *   &lt;/files&gt;
+   * </code></pre>
+   *
+   * @see #setFiles(List)
+   * @since 1.2.0
+   */
+  @Parameter(property = "ijhttp.files", required = true)
+  public void setDirectories(List<File> directories) {
+    this.directories = directories;
   }
 
   /**
@@ -216,6 +236,8 @@ public class RunMojo extends AbstractMojo {
    *     &lt;file&gt;simple-run.http&lt;/file&gt;
    *   &lt;/files&gt;
    * </code></pre>
+   *
+   * @see #setDirectories(List)
    */
   @Parameter(property = "ijhttp.files", required = true)
   public void setFiles(List<File> files) {
@@ -359,7 +381,6 @@ public class RunMojo extends AbstractMojo {
 
   @VisibleForTesting
   CommandLine getCommandLine() throws IOException, MojoExecutionException {
-
     var httpClientCommandLine = new HttpClientCommandLine();
 
     environment(httpClientCommandLine);
@@ -396,10 +417,16 @@ public class RunMojo extends AbstractMojo {
   }
 
   private void files(HttpClientCommandLine httpClientCommandLine) throws MojoExecutionException {
-    if (isNull(files)) {
+    if (isNull(directories) && isNull(files)) {
       throw new MojoExecutionException("files are required");
     }
-    httpClientCommandLine.files(files.stream().map(File::toPath).toArray(Path[]::new));
+    if (nonNull(directories)) {
+      httpClientCommandLine.directories(
+          directories.stream().map(File::toPath).toArray(Path[]::new));
+    }
+    if (nonNull(files)) {
+      httpClientCommandLine.files(files.stream().map(File::toPath).toArray(Path[]::new));
+    }
   }
 
   private void flags(HttpClientCommandLine httpClientCommandLine) {
