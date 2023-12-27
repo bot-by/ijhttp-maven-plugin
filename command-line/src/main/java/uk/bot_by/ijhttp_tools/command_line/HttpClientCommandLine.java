@@ -47,6 +47,8 @@ import org.jetbrains.annotations.NotNull;
  * IntelliJ HTTP Client uses <code>--report</code> as boolean option and parameter with a file
  * value. The component implements it by two methods: {@link #report(boolean)} and
  * {@link #reportPath(Path)}.
+ *
+ * @since 1.1.0
  */
 public class HttpClientCommandLine {
 

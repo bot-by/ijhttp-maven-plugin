@@ -34,6 +34,8 @@ import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 /**
  * HTTP Client configuration provides {@linkplain org.apache.commons.exec.Executor executor} and
  * {@linkplain uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine command line} beans.
+ *
+ * @since 1.1.0
  */
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(HttpClientCommandLineParameters.class)

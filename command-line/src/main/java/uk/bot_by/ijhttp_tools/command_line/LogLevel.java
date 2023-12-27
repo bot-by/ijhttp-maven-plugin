@@ -17,6 +17,8 @@ package uk.bot_by.ijhttp_tools.command_line;
 
 /**
  * Logging levels.
+ *
+ * @since 1.1.0
  */
 public enum LogLevel {
 

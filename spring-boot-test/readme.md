@@ -10,10 +10,13 @@ The [HTTP Request in Editor Specification][specification] describes format these
 Example of test request:
 
 ```http
-GET https://example.com/api/get
+GET /api/get HTTP/1.1
+Accept: application/json
+Host: example.com
 
 ### Add an item
-POST https://example.com/api/add
+POST /api/add HTTP/1.1
+Host: example.com
 Content-Type: application/json
 
 {

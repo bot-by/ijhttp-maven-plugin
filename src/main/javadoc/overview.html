@@ -19,17 +19,20 @@
   <a href="https://github.com/JetBrains/http-request-in-editor-spec">HTTP Request in Editor
     Specification</a> describes format these files.</p>
 <p>Example requests:</p>
-<pre><code class="language-apex">
-  GET https://example.com/api/get
+<pre><code class="language-http">
+GET /api/get HTTP/1.1
+Accept: application/json
+Host: example.com
 
-  ### Add an item
-  POST https://example.com/api/add
-  Content-Type: application/json
+### Add an item
+POST /api/add HTTP/1.1
+Host: example.com
+Content-Type: application/json
 
-  {
-    "name": "entity",
-    "value": "content"
-  }
+{
+  "name": "entity",
+  "value": "content"
+}
 </code></pre>
 </body>
 </html>

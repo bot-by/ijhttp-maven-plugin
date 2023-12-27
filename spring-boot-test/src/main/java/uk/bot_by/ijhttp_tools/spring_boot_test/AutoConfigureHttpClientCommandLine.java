@@ -26,6 +26,8 @@ import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
 
 /**
  * HTTP Client Command Line autoconfiguration.
+ *
+ * @since 1.1.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

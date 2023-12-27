@@ -25,6 +25,7 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
  * HTTP Client parameters.
  *
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
+ * @since 1.1.0
  */
 @ConfigurationProperties(prefix = "ijhttp.parameters")
 public class HttpClientCommandLineParameters {

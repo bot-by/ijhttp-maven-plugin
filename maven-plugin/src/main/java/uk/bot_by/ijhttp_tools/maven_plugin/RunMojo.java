@@ -47,26 +47,26 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
  * <p>
  * Sample configuration:
  * <pre><code class="language-xml">
- *   &lt;configuration&gt;
- *     &lt;environmentFile&gt;public-env.json&lt;/environmentFile&gt;
- *     &lt;environmentName&gt;dev&lt;/environmentName&gt;
- *     &lt;files&gt;
- *       &lt;file&gt;sample-1-queries.http&lt;/file&gt;
- *       &lt;file&gt;sample-2-queries.http&lt;/file&gt;
- *     &lt;/files&gt;
- *     &lt;logLevel&gt;HEADERS&lt;/logLevel&gt;
- *     &lt;report&gt;true&lt;/report&gt;
- *     &lt;workingDirectory&gt;target&lt;/workingDirectory&gt;
- *   &lt;/configuration&gt;
+ * &lt;configuration&gt;
+ *   &lt;environmentFile&gt;public-env.json&lt;/environmentFile&gt;
+ *   &lt;environmentName&gt;dev&lt;/environmentName&gt;
+ *   &lt;files&gt;
+ *     &lt;file&gt;sample-1-queries.http&lt;/file&gt;
+ *     &lt;file&gt;sample-2-queries.http&lt;/file&gt;
+ *   &lt;/files&gt;
+ *   &lt;logLevel&gt;HEADERS&lt;/logLevel&gt;
+ *   &lt;report&gt;true&lt;/report&gt;
+ *   &lt;workingDirectory&gt;target&lt;/workingDirectory&gt;
+ * &lt;/configuration&gt;
  * </code></pre>
  * Environment variables:
  * <pre><code class="language-xml">
- *   ...
- *   &lt;environmentVariables&gt;
- *     &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
- *     &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
- *   &lt;/environmentVariables&gt;
- *   ...
+ * ...
+ * &lt;environmentVariables&gt;
+ *   &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
+ *   &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
+ * &lt;/environmentVariables&gt;
+ * ...
  * </code></pre>
  * To manage plugin's output use {@link #useMavenLogger}, {@link #quietLogs} and
  * {@link #outputFile}.
