@@ -15,6 +15,7 @@ To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
 The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them.
 
 - **connectTimeout** - Number of milliseconds for connection. Defaults to _3000_.
+- **directories** - Directories to look up HTTP files. At least one `file` or `directory` is required.
 - **dockerMode** - Enables Docker mode. Treat `localhost` as `host.docker.internal`. Defaults to _false_.
 - **environmentFile** - Name of the public environment file, e.g. `http-client.env.json`.
 - **environmentName** - Name of the environment in a configuration file.
@@ -29,7 +30,7 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   ...
   ```
 - **executable** - The executable. Can be a full path or the name of the executable. Defaults to _ijhttp_.
-- **files** - HTTP file paths. They are required.
+- **files** - HTTP file paths.
   Example:
   ```xml
   ...
@@ -70,7 +71,6 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   <executions>
     <execution>
       <configuration>
-       <!-- At least one file or directory is required. -->
        <directories>
          <directory>src/test/resources</directory>
        </directories>
