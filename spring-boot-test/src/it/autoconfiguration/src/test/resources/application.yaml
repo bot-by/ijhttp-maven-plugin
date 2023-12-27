@@ -1,12 +1,14 @@
 ijhttp:
   parameters:
     connect-timeout: 9000
+    directories:
+     - src/test/resources/ijhttp
     # docker-mode: false default value
     environment-file: src/test/resources/ijhttp/public-env.json
     environment-name: dev
     # executable: ijhttp default value
-    files:
-      - src/test/resources/ijhttp/echo.http
+    # files:
+    #   - src/test/resources/ijhttp/echo.http
     # insecure: false default value
     log-level: verbose
     private-environment-file: src/test/resources/ijhttp/private-env.json

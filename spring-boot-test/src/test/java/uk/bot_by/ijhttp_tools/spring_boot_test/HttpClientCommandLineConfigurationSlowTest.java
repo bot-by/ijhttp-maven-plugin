@@ -15,6 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -110,6 +111,7 @@ class HttpClientCommandLineConfigurationSlowTest {
     var file = Paths.get("test-file");
     var parameters = spy(new HttpClientCommandLineParameters());
 
+    parameters.setDirectories(List.of(Path.of("src/test")));
     parameters.setDockerMode(true);
     parameters.setExecutable("test.sh");
     parameters.setInsecure(true);
@@ -138,6 +140,7 @@ class HttpClientCommandLineConfigurationSlowTest {
     verify(parameters).isReport();
 
     verify(parameters, times(2)).getConnectTimeout();
+    verify(parameters, times(2)).getDirectories();
     verify(parameters, times(2)).getEnvironmentFile();
     verify(parameters, times(2)).getEnvironmentName();
     verify(parameters, times(2)).getEnvironmentVariables();
@@ -157,8 +160,8 @@ class HttpClientCommandLineConfigurationSlowTest {
                 equalTo("--env-file"), endsWith("test-file"), equalTo("--env-variables"),
                 equalTo("public"), equalTo("--private-env-file"), endsWith("test-file"),
                 equalTo("--private-env-variables"), equalTo("private"), equalTo("--proxy"),
-                equalTo("proxy"), endsWith("test-file"), equalTo("--report"),
-                endsWith("test-file"))));
+                equalTo("proxy"), endsWith("test-file"), endsWith("directory-test.http"),
+                equalTo("--report"), endsWith("test-file"))));
   }
 
 }

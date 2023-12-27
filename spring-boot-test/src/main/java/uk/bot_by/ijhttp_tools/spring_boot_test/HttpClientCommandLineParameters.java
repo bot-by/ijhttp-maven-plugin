@@ -35,6 +35,10 @@ public class HttpClientCommandLineParameters {
    */
   private Integer connectTimeout;
   /**
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
+   */
+  private List<Path> directories;
+  /**
    * Enables Docker mode. Treat <em>localhost</em> as <em>host.docker.internal</em>. Defaults to
    * <em>false</em>.
    */
@@ -57,7 +61,7 @@ public class HttpClientCommandLineParameters {
    */
   private String executable = "ijhttp";
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
    */
   private List<Path> files;
   /**
@@ -105,6 +109,20 @@ public class HttpClientCommandLineParameters {
    */
   public void setConnectTimeout(Integer connectTimeout) {
     this.connectTimeout = connectTimeout;
+  }
+
+  public List<Path> getDirectories() {
+    return directories;
+  }
+
+  /**
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
+   *
+   * @see #setFiles(List)
+   * @since 1.2.0
+   */
+  public void setDirectories(List<Path> directories) {
+    this.directories = directories;
   }
 
   public boolean isDockerMode() {
@@ -169,7 +187,10 @@ public class HttpClientCommandLineParameters {
   }
 
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
+   *
+   * @see #setDirectories(List)
+   * @since 1.2.0
    */
   public void setFiles(List<Path> files) {
     this.files = files;
@@ -269,8 +290,8 @@ public class HttpClientCommandLineParameters {
   @Override
   public String toString() {
     return new StringJoiner(", ", getClass().getSimpleName() + "[", "]").add(
-            "connectTimeout=" + connectTimeout).add("dockerMode=" + dockerMode)
-        .add("environmentFile=" + environmentFile)
+            "connectTimeout=" + connectTimeout).add("directories=" + directories)
+        .add("dockerMode=" + dockerMode).add("environmentFile=" + environmentFile)
         .add("environmentVariables=" + environmentVariables)
         .add("environmentName='" + environmentName + "'").add("executable='" + executable + "'")
         .add("files=" + files).add("insecure=" + insecure).add("logLevel=" + logLevel)
@@ -279,5 +300,4 @@ public class HttpClientCommandLineParameters {
         .add("proxy='" + proxy + "'").add("report=" + report).add("reportPath=" + reportPath)
         .add("socketTimeout=" + socketTimeout).toString();
   }
-
 }

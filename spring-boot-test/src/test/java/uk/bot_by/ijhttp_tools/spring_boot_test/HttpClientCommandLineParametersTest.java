@@ -22,11 +22,12 @@ class HttpClientCommandLineParametersTest {
     var parameters = new HttpClientCommandLineParameters();
 
     // when and then
-    assertEquals("HttpClientCommandLineParameters[connectTimeout=null, dockerMode=false, "
-        + "environmentFile=null, environmentVariables=null, environmentName='null', "
-        + "executable='ijhttp', files=null, insecure=false, logLevel=BASIC, "
-        + "privateEnvironmentFile=null, privateEnvironmentVariables=null, proxy='null', "
-        + "report=false, reportPath=null, socketTimeout=null]", parameters.toString());
+    assertEquals("HttpClientCommandLineParameters[connectTimeout=null, directories=null, "
+            + "dockerMode=false, environmentFile=null, environmentVariables=null, "
+            + "environmentName='null', executable='ijhttp', files=null, insecure=false, "
+            + "logLevel=BASIC, privateEnvironmentFile=null, privateEnvironmentVariables=null, "
+            + "proxy='null', report=false, reportPath=null, socketTimeout=null]",
+        parameters.toString());
   }
 
   @DisplayName("Custom values")
@@ -36,6 +37,7 @@ class HttpClientCommandLineParametersTest {
     var file = mock(Path.class);
     var parameters = new HttpClientCommandLineParameters();
 
+    parameters.setDirectories(List.of(Path.of("test-directory")));
     parameters.setDockerMode(true);
     parameters.setExecutable("test.sh");
     parameters.setInsecure(true);
@@ -56,11 +58,12 @@ class HttpClientCommandLineParametersTest {
     when(file.toString()).thenReturn("path");
 
     // when and then
-    assertEquals("HttpClientCommandLineParameters[connectTimeout=1, dockerMode=true, "
-        + "environmentFile=path, environmentVariables=[public], environmentName='name', "
-        + "executable='test.sh', files=[path], insecure=true, logLevel=VERBOSE, "
-        + "privateEnvironmentFile=path, privateEnvironmentVariables=[private], proxy='proxy', "
-        + "report=true, reportPath=path, socketTimeout=2]", parameters.toString());
+    assertEquals("HttpClientCommandLineParameters[connectTimeout=1, "
+        + "directories=[test-directory], dockerMode=true, environmentFile=path, "
+        + "environmentVariables=[public], environmentName='name', executable='test.sh', "
+        + "files=[path], insecure=true, logLevel=VERBOSE, privateEnvironmentFile=path, "
+        + "privateEnvironmentVariables=[private], proxy='proxy', report=true, reportPath=path, "
+        + "socketTimeout=2]", parameters.toString());
   }
 
 }

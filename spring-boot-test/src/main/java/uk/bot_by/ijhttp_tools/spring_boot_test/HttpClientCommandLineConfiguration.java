@@ -77,6 +77,9 @@ public class HttpClientCommandLineConfiguration {
     if (nonNull(parameters.getFiles())) {
       httpClientCommandLine.files(parameters.getFiles().toArray(new Path[0]));
     }
+    if (nonNull(parameters.getDirectories())) {
+      httpClientCommandLine.directories(parameters.getDirectories().toArray(new Path[0]));
+    }
     if (nonNull(parameters.getReportPath())) {
       httpClientCommandLine.reportPath(parameters.getReportPath());
     }
