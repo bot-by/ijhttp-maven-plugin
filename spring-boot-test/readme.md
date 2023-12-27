@@ -38,6 +38,8 @@ Example of autoconfiguration, full configuration:
 ijhttp:
   parameters:
     connect-timeout: 9000
+    directories:
+     - src/test/resources/ijhttp
     # docker-mode: false default value
     environment-file: public-env.json
     environment-name: dev
