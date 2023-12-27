@@ -163,9 +163,10 @@ public class RunMojo extends AbstractMojo {
    * <p>
    * Example:
    * <pre><code class="language-xml">
-   *   &lt;files&gt;
-   *     &lt;file&gt;simple-run.http&lt;/file&gt;
-   *   &lt;/files&gt;
+   *   &lt;directories&gt;
+   *     &lt;directory&gt;src/test/resources/orders&lt;/directory&gt;
+   *     &lt;directory&gt;src/test/resources/catalog/products&lt;/directory&gt;
+   *   &lt;/directories&gt;
    * </code></pre>
    *
    * @see #setFiles(List)
