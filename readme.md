@@ -38,11 +38,14 @@ describes format these files.
 
 Example requests:
 
-```language-apex
-GET https://example.com/api/get
+```http
+GET /api/get HTTP/1.1
+Accept: application/json
+Host: example.com
 
 ### Add an item
-POST https://example.com/api/add
+POST /api/add HTTP/1.1
+Host: example.com
 Content-Type: application/json
 
 {
@@ -58,6 +61,11 @@ to install it by yourself then add to `PATH`. You can also set the full path to 
 via the parameter `executable`. The [HTTP Client Demo][demo] has some examples
 how to download the HTTP client.
 
+### Directories
+
+**IntelliJ HTTP Client** needs HTTP files to work.
+With **HTTP Client Command Line** you can set directories that contain such files.
+
 ### Maven Plugin
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
@@ -67,7 +75,7 @@ There is one goal **run**. To use it add the plugin to your POM.
 
 Example of full configuration:
 
-```language-xml
+```xml
 <plugin>
   <groupId>uk.bot-by.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
@@ -75,6 +83,10 @@ Example of full configuration:
   <executions>
     <execution>
       <configuration>
+       <!-- At least one file or directory is required. -->
+       <directories>
+         <directory>src/test/resources</directory>
+       </directories>
        <environmentFile>public-env.json</environmentFile>
        <environmentName>dev</environmentName>
        <files>
@@ -106,6 +118,8 @@ Example of autoconfiguration, full configuration:
 ijhttp:
   parameters:
     connect-timeout: 9000
+    directories:
+     - src/test/resources/ijhttp
     # docker-mode: false default value
     environment-file: public-env.json
     environment-name: dev
@@ -171,7 +185,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)  
+[Apache License v2.0](LICENSE)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html

@@ -9,11 +9,14 @@ The [HTTP Request in Editor Specification][specification] describes format these
 
 Example of test request:
 
-```language-apex
-GET https://example.com/api/get
+```http
+GET /api/get HTTP/1.1
+Accept: application/json
+Host: example.com
 
 ### Add an item
-POST https://example.com/api/add
+POST /api/add HTTP/1.1
+Host: example.com
 Content-Type: application/json
 
 {
@@ -35,6 +38,8 @@ Example of autoconfiguration, full configuration:
 ijhttp:
   parameters:
     connect-timeout: 9000
+    directories:
+     - src/test/resources/ijhttp
     # docker-mode: false default value
     environment-file: public-env.json
     environment-name: dev

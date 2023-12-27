@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -22,20 +22,22 @@ class HttpClientCommandLineParametersTest {
     var parameters = new HttpClientCommandLineParameters();
 
     // when and then
-    assertEquals("HttpClientCommandLineParameters[connectTimeout=null, dockerMode=false, "
-        + "environmentFile=null, environmentVariables=null, environmentName='null', "
-        + "executable='ijhttp', files=null, insecure=false, logLevel=BASIC, "
-        + "privateEnvironmentFile=null, privateEnvironmentVariables=null, proxy='null', "
-        + "report=false, reportPath=null, socketTimeout=null]", parameters.toString());
+    assertEquals("HttpClientCommandLineParameters[connectTimeout=null, directories=null, "
+            + "dockerMode=false, environmentFile=null, environmentVariables=null, "
+            + "environmentName='null', executable='ijhttp', files=null, insecure=false, "
+            + "logLevel=BASIC, privateEnvironmentFile=null, privateEnvironmentVariables=null, "
+            + "proxy='null', report=false, reportPath=null, socketTimeout=null]",
+        parameters.toString());
   }
 
   @DisplayName("Custom values")
   @Test
   void customValues() throws IOException {
     // given
-    var file = mock(File.class);
+    var file = mock(Path.class);
     var parameters = new HttpClientCommandLineParameters();
 
+    parameters.setDirectories(List.of(Path.of("test-directory")));
     parameters.setDockerMode(true);
     parameters.setExecutable("test.sh");
     parameters.setInsecure(true);
@@ -56,11 +58,12 @@ class HttpClientCommandLineParametersTest {
     when(file.toString()).thenReturn("path");
 
     // when and then
-    assertEquals("HttpClientCommandLineParameters[connectTimeout=1, dockerMode=true, "
-        + "environmentFile=path, environmentVariables=[public], environmentName='name', "
-        + "executable='test.sh', files=[path], insecure=true, logLevel=VERBOSE, "
-        + "privateEnvironmentFile=path, privateEnvironmentVariables=[private], proxy='proxy', "
-        + "report=true, reportPath=path, socketTimeout=2]", parameters.toString());
+    assertEquals("HttpClientCommandLineParameters[connectTimeout=1, "
+        + "directories=[test-directory], dockerMode=true, environmentFile=path, "
+        + "environmentVariables=[public], environmentName='name', executable='test.sh', "
+        + "files=[path], insecure=true, logLevel=VERBOSE, privateEnvironmentFile=path, "
+        + "privateEnvironmentVariables=[private], proxy='proxy', report=true, reportPath=path, "
+        + "socketTimeout=2]", parameters.toString());
   }
 
 }

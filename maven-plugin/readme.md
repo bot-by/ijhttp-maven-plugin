@@ -9,11 +9,14 @@ describes format these files.
 
 Example of test request:
 
-```language-apex
-GET https://example.com/api/get
+```http
+GET /api/get HTTP/1.1
+Accept: application/json
+Host: example.com
 
 ### Add an item
-POST https://example.com/api/add
+POST /api/add HTTP/1.1
+Host: example.com
 Content-Type: application/json
 
 {
@@ -33,7 +36,7 @@ There is one goal **run**. To use it add the plugin to your POM.
 
 Example of full configuration:
 
-```language-xml
+```xml
 <plugin>
   <groupId>uk.bot-by.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
@@ -41,6 +44,10 @@ Example of full configuration:
   <executions>
     <execution>
       <configuration>
+       <!-- At least one file or directory is required. -->
+       <directories>
+         <directory>src/test/resources</directory>
+       </directories>
        <environmentFile>public-env.json</environmentFile>
        <environmentName>dev</environmentName>
        <files>

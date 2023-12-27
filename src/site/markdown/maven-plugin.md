@@ -15,12 +15,13 @@ To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
 The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them.
 
 - **connectTimeout** - Number of milliseconds for connection. Defaults to _3000_.
+- **directories** - Directories to look up HTTP files. At least one `file` or `directory` is required.
 - **dockerMode** - Enables Docker mode. Treat `localhost` as `host.docker.internal`. Defaults to _false_.
 - **environmentFile** - Name of the public environment file, e.g. `http-client.env.json`.
 - **environmentName** - Name of the environment in a configuration file.
 - **environmentVariables** - Public environment variables.
   Example:
-  ```language-xml
+  ```xml
   ...
   <environmentVariables>
     <environmentVariable>id=1234</environmentVariable>
@@ -29,9 +30,9 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   ...
   ```
 - **executable** - The executable. Can be a full path or the name of the executable. Defaults to _ijhttp_.
-- **files** - HTTP file paths. They are required.
+- **files** - HTTP file paths.
   Example:
-  ```language-xml
+  ```xml
   ...
   <files>
     <file>simple-run.http</file>
@@ -62,7 +63,7 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
 
 ## Example of configuration
 
-```language-xml
+```xml
 <plugin>
   <groupId>uk.bot-by.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
@@ -70,6 +71,9 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   <executions>
     <execution>
       <configuration>
+       <directories>
+         <directory>src/test/resources</directory>
+       </directories>
        <environmentFile>public-env.json</environmentFile>
        <environmentName>dev</environmentName>
        <files>

@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -46,26 +47,29 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
  * <p>
  * Sample configuration:
  * <pre><code class="language-xml">
- *   &lt;configuration&gt;
- *     &lt;environmentFile&gt;public-env.json&lt;/environmentFile&gt;
- *     &lt;environmentName&gt;dev&lt;/environmentName&gt;
- *     &lt;files&gt;
- *       &lt;file&gt;sample-1-queries.http&lt;/file&gt;
- *       &lt;file&gt;sample-2-queries.http&lt;/file&gt;
- *     &lt;/files&gt;
- *     &lt;logLevel&gt;HEADERS&lt;/logLevel&gt;
- *     &lt;report&gt;true&lt;/report&gt;
- *     &lt;workingDirectory&gt;target&lt;/workingDirectory&gt;
- *   &lt;/configuration&gt;
+ * &lt;configuration&gt;
+ *   &lt;directories&gt;
+ *     &lt;directory&gt;src/test/resources&lt;/directory&gt;
+ *   &lt;/directories&gt;
+ *   &lt;environmentFile&gt;public-env.json&lt;/environmentFile&gt;
+ *   &lt;environmentName&gt;dev&lt;/environmentName&gt;
+ *   &lt;files&gt;
+ *     &lt;file&gt;sample-1-queries.http&lt;/file&gt;
+ *     &lt;file&gt;sample-2-queries.http&lt;/file&gt;
+ *   &lt;/files&gt;
+ *   &lt;logLevel&gt;HEADERS&lt;/logLevel&gt;
+ *   &lt;report&gt;true&lt;/report&gt;
+ *   &lt;workingDirectory&gt;target&lt;/workingDirectory&gt;
+ * &lt;/configuration&gt;
  * </code></pre>
  * Environment variables:
  * <pre><code class="language-xml">
- *   ...
- *   &lt;environmentVariables&gt;
- *     &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
- *     &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
- *   &lt;/environmentVariables&gt;
- *   ...
+ * ...
+ * &lt;environmentVariables&gt;
+ *   &lt;environmentVariable&gt;id=1234&lt;/environmentVariable&gt;
+ *   &lt;environmentVariable&gt;field=name&lt;/environmentVariable&gt;
+ * &lt;/environmentVariables&gt;
+ * ...
  * </code></pre>
  * To manage plugin's output use {@link #useMavenLogger}, {@link #quietLogs} and
  * {@link #outputFile}.
@@ -80,6 +84,7 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 public class RunMojo extends AbstractMojo {
 
   private Integer connectTimeout;
+  private List<File> directories;
   private boolean dockerMode;
   private File environmentFile;
   private List<String> environmentVariables;
@@ -151,8 +156,28 @@ public class RunMojo extends AbstractMojo {
    * Number of milliseconds for connection. Defaults to <em>3000</em>.
    */
   @Parameter(property = "ijhttp.connect-timeout")
+
   public void setConnectTimeout(Integer connectTimeout) {
     this.connectTimeout = connectTimeout;
+  }
+
+  /**
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
+   * <p>
+   * Example:
+   * <pre><code class="language-xml">
+   *   &lt;directories&gt;
+   *     &lt;directory&gt;src/test/resources/orders&lt;/directory&gt;
+   *     &lt;directory&gt;src/test/resources/catalog/products&lt;/directory&gt;
+   *   &lt;/directories&gt;
+   * </code></pre>
+   *
+   * @see #setFiles(List)
+   * @since 1.2.0
+   */
+  @Parameter(property = "ijhttp.files", required = true)
+  public void setDirectories(List<File> directories) {
+    this.directories = directories;
   }
 
   /**
@@ -207,7 +232,7 @@ public class RunMojo extends AbstractMojo {
   }
 
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
    * <p>
    * Example:
    * <pre><code class="language-xml">
@@ -215,6 +240,8 @@ public class RunMojo extends AbstractMojo {
    *     &lt;file&gt;simple-run.http&lt;/file&gt;
    *   &lt;/files&gt;
    * </code></pre>
+   *
+   * @see #setDirectories(List)
    */
   @Parameter(property = "ijhttp.files", required = true)
   public void setFiles(List<File> files) {
@@ -358,7 +385,6 @@ public class RunMojo extends AbstractMojo {
 
   @VisibleForTesting
   CommandLine getCommandLine() throws IOException, MojoExecutionException {
-
     var httpClientCommandLine = new HttpClientCommandLine();
 
     environment(httpClientCommandLine);
@@ -377,13 +403,13 @@ public class RunMojo extends AbstractMojo {
       httpClientCommandLine.environmentName(environmentName);
     }
     if (nonNull(environmentFile)) {
-      httpClientCommandLine.environmentFile(environmentFile);
+      httpClientCommandLine.environmentFile(environmentFile.toPath());
     }
     if (nonNull(environmentVariables)) {
       httpClientCommandLine.environmentVariables(environmentVariables);
     }
     if (nonNull(privateEnvironmentFile)) {
-      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile);
+      httpClientCommandLine.privateEnvironmentFile(privateEnvironmentFile.toPath());
     }
     if (nonNull(privateEnvironmentVariables)) {
       httpClientCommandLine.privateEnvironmentVariables(privateEnvironmentVariables);
@@ -395,10 +421,16 @@ public class RunMojo extends AbstractMojo {
   }
 
   private void files(HttpClientCommandLine httpClientCommandLine) throws MojoExecutionException {
-    if (isNull(files)) {
+    if (isNull(directories) && isNull(files)) {
       throw new MojoExecutionException("files are required");
     }
-    httpClientCommandLine.files(files);
+    if (nonNull(directories)) {
+      httpClientCommandLine.directories(
+          directories.stream().map(File::toPath).toArray(Path[]::new));
+    }
+    if (nonNull(files)) {
+      httpClientCommandLine.files(files.stream().map(File::toPath).toArray(Path[]::new));
+    }
   }
 
   private void flags(HttpClientCommandLine httpClientCommandLine) {
@@ -406,7 +438,7 @@ public class RunMojo extends AbstractMojo {
     httpClientCommandLine.insecure(insecure);
     httpClientCommandLine.report(report);
     if (nonNull(reportPath)) {
-      httpClientCommandLine.reportPath(reportPath);
+      httpClientCommandLine.reportPath(reportPath.toPath());
     }
   }
 

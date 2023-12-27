@@ -17,6 +17,7 @@ package uk.bot_by.ijhttp_tools.spring_boot_test;
 
 import static java.util.Objects.nonNull;
 
+import java.nio.file.Path;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
@@ -33,6 +34,8 @@ import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 /**
  * HTTP Client configuration provides {@linkplain org.apache.commons.exec.Executor executor} and
  * {@linkplain uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine command line} beans.
+ *
+ * @since 1.1.0
  */
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(HttpClientCommandLineParameters.class)
@@ -72,7 +75,10 @@ public class HttpClientCommandLineConfiguration {
   private static void handleFileParameters(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
     if (nonNull(parameters.getFiles())) {
-      httpClientCommandLine.files(parameters.getFiles());
+      httpClientCommandLine.files(parameters.getFiles().toArray(new Path[0]));
+    }
+    if (nonNull(parameters.getDirectories())) {
+      httpClientCommandLine.directories(parameters.getDirectories().toArray(new Path[0]));
     }
     if (nonNull(parameters.getReportPath())) {
       httpClientCommandLine.reportPath(parameters.getReportPath());

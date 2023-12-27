@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.ExecuteException;
@@ -103,15 +104,17 @@ class RunMojoFastTest {
     assertEquals("files are required", exception.getMessage());
   }
 
-  @DisplayName("Run")
+  @DisplayName("Files")
   @Test
-  void run() throws IOException, MojoExecutionException, MojoFailureException {
+  void files() throws IOException, MojoExecutionException, MojoFailureException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.getStreamHandler()).thenReturn(streamHandler);
 
@@ -131,10 +134,12 @@ class RunMojoFastTest {
   void runWithException() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException("test exception"));
     when(executor.getStreamHandler()).thenReturn(streamHandler);
@@ -155,10 +160,12 @@ class RunMojoFastTest {
   void runWithExceptionWithoutMessage(String message) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(new IOException(message));
     when(executor.getStreamHandler()).thenReturn(streamHandler);
@@ -178,11 +185,13 @@ class RunMojoFastTest {
   void runWithExecuteException(boolean watchdogExists) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
     var watchdog = mock(ExecuteWatchdog.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(
         new ExecuteException("test execute exception", 2));
@@ -207,12 +216,14 @@ class RunMojoFastTest {
   void timeoutOfExecutor() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
     var watchdog = mock(ExecuteWatchdog.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setTimeout(1234567);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.execute(isA(CommandLine.class))).thenThrow(
         new ExecuteException("test execute exception", 3));
@@ -244,10 +255,12 @@ class RunMojoFastTest {
   void simpleRun() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -265,11 +278,13 @@ class RunMojoFastTest {
   void environmentName(String name) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setEnvironmentName(name);
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -291,11 +306,13 @@ class RunMojoFastTest {
   void quotedEnvironmentName() throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setEnvironmentName("environment name");
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -315,10 +332,12 @@ class RunMojoFastTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(logLevel);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -340,12 +359,14 @@ class RunMojoFastTest {
       String argumentValue, String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setConnectTimeout(connectTimeout);
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setSocketTimeout(socketTimeout);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -364,13 +385,15 @@ class RunMojoFastTest {
       String argumentName) throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setDockerMode(dockerMode);
     mojo.setFiles(List.of(file));
     mojo.setInsecure(insecure);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setReport(report);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -390,6 +413,7 @@ class RunMojoFastTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setEnvironmentFile(environmentFile);
     mojo.setFiles(List.of(file));
@@ -399,7 +423,8 @@ class RunMojoFastTest {
       mojo.setReport(true);
     }
     mojo.setReportPath(reportPath);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -419,6 +444,7 @@ class RunMojoFastTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setEnvironmentFile(environmentFile);
     mojo.setFiles(List.of(file));
@@ -428,7 +454,8 @@ class RunMojoFastTest {
       mojo.setReport(true);
     }
     mojo.setReportPath(reportPath);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -449,11 +476,13 @@ class RunMojoFastTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setProxy(proxy);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -479,12 +508,14 @@ class RunMojoFastTest {
       throws IOException, MojoExecutionException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setEnvironmentVariables(environmentVariables);
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setPrivateEnvironmentVariables(privateEnvironmentVariables);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
 
     // when
     var commandLine = mojo.getCommandLine();
@@ -522,12 +553,14 @@ class RunMojoFastTest {
       throws IOException, MojoExecutionException, MojoFailureException {
     // given
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.getStreamHandler()).thenReturn(streamHandler);
 

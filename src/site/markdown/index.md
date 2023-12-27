@@ -23,11 +23,14 @@ describes format these files.
 
 Example requests:
 
-```language-apex
-GET https://example.com/api/get
+```http
+GET /api/get HTTP/1.1
+Accept: application/json
+Host: example.com
 
 ### Add an item
-POST https://example.com/api/add
+POST /api/add HTTP/1.1
+Host: example.com
 Content-Type: application/json
 
 {
@@ -35,6 +38,11 @@ Content-Type: application/json
   "value": "content"
 }
 ```
+
+### Directories
+
+**IntelliJ HTTP Client** needs HTTP files to work.
+With **HTTP Client Command Line** you can set directories that contain such files.
 
 * [Maven Plugin][maven-plugin]
 * [Spring Boot Test autoconfiguration][autoconfiguration]

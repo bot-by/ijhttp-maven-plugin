@@ -1,6 +1,8 @@
 package uk.bot_by.ijhttp_tools.maven_plugin;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.ArrayMatching.arrayContaining;
+import static org.hamcrest.core.StringEndsWith.endsWith;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -8,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
@@ -16,12 +19,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.Executor;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +33,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,6 +44,8 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 @Tag("slow")
 class RunMojoSlowTest {
 
+  @Captor
+  private ArgumentCaptor<CommandLine> commandLineCaptor;
   @Mock
   private Executor executor;
   @Mock
@@ -55,6 +62,28 @@ class RunMojoSlowTest {
         return true;
       }
     });
+  }
+
+  @DisplayName("Directories")
+  @Test
+  void directories() throws IOException, MojoExecutionException, MojoFailureException {
+    // given
+    var directory = new File("src/test/resources/directory");
+
+    mojo.setDirectories(List.of(directory));
+    mojo.setLogLevel(LogLevel.BASIC);
+    when(mojo.getExecutor()).thenReturn(executor);
+    when(executor.getStreamHandler()).thenReturn(streamHandler);
+
+    // when
+    mojo.execute();
+
+    // then
+    verify(executor).execute(commandLineCaptor.capture());
+
+    var arguments = commandLineCaptor.getValue().getArguments();
+
+    assertThat("directories", arguments, arrayContaining(endsWith("bing.http")));
   }
 
   @DisplayName("Working directory: existed directory, non-existed directory")
@@ -101,11 +130,13 @@ class RunMojoSlowTest {
     // given
     var outputFile = Files.createTempFile("http-client-", ".log");
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setOutputFile(outputFile.toFile());
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
     when(executor.getStreamHandler()).thenReturn(streamHandler);
 
@@ -124,11 +155,13 @@ class RunMojoSlowTest {
         "second");
     var outputFile = Path.of(parentDirectories.toString(), "http-client.log");
     var file = mock(File.class);
+    var path = mock(Path.class);
 
     mojo.setFiles(List.of(file));
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setOutputFile(outputFile.toFile());
-    when(file.getCanonicalPath()).thenReturn("*");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("*");
     when(mojo.getExecutor()).thenReturn(executor);
 
     // when
@@ -145,6 +178,7 @@ class RunMojoSlowTest {
     // given
     var file = mock(File.class);
     var files = new ArrayList<File>();
+    var path = mock(Path.class);
 
     files.add(file);
 
@@ -153,7 +187,8 @@ class RunMojoSlowTest {
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setQuietLogs(quietLogs);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn("0");
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn("0");
 
     // when
     assertDoesNotThrow(mojo::execute);
@@ -166,7 +201,7 @@ class RunMojoSlowTest {
     // given
     var file = mock(File.class);
     var files = new ArrayList<File>();
-    var logger = mock(Log.class);
+    var path = mock(Path.class);
 
     files.add(file);
 
@@ -174,7 +209,8 @@ class RunMojoSlowTest {
     mojo.setFiles(files);
     mojo.setLogLevel(LogLevel.BASIC);
     mojo.setUseMavenLogger(true);
-    when(file.getCanonicalPath()).thenReturn(Integer.toString(exitCode));
+    when(file.toPath()).thenReturn(path);
+    when(path.toString()).thenReturn(Integer.toString(exitCode));
     when(mojo.getExecutor()).thenAnswer(invocationOnMock -> {
       var executor = new DefaultExecutor();
 
@@ -182,7 +218,6 @@ class RunMojoSlowTest {
 
       return executor;
     });
-    when(mojo.getLog()).thenReturn(logger);
 
     // when
     assertDoesNotThrow(mojo::execute);

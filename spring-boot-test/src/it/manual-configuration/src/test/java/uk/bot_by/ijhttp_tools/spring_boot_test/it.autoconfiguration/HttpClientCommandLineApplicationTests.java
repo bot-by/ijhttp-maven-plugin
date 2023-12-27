@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import org.apache.commons.exec.Executor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,7 @@ class HttpClientCommandLineApplicationTests {
   @Test
   void httpClientCommandLine() throws IOException {
     // given
-    var files = List.of(Path.of("echo.http").toFile());
-
-    httpClientCommandLine.files(files);
+    httpClientCommandLine.files(Path.of("echo.http"));
     httpClientCommandLine.logLevel(LogLevel.VERBOSE);
     httpClientCommandLine.environmentVariable(String.format("timeout=%s", timeout));
     httpClientCommandLine.report(true);

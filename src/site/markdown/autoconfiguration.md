@@ -11,12 +11,13 @@ The [HTTP Client Demo][demo] has some examples how to download the HTTP client.
 The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them.
 
 - **connect-timeout** - Number of milliseconds for connection. Defaults to _3000_.
+- **directories** - Directories to look up HTTP files. At least one `file` or `directory` is required.
 - **docker-mode** - Enables Docker mode. Treat `localhost` as `host.docker.internal`. Defaults to _false_.
 - **environment-file** - Name of the public environment file, e.g. `http-client.env.json`.
 - **environment-name** - Name of the environment in a configuration file.
 - **environment-variables** - Public environment variables.
 - **executable** - The executable. Can be a full path or the name of the executable. Defaults to _ijhttp_.
-- **files** - HTTP file paths. They are required.
+- **files** - HTTP file paths.
 - **insecure** - Allow insecure SSL connection. Defaults to _false_.
 - **log-level** - Logging level: `BASIC`, `HEADERS`, `VERBOSE`. Defaults to _BASIC_.
 - **private-environment-file** - Name of the private environment file,
@@ -37,6 +38,8 @@ ijhttp:
   # timeout: 7000 same as annotation's property 'timeout'
   parameters:
     connect-timeout: 9000
+    directories:
+     - src/test/resources/ijhttp
     # docker-mode: false default value
     environment-file: public-env.json
     environment-name: dev

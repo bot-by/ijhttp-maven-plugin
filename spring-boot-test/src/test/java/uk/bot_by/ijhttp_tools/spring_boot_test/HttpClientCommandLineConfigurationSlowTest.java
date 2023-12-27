@@ -15,7 +15,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -71,7 +72,7 @@ class HttpClientCommandLineConfigurationSlowTest {
   @Test
   void httpClientCommandLine() {
     // given
-    var file = new File(".");
+    var file = Paths.get("test-file");
     var parameters = spy(new HttpClientCommandLineParameters());
 
     parameters.setFiles(List.of(file));
@@ -100,16 +101,17 @@ class HttpClientCommandLineConfigurationSlowTest {
     assertAll("Default HTTP Client Command Client", () -> assertNotNull(httpClientCommandLine),
         () -> assertEquals("ijhttp", httpClientCommandLine.getCommandLine().getExecutable()),
         () -> assertThat(httpClientCommandLine.getCommandLine().getArguments(),
-            arrayContaining(endsWith("spring-boot-test"))));
+            arrayContaining(endsWith("test-file"))));
   }
 
   @DisplayName("Configured HTTP Client Command Line")
   @Test
   void configuredHttpClientCommandLine() {
     // given
-    var file = new File(".");
+    var file = Paths.get("test-file");
     var parameters = spy(new HttpClientCommandLineParameters());
 
+    parameters.setDirectories(List.of(Path.of("src/test")));
     parameters.setDockerMode(true);
     parameters.setExecutable("test.sh");
     parameters.setInsecure(true);
@@ -138,6 +140,7 @@ class HttpClientCommandLineConfigurationSlowTest {
     verify(parameters).isReport();
 
     verify(parameters, times(2)).getConnectTimeout();
+    verify(parameters, times(2)).getDirectories();
     verify(parameters, times(2)).getEnvironmentFile();
     verify(parameters, times(2)).getEnvironmentName();
     verify(parameters, times(2)).getEnvironmentVariables();
@@ -154,11 +157,11 @@ class HttpClientCommandLineConfigurationSlowTest {
             arrayContaining(equalTo("--docker-mode"), equalTo("--insecure"), equalTo("--log-level"),
                 equalTo("VERBOSE"), equalTo("--connect-timeout"), equalTo("1"),
                 equalTo("--socket-timeout"), equalTo("2"), equalTo("--env"), equalTo("name"),
-                equalTo("--env-file"), endsWith("spring-boot-test"), equalTo("--env-variables"),
-                equalTo("public"), equalTo("--private-env-file"), endsWith("spring-boot-test"),
+                equalTo("--env-file"), endsWith("test-file"), equalTo("--env-variables"),
+                equalTo("public"), equalTo("--private-env-file"), endsWith("test-file"),
                 equalTo("--private-env-variables"), equalTo("private"), equalTo("--proxy"),
-                equalTo("proxy"), endsWith("spring-boot-test"), equalTo("--report"),
-                endsWith("spring-boot-test"))));
+                equalTo("proxy"), endsWith("test-file"), endsWith("directory-test.http"),
+                equalTo("--report"), endsWith("test-file"))));
   }
 
 }

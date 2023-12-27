@@ -15,7 +15,7 @@
  */
 package uk.bot_by.ijhttp_tools.spring_boot_test;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.StringJoiner;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -25,6 +25,7 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
  * HTTP Client parameters.
  *
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
+ * @since 1.1.0
  */
 @ConfigurationProperties(prefix = "ijhttp.parameters")
 public class HttpClientCommandLineParameters {
@@ -34,6 +35,10 @@ public class HttpClientCommandLineParameters {
    */
   private Integer connectTimeout;
   /**
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
+   */
+  private List<Path> directories;
+  /**
    * Enables Docker mode. Treat <em>localhost</em> as <em>host.docker.internal</em>. Defaults to
    * <em>false</em>.
    */
@@ -41,7 +46,7 @@ public class HttpClientCommandLineParameters {
   /**
    * Name of the public environment file, e.g. <em>http-client.env.json</em>.
    */
-  private File environmentFile;
+  private Path environmentFile;
   /**
    * Public environment variables.
    */
@@ -56,9 +61,9 @@ public class HttpClientCommandLineParameters {
    */
   private String executable = "ijhttp";
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
    */
-  private List<File> files;
+  private List<Path> files;
   /**
    * Allow insecure SSL connection. Defaults to <em>false</em>.
    */
@@ -70,7 +75,7 @@ public class HttpClientCommandLineParameters {
   /**
    * Name of the private environment file, e.g. <em>http-client.private.env.json</em>.
    */
-  private File privateEnvironmentFile;
+  private Path privateEnvironmentFile;
   /**
    * Private environment variables.
    */
@@ -89,7 +94,7 @@ public class HttpClientCommandLineParameters {
   /**
    * Path to a report folder. Default value <em>reports</em> in the current directory.
    */
-  private File reportPath;
+  private Path reportPath;
   /**
    * Number of milliseconds for socket read. Defaults to <em>10000</em>.
    */
@@ -106,6 +111,20 @@ public class HttpClientCommandLineParameters {
     this.connectTimeout = connectTimeout;
   }
 
+  public List<Path> getDirectories() {
+    return directories;
+  }
+
+  /**
+   * Directories to look up HTTP files. At least one {@code file} or {@code directory} is required.
+   *
+   * @see #setFiles(List)
+   * @since 1.2.0
+   */
+  public void setDirectories(List<Path> directories) {
+    this.directories = directories;
+  }
+
   public boolean isDockerMode() {
     return dockerMode;
   }
@@ -118,14 +137,14 @@ public class HttpClientCommandLineParameters {
     this.dockerMode = dockerMode;
   }
 
-  public File getEnvironmentFile() {
+  public Path getEnvironmentFile() {
     return environmentFile;
   }
 
   /**
    * Name of the public environment file.
    */
-  public void setEnvironmentFile(File environmentFile) {
+  public void setEnvironmentFile(Path environmentFile) {
     this.environmentFile = environmentFile;
   }
 
@@ -163,14 +182,17 @@ public class HttpClientCommandLineParameters {
     this.executable = executable;
   }
 
-  public List<File> getFiles() {
+  public List<Path> getFiles() {
     return files;
   }
 
   /**
-   * HTTP file paths. They are required.
+   * HTTP file paths. At least one {@code file} or {@code directory} is required.
+   *
+   * @see #setDirectories(List)
+   * @since 1.2.0
    */
-  public void setFiles(List<File> files) {
+  public void setFiles(List<Path> files) {
     this.files = files;
   }
 
@@ -196,14 +218,14 @@ public class HttpClientCommandLineParameters {
     this.logLevel = logLevel;
   }
 
-  public File getPrivateEnvironmentFile() {
+  public Path getPrivateEnvironmentFile() {
     return privateEnvironmentFile;
   }
 
   /**
    * Name of the private environment file.
    */
-  public void setPrivateEnvironmentFile(File privateEnvironmentFile) {
+  public void setPrivateEnvironmentFile(Path privateEnvironmentFile) {
     this.privateEnvironmentFile = privateEnvironmentFile;
   }
 
@@ -243,14 +265,14 @@ public class HttpClientCommandLineParameters {
     this.report = report;
   }
 
-  public File getReportPath() {
+  public Path getReportPath() {
     return reportPath;
   }
 
   /**
    * Path to a report folder. Default value <em>reports</em> in the current directory.
    */
-  public void setReportPath(File reportPath) {
+  public void setReportPath(Path reportPath) {
     this.reportPath = reportPath;
   }
 
@@ -268,8 +290,8 @@ public class HttpClientCommandLineParameters {
   @Override
   public String toString() {
     return new StringJoiner(", ", getClass().getSimpleName() + "[", "]").add(
-            "connectTimeout=" + connectTimeout).add("dockerMode=" + dockerMode)
-        .add("environmentFile=" + environmentFile)
+            "connectTimeout=" + connectTimeout).add("directories=" + directories)
+        .add("dockerMode=" + dockerMode).add("environmentFile=" + environmentFile)
         .add("environmentVariables=" + environmentVariables)
         .add("environmentName='" + environmentName + "'").add("executable='" + executable + "'")
         .add("files=" + files).add("insecure=" + insecure).add("logLevel=" + logLevel)
@@ -278,5 +300,4 @@ public class HttpClientCommandLineParameters {
         .add("proxy='" + proxy + "'").add("report=" + report).add("reportPath=" + reportPath)
         .add("socketTimeout=" + socketTimeout).toString();
   }
-
 }
