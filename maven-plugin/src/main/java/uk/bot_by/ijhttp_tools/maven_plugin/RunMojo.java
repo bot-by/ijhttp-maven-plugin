@@ -48,6 +48,9 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
  * Sample configuration:
  * <pre><code class="language-xml">
  * &lt;configuration&gt;
+ *   &lt;directories&gt;
+ *     &lt;directory&gt;src/test/resources&lt;/directory&gt;
+ *   &lt;/directories&gt;
  *   &lt;environmentFile&gt;public-env.json&lt;/environmentFile&gt;
  *   &lt;environmentName&gt;dev&lt;/environmentName&gt;
  *   &lt;files&gt;

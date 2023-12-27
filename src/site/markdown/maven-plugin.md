@@ -70,6 +70,10 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
   <executions>
     <execution>
       <configuration>
+       <!-- At least one file or directory is required. -->
+       <directories>
+         <directory>src/test/resources</directory>
+       </directories>
        <environmentFile>public-env.json</environmentFile>
        <environmentName>dev</environmentName>
        <files>
