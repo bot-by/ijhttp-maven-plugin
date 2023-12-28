@@ -6,8 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
-### Added
-- Directories
+### Updated
+- Updated Spring Boot to 3.2.1
+
+## 1.1.1 - 2023-12-20
+### Security
+- CVE-2023-6378: A serialization vulnerability in logback receiver component part of logback version 1.4.11 allows an attacker to mount a Denial-Of-Service attack by sending poisoned data.
 
 ## 1.1.0 - 2023-12-20
 ### Added

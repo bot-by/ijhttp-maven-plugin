@@ -1,8 +1,8 @@
-# ijhttp tools: Maven Plugin and Spring Boot Test autoconfiguration
+# ijhttp tools
 
-I had started with Maven Plugin to run HTTP requests on the <em>integration-test</em> phase
-using the [IntelliJ HTTP Client][http-client]. Later I added Spring Boot Test autoconfiguration,
-thanks @GoncaloPT for [his idea][leverage-test].
+I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
+using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
+thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
@@ -13,7 +13,7 @@ Table of Contents
 
    * [Getting started](#getting-started)
    * [Usage](#usage)
-      * [Maven Plugin](#maven-plugin)
+      * [Maven plugin](#maven-plugin)
       * [Spring Boot Test autoconfiguration](#spring-boot-test-autoconfiguration)
    * [Contributing](#contributing)
    * [History](#history)
@@ -66,7 +66,7 @@ how to download the HTTP client.
 **IntelliJ HTTP Client** needs HTTP files to work.
 With **HTTP Client Command Line** you can set directories that contain such files.
 
-### Maven Plugin
+### Maven plugin
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
@@ -109,6 +109,9 @@ Example of full configuration:
 To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
 
 ### Spring Boot Test autoconfiguration
+
+[![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)
+[![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)
 
 You can set configuration in `application.yaml` or manually, or combine both ways.
 
@@ -177,7 +180,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -185,10 +188,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0.html)
+[Apache License v2.0](LICENSE)  
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+
+[GoncaloPT]: https://github.com/GoncaloPT
 
 [leverage-test]: https://github.com/bot-by/ijhttp-maven-plugin/issues/51 "Leverage test instead of using main app"
 

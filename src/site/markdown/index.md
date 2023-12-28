@@ -1,7 +1,7 @@
-# ijhttp tools: Maven Plugin and Spring Boot Test autoconfiguration
+# ijhttp tools: Maven plugin and Spring Boot Test autoconfiguration
 
-I had started with Maven Plugin to run HTTP requests on the <em>integration-test</em> phase
-using the [IntelliJ HTTP Client][http-client]. Later I added Spring Boot Test autoconfiguration,
+I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
+using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
 thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
@@ -44,7 +44,7 @@ Content-Type: application/json
 **IntelliJ HTTP Client** needs HTTP files to work.
 With **HTTP Client Command Line** you can set directories that contain such files.
 
-* [Maven Plugin][maven-plugin]
+* [Maven plugin][maven-plugin]
 * [Spring Boot Test autoconfiguration][autoconfiguration]
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
