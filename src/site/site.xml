@@ -1,28 +1,20 @@
-<project xmlns="http://maven.apache.org/DECORATION/1.8.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.0 http://maven.apache.org/xsd/decoration-1.8.0.xsd">
-  <skin>
-    <groupId>com.bernardomg.maven.skins</groupId>
-    <artifactId>docs-maven-skin</artifactId>
-    <version>2.3.2</version>
-  </skin>
-  <custom>
-    <skinConfig>
-      <keywords>ijhttp,http client cli,maven plugin</keywords>
-      <descriptionUrl>Run HTTP requests of integration tests.</descriptionUrl>
-      <topNav>
-        <menu>Documentation</menu>
-        <menu>Info and reports</menu>
-      </topNav>
-      <bottomNav>
-        <menu>General Info</menu>
-        <menu>Code</menu>
-        <menu>Releases</menu>
-      </bottomNav>
-      <iconNav>
-        <menu>Icons</menu>
-      </iconNav>
-    </skinConfig>
-  </custom>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	Copyright 2023 Vitalij Berdinskih
+
+	Licensed under the Apache License, Version 2.0 (the "License");
+	you may not use this file except in compliance with the License.
+	You may obtain a copy of the License at
+
+	    https://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing, software
+	distributed under the License is distributed on an "AS IS" BASIS,
+	WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	See the License for the specific language governing permissions and
+	limitations under the License.
+-->
+<project name="ijhttp tools" xmlns="http://maven.apache.org/DECORATION/1.8.1">
   <body>
     <head><![CDATA[
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -34,38 +26,62 @@
 <meta name="theme-color" content="#ffffff">
     ]]></head>
     <links>
-      <item name="HTTP Client" href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"/>
+      <item href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"
+        name="HTTP Client"/>
     </links>
-    <menu name="General Info" inherit="top">
-      <item name="Change Log" href="./changelog.html"/>
-      <item name="Contributing" href="./contributing.html"/>
+    <menu inherit="top" name="General Info">
+      <item href="./changelog.html" name="Change Log"/>
+      <item href="./contributing.html" name="Contributing"/>
     </menu>
-    <menu name="Documentation" inherit="bottom">
-      <item name="Maven Plugin" href="./maven-plugin.html"/>
-      <item name="Spring Boot Test" href="./autoconfiguration.html"/>
-      <item name="Javadocs" href="./apidocs/"/>
+    <menu inherit="bottom" name="Documentation">
+      <item href="./maven-plugin.html" name="Maven plugin"/>
+      <item href="./autoconfiguration.html" name="Spring Boot Test autoconfiguration"/>
+      <item href="./apidocs/" name="Javadocs"/>
     </menu>
-    <menu name="Info and reports" inherit="bottom">
-      <item name="Project Information" href="./project-info.html"/>
+    <menu inherit="bottom" name="Info and reports">
+      <item href="./project-info.html" name="Project Information"/>
     </menu>
-    <menu name="Code" inherit="bottom">
-      <item name="SCM" href="${project.scm.url}">
+    <menu inherit="bottom" name="Code">
+      <item href="${project.scm.url}" name="SCM">
         <description>GitLab</description>
       </item>
-      <item name="CI" href="${project.ciManagement.url}">
+      <item href="${project.ciManagement.url}" name="CI">
         <description>${project.ciManagement.system}</description>
       </item>
-      <item name="Issues" href="${project.issueManagement.url}">
+      <item href="${project.issueManagement.url}" name="Issues">
         <description>${project.issueManagement.system}</description>
       </item>
     </menu>
-    <menu name="Releases" inherit="bottom">
-      <item name="GitLab" href="${gitlab.release.url}"/>
-      <item name="GitHub" href="${github.release.url}"/>
-      <item name="Changes Log" href="./changelog.html"/>
+    <menu inherit="bottom" name="Releases">
+      <item href="${gitlab.release.url}" name="GitLab"/>
+      <item href="${github.release.url}" name="GitHub"/>
+      <item href="./changelog.html" name="Changes Log"/>
     </menu>
-    <menu name="Icons" inherit="bottom">
-      <item name="GitLab" img="gitlab" href="${project.scm.url}"/>
+    <menu inherit="bottom" name="Icons">
+      <item href="${project.scm.url}" img="gitlab" name="GitLab"/>
     </menu>
   </body>
+  <custom>
+    <skinConfig>
+      <bottomNav>
+        <menu>General Info</menu>
+        <menu>Code</menu>
+        <menu>Releases</menu>
+      </bottomNav>
+      <descriptionUrl>Run HTTP requests of integration tests.</descriptionUrl>
+      <iconNav>
+        <menu>Icons</menu>
+      </iconNav>
+      <keywords>ijhttp,http client cli,maven plugin,spring boot test</keywords>
+      <topNav>
+        <menu>Documentation</menu>
+        <menu>Info and reports</menu>
+      </topNav>
+    </skinConfig>
+  </custom>
+  <skin>
+    <artifactId>docs-maven-skin</artifactId>
+    <groupId>com.bernardomg.maven.skins</groupId>
+    <version>${docs-maven-skin.version}</version>
+  </skin>
 </project>

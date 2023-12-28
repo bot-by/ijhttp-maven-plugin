@@ -1,4 +1,4 @@
-# HTTP Client Spring Boot Test
+# ijhttp tools: Spring Boot Test autoconfiguration
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)
