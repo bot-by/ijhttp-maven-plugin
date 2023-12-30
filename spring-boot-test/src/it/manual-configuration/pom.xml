@@ -27,16 +27,6 @@
       <groupId>org.springframework.boot</groupId>
     </dependency>
     <dependency>
-      <!--
-        Avoid transitive vulnerable dependency maven:org.yaml:snakeyaml:1.33
-        CVE-2022-41854 6.5 Out-of-bounds Write vulnerability with medium severity found
-        CVE-2022-1471 9.8 Deserialization of Untrusted Data vulnerability with high severity found
-      -->
-      <artifactId>snakeyaml</artifactId>
-      <groupId>org.yaml</groupId>
-      <version>2.2</version>
-    </dependency>
-    <dependency>
       <artifactId>spring-boot-starter-test</artifactId>
       <groupId>org.springframework.boot</groupId>
       <scope>test</scope>

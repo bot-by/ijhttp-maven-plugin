@@ -11,13 +11,14 @@ thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
 Table of Contents
 =================
 
-   * [Getting started](#getting-started)
-   * [Usage](#usage)
-      * [Maven plugin](#maven-plugin)
-      * [Spring Boot Test autoconfiguration](#spring-boot-test-autoconfiguration)
-   * [Contributing](#contributing)
-   * [History](#history)
-   * [License](#license)
+* [Getting started](#getting-started)
+  * [Directories (extra feature)](#directories-extra-feature)
+* [Usage](#usage)
+  * [Maven plugin](#maven-plugin)
+  * [Spring Boot Test autoconfiguration](#spring-boot-test-autoconfiguration)
+* [Contributing](#contributing)
+* [History](#history)
+* [License](#license)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -54,17 +55,17 @@ Content-Type: application/json
 }
 ```
 
+### Directories (extra feature)
+
+**IntelliJ HTTP Client** needs HTTP files to work.
+With **HTTP Client Command Line** you can set directories that contain such files.
+
 ## Usage
 
 **Important!** Both plugin and autoconfiguration do not contain the HTTP client: you need
 to install it by yourself then add to `PATH`. You can also set the full path to the ijhttp
 via the parameter `executable`. The [HTTP Client Demo][demo] has some examples
 how to download the HTTP client.
-
-### Directories
-
-**IntelliJ HTTP Client** needs HTTP files to work.
-With **HTTP Client Command Line** you can set directories that contain such files.
 
 ### Maven plugin
 

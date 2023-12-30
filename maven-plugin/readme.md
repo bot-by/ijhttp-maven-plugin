@@ -44,19 +44,20 @@ Example of full configuration:
   <executions>
     <execution>
       <configuration>
-       <!-- At least one file or directory is required. -->
-       <directories>
-         <directory>src/test/resources</directory>
-       </directories>
-       <environmentFile>public-env.json</environmentFile>
-       <environmentName>dev</environmentName>
-       <files>
-         <file>sample-1-queries.http</file>
-         <file>sample-2-queries.http</file>
-       </files>
-       <logLevel>HEADERS</logLevel>
-       <report>true</report>
-       <workingDirectory>target</workingDirectory>
+        <!-- At least one file or directory is required. -->
+        <directories>
+          <directory>src/test/resources</directory>
+        </directories>
+        <environmentFile>public-env.json</environmentFile>
+        <environmentName>dev</environmentName>
+        <!-- At least one file or directory is required. -->
+        <files>
+          <file>sample-1-queries.http</file>
+          <file>sample-2-queries.http</file>
+        </files>
+        <logLevel>HEADERS</logLevel>
+        <report>true</report>
+        <workingDirectory>target</workingDirectory>
       </configuration>
       <goals>
         <goal>run</goal>

@@ -91,16 +91,6 @@
       <version>${spring-boot.version}</version>
     </dependency>
     <dependency>
-      <!--
-        CVE-2023-6378: A serialization vulnerability in
-        logback receiver component part of logback version 1.4.11 allows an attacker
-        to mount a Denial-Of-Service attack by sending poisoned data.
-      -->
-      <artifactId>logback-classic</artifactId>
-      <groupId>ch.qos.logback</groupId>
-      <version>1.4.14</version>
-    </dependency>
-    <dependency>
       <artifactId>spring-boot-configuration-processor</artifactId>
       <groupId>org.springframework.boot</groupId>
       <optional>true</optional>
