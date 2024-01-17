@@ -68,7 +68,7 @@ coverage:
     - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' command-line/target/site/jacoco/jacoco.csv maven-plugin/target/site/jacoco/jacoco.csv spring-boot-test/target/site/jacoco/jacoco.csv
   coverage: '/(\d+\.?\d*) \% covered/'
   rules:
-    - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_BRANCH
+    - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_BRANCH && $CI_COMMIT_TAG == null
 
 codacy:
   stage: verify

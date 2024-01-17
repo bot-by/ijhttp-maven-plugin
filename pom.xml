@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2023 Vitalij Berdinskih
+  Copyright 2023-2024 Vitalij Berdinskih
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -195,7 +195,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
         <configuration>
           <fast>true</fast>
           <filesets>
@@ -204,6 +203,7 @@
             </fileset>
           </filesets>
         </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
       </plugin>
       <plugin>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -278,6 +278,11 @@
         <groupId>org.apache.commons</groupId>
         <version>${commons-exec.version}</version>
       </dependency>
+      <dependency>
+        <artifactId>snakeyaml</artifactId>
+        <groupId>org.yaml</groupId>
+        <version>${snakeyaml.version}</version>
+      </dependency>
       <!-- test -->
       <dependency>
         <artifactId>junit-jupiter-api</artifactId>
@@ -346,6 +351,7 @@
     <module>command-line</module>
     <module>maven-plugin</module>
     <module>spring-boot-test</module>
+    <module>junit-extension</module>
   </modules>
   <name>ijhttp tools</name>
   <organization>
@@ -533,6 +539,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <revision>1.2.0</revision>
     <sha1/>
+    <snakeyaml.version>2.2</snakeyaml.version>
   </properties>
   <scm>
     <connection>scm:git:https://gitlab.com/bot-by/ijhttp-maven-plugin.git</connection>
