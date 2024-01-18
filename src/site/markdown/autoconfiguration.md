@@ -1,4 +1,4 @@
-# Srping Boot Test autoconfiguration
+# Usage of the Srping Boot Test autoconfiguration
 
 **Important!** The autoconfiguration does not contain the HTTP client: you need to install it
 by yourself then add to `PATH`. You can also set the full path to the ijhttp

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Vitalij Berdinskih
+ * Copyright 2023-2024 bot-by
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 /**
  * HTTP Client parameters.
  *
+ * @author Vitalij Berdinskih
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
  * @since 1.1.0
  */

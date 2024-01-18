@@ -11,5 +11,8 @@
  *   <dt>{@link uk.bot_by.ijhttp_tools.spring_boot_test.HttpClientCommandLineParameters}</dt>
  *   <dd>HTTP Client parameters from Spring Boot properties.</dd>
  * </dl>
+ *
+ * @author Vitalij Berdinskih
+ * @since 1.1.0
  */
 package uk.bot_by.ijhttp_tools.spring_boot_test;

@@ -212,7 +212,7 @@ class RunMojoSlowTest {
     when(file.toPath()).thenReturn(path);
     when(path.toString()).thenReturn(Integer.toString(exitCode));
     when(mojo.getExecutor()).thenAnswer(invocationOnMock -> {
-      var executor = new DefaultExecutor();
+      var executor = DefaultExecutor.builder().get();
 
       executor.setExitValue(exitCode);
 

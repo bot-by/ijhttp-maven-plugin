@@ -35,7 +35,6 @@ test:
     reports:
       junit:
         - command-line/target/surefire-reports/TEST-*.xml
-        - command-line/target/failsafe-reports/TEST-*.xml
         - maven-plugin/target/surefire-reports/TEST-*.xml
         - maven-plugin/target/failsafe-reports/TEST-*.xml
         - spring-boot-test/target/surefire-reports/TEST-*.xml

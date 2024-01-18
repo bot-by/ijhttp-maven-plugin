@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2023 Vitalij Berdinskih
+	Copyright 2023-2024 bot-by
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -184,7 +184,7 @@
     </profile>
   </profiles>
   <properties>
-    <plugin-annotations.version>3.10.2</plugin-annotations.version>
+    <plugin-annotations.version>3.11.0</plugin-annotations.version>
     <plugin-api.version>3.9.4</plugin-api.version>
   </properties>
   <version>${revision}${changelist}${sha1}</version>

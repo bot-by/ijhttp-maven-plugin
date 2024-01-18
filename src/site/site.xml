@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2023-2024 Vitalij Berdinskih
+	Copyright 2023-2024 bot-by
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 -->
-<project name="ijhttp tools" xmlns="http://maven.apache.org/DECORATION/1.8.1">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://maven.apache.org/DECORATION/1.8.1"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.8.1 https://maven.apache.org/xsd/decoration-1.8.1.xsd">
   <body>
     <head><![CDATA[
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -22,12 +24,16 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="apple-mobile-web-app-title" content="${project.name}">
+<meta name="application-name" content="${project.name}">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
     ]]></head>
     <links>
       <item href="https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html"
         name="HTTP Client"/>
+      <item href="https://github.com/JetBrains/http-request-in-editor-spec"
+        name="HTTP Request in Editor Specification"/>
     </links>
     <menu inherit="top" name="General Info">
       <item href="./changelog.html" name="Change Log"/>
@@ -63,12 +69,13 @@
   </body>
   <custom>
     <skinConfig>
+      <bootswatchStyle>flatly</bootswatchStyle>
       <bottomNav>
         <menu>General Info</menu>
         <menu>Code</menu>
         <menu>Releases</menu>
       </bottomNav>
-      <descriptionUrl>Run HTTP requests of integration tests.</descriptionUrl>
+      <descriptionUrl>${project.description}</descriptionUrl>
       <iconNav>
         <menu>Icons</menu>
       </iconNav>

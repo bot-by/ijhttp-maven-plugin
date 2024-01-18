@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2023-2024 Vitalij Berdinskih
+  Copyright 2023-2024 bot-by
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@
             </properties>
           </configuration>
           <groupId>org.apache.maven.plugins</groupId>
-          <version>3.2.3</version>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <artifactId>maven-jar-plugin</artifactId>
@@ -87,7 +87,7 @@
             </execution>
           </executions>
           <groupId>org.apache.maven.plugins</groupId>
-          <version>3.2.3</version>
+          <version>3.2.5</version>
         </plugin>
         <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
@@ -257,7 +257,7 @@
           </execution>
         </executions>
         <groupId>org.codehaus.mojo</groupId>
-        <version>1.5.0</version>
+        <version>1.6.0</version>
       </plugin>
     </plugins>
   </build>
@@ -322,7 +322,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <description>Run HTTP requests of integration tests</description>
+  <description>Maven plugin and Spring Boot Test autoconfiguration for IntelliJ HTTP Client</description>
   <developers>
     <developer>
       <email>vitalij_r2@outlook.com</email>
@@ -524,7 +524,7 @@
   </profiles>
   <properties>
     <changelist>-SNAPSHOT</changelist>
-    <commons-exec.version>1.3</commons-exec.version>
+    <commons-exec.version>1.4.0</commons-exec.version>
     <docs-maven-skin.version>2.3.2</docs-maven-skin.version>
     <github.release.url>https://github.com/bot-by/ijhttp-maven-plugin/releases</github.release.url>
     <gitlab.release.url>https://gitlab.com/bot-by/ijhttp-maven-plugin/-/releases
@@ -534,10 +534,10 @@
     <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
     <junit-jupiter.version>5.10.1</junit-jupiter.version>
     <maven-minimal.version>3.8.5</maven-minimal.version>
-    <mockito.version>5.8.0</mockito.version>
+    <mockito.version>5.9.0</mockito.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <revision>1.2.0</revision>
+    <revision>1.2.1</revision>
     <sha1/>
     <snakeyaml.version>2.2</snakeyaml.version>
   </properties>

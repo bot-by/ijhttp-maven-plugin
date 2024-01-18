@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Vitalij Berdinskih
+ * Copyright 2023-2024 bot-by
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ import org.jetbrains.annotations.NotNull;
  * value. The component implements it by two methods: {@link #report(boolean)} and
  * {@link #reportPath(Path)}.
  *
+ * @author Vitalij Berdinskih
  * @since 1.1.0
  */
 public class HttpClientCommandLine {
@@ -316,8 +317,7 @@ public class HttpClientCommandLine {
 
   private void privateEnvironment(CommandLine commandLine) throws IOException {
     if (nonNull(privateEnvironmentFile)) {
-      commandLine.addArgument(PRIVATE_ENV_FILE)
-          .addArgument(privateEnvironmentFile.toString());
+      commandLine.addArgument(PRIVATE_ENV_FILE).addArgument(privateEnvironmentFile.toString());
     }
     if (nonNull(privateEnvironmentVariables)) {
       privateEnvironmentVariables.forEach(

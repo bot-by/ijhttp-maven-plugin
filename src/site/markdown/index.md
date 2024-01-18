@@ -1,4 +1,4 @@
-# ijhttp tools: Maven plugin and Spring Boot Test autoconfiguration
+# Maven plugin and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
 
 I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
 using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
@@ -43,6 +43,8 @@ Content-Type: application/json
 
 **IntelliJ HTTP Client** needs HTTP files to work.
 With **HTTP Client Command Line** you can set directories that contain such files.
+
+## Usage
 
 * [Maven plugin][maven-plugin]
 * [Spring Boot Test autoconfiguration][autoconfiguration]

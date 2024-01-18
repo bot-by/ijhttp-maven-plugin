@@ -1,4 +1,4 @@
-# Maven plugin
+# Usage of the Maven plugin
 
 **Important!** The plugin does not contain the HTTP client: you need to install it by yourself
 then add to `PATH`. You can also set the full path to the ijhttp via the parameter `executable`.

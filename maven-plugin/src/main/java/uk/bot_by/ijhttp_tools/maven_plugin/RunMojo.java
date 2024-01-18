@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Vitalij Berdinskih
+ * Copyright 2023-2024 bot-by
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.List;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -156,7 +157,6 @@ public class RunMojo extends AbstractMojo {
    * Number of milliseconds for connection. Defaults to <em>3000</em>.
    */
   @Parameter(property = "ijhttp.connect-timeout")
-
   public void setConnectTimeout(Integer connectTimeout) {
     this.connectTimeout = connectTimeout;
   }
@@ -463,17 +463,20 @@ public class RunMojo extends AbstractMojo {
 
   @VisibleForTesting
   Executor getExecutor() throws IOException, MojoExecutionException {
-    var executor = new DefaultExecutor();
+    var builder = DefaultExecutor.builder();
+
+    handleWorkingDirectory(builder);
+
+    var executor = builder.get();
 
     handleWatchdog(executor);
-    handleWorkingDirectory(executor);
 
     return executor;
   }
 
   private void handleWatchdog(DefaultExecutor executor) {
     if (nonNull(timeout)) {
-      var watchdog = new ExecuteWatchdog(timeout);
+      var watchdog = ExecuteWatchdog.builder().setTimeout(Duration.ofMillis(timeout)).get();
 
       executor.setWatchdog(watchdog);
       if (getLog().isDebugEnabled()) {
@@ -482,7 +485,8 @@ public class RunMojo extends AbstractMojo {
     }
   }
 
-  private void handleWorkingDirectory(DefaultExecutor executor)
+  @SuppressWarnings("rawtypes")
+  private void handleWorkingDirectory(DefaultExecutor.Builder builder)
       throws IOException, MojoExecutionException {
     if (nonNull(workingDirectory)) {
       if (!workingDirectory.exists()) {
@@ -491,10 +495,10 @@ public class RunMojo extends AbstractMojo {
         throw new MojoExecutionException(
             "the working directory is a file: " + workingDirectory.getPath());
       }
-      executor.setWorkingDirectory(workingDirectory);
-    }
-    if (getLog().isDebugEnabled()) {
-      getLog().debug("Working directory: " + executor.getWorkingDirectory());
+      builder.setWorkingDirectory(workingDirectory);
+      if (getLog().isDebugEnabled()) {
+        getLog().debug("Working directory: " + workingDirectory);
+      }
     }
   }
 

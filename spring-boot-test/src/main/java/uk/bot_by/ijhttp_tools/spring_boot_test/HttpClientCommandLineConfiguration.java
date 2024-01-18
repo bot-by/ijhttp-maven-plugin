@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Vitalij Berdinskih
+ * Copyright 2023-2024 bot-by
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package uk.bot_by.ijhttp_tools.spring_boot_test;
 import static java.util.Objects.nonNull;
 
 import java.nio.file.Path;
+import java.time.Duration;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
@@ -35,6 +36,7 @@ import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
  * HTTP Client configuration provides {@linkplain org.apache.commons.exec.Executor executor} and
  * {@linkplain uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine command line} beans.
  *
+ * @author Vitalij Berdinskih
  * @since 1.1.0
  */
 @ConditionalOnWebApplication(type = Type.SERVLET)
@@ -113,10 +115,10 @@ public class HttpClientCommandLineConfiguration {
   @Bean
   @ConditionalOnMissingBean
   Executor executor(@Value("${ijhttp.timeout:-1}") int timeout) {
-    var executor = new DefaultExecutor();
+    var executor = DefaultExecutor.builder().get();
 
     if (timeout > 0) {
-      executor.setWatchdog(new ExecuteWatchdog(timeout));
+      executor.setWatchdog(ExecuteWatchdog.builder().setTimeout(Duration.ofMillis(timeout)).get());
       if (logger.isDebugEnabled()) {
         logger.debug(String.format("Set the watchdog (%s) ms", timeout));
       }
