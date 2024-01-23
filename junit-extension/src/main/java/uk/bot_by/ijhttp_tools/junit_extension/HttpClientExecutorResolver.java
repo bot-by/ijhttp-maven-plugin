@@ -15,21 +15,29 @@
  */
 package uk.bot_by.ijhttp_tools.junit_extension;
 
+import static java.util.Objects.nonNull;
+
 import java.time.Duration;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteWatchdog;
 import org.apache.commons.exec.Executor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 
-class ExecutorResolver implements ParameterResolver {
+class HttpClientExecutorResolver implements ParameterResolver {
 
   private final int timeout;
 
-  ExecutorResolver(int timeout) {
+  HttpClientExecutorResolver() {
+    this(-1);
+  }
+
+  HttpClientExecutorResolver(int timeout) {
     this.timeout = timeout;
   }
 
@@ -45,22 +53,35 @@ class ExecutorResolver implements ParameterResolver {
       ExtensionContext extensionContext) throws ParameterResolutionException {
     var annotationTimeout = parameterContext.getAnnotatedElement()
         .getAnnotation(HttpClientExecutor.class).timeout();
-    var executor = DefaultExecutor.builder().get();
+    var executor = getExecutor();
+    var duration = getDuration(annotationTimeout);
 
-    if (0 != annotationTimeout) {
-      if (0 < annotationTimeout) {
-        executor.setWatchdog(getWatchdog(annotationTimeout));
-      } else if (0 < timeout) {
-        executor.setWatchdog(getWatchdog(timeout));
-      }
+    if (nonNull(duration)) {
+      executor.setWatchdog(ExecuteWatchdog.builder().setTimeout(duration).get());
     }
 
     return executor;
   }
 
   @NotNull
-  private static ExecuteWatchdog getWatchdog(int annotationTimeout) {
-    return ExecuteWatchdog.builder().setTimeout(Duration.ofMillis(annotationTimeout)).get();
+  private static DefaultExecutor getExecutor() {
+    return DefaultExecutor.builder().get();
+  }
+
+  @Nullable
+  @VisibleForTesting
+  Duration getDuration(int annotationTimeout) {
+    Duration duration = null;
+
+    if (0 != annotationTimeout) {
+      if (0 < annotationTimeout) {
+        duration = Duration.ofMillis(annotationTimeout);
+      } else if (0 < timeout) {
+        duration = Duration.ofMillis(timeout);
+      }
+    }
+
+    return duration;
   }
 
 }

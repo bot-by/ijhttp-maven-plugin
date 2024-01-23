@@ -15,8 +15,8 @@
  */
 package uk.bot_by.ijhttp_tools.junit_extension;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.stream.Stream;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
@@ -31,18 +31,21 @@ import org.junit.jupiter.api.extension.ParameterResolver;
  */
 public class HttpClientExtension implements ParameterResolver {
 
-  private final Set<ParameterResolver> parameterResolvers;
+  private final ParameterResolver[] parameterResolvers;
 
   public HttpClientExtension() {
-    parameterResolvers = new LinkedHashSet<>();
-    parameterResolvers.add(new ExecutorResolver(-1));
-    parameterResolvers.add(new HttpClientCommandLineResolver());
+    this(new HttpClientExecutorResolver(), new HttpClientCommandLineResolver());
+  }
+
+  @VisibleForTesting
+  HttpClientExtension(ParameterResolver... parameterResolvers) {
+    this.parameterResolvers = parameterResolvers;
   }
 
   @Override
   public boolean supportsParameter(ParameterContext parameterContext,
       ExtensionContext extensionContext) throws ParameterResolutionException {
-    return parameterResolvers.stream().anyMatch(
+    return Stream.of(parameterResolvers).anyMatch(
         parameterResolver -> parameterResolver.supportsParameter(parameterContext,
             extensionContext));
   }
@@ -50,7 +53,7 @@ public class HttpClientExtension implements ParameterResolver {
   @Override
   public Object resolveParameter(ParameterContext parameterContext,
       ExtensionContext extensionContext) throws ParameterResolutionException {
-    var parameterResolverList = parameterResolvers.stream().filter(
+    var parameterResolverList = Stream.of(parameterResolvers).filter(
         parameterResolver -> parameterResolver.supportsParameter(parameterContext,
             extensionContext)).toList();
 
