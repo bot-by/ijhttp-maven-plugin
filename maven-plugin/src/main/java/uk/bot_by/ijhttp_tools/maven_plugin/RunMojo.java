@@ -77,8 +77,6 @@ import uk.bot_by.ijhttp_tools.command_line.LogLevel;
  *
  * @author Vitalij Berdinskih
  * @see <a href="https://www.jetbrains.com/help/idea/http-client-cli.html">HTTP Client CLI</a>
- * @see <a href="https://www.youtube.com/live/mwiHAukbWjM?feature=share">Lve stream: The New HTTP
- * Client CLI</a>
  * @since 1.0.0
  */
 @Mojo(name = "run", defaultPhase = LifecyclePhase.INTEGRATION_TEST, requiresProject = false)

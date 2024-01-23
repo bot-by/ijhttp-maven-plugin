@@ -1,4 +1,4 @@
-# ijhttp tools
+# Maven plugin and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
 
 I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
 using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
@@ -196,7 +196,7 @@ limitations under the License.
 
 [GoncaloPT]: https://github.com/GoncaloPT
 
-[leverage-test]: https://github.com/bot-by/ijhttp-maven-plugin/issues/51 "Leverage test instead of using main app"
+[leverage-test]: https://github.com/bot-by/ijhttp-tools/issues/51 "Leverage test instead of using main app"
 
 [cli-tool]: https://www.jetbrains.com/help/idea/http-client-cli.html
 

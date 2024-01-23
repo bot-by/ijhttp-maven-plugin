@@ -13,6 +13,8 @@
  * </dl>
  *
  * @author Vitalij Berdinskih
+ * @see <a href="https://www.youtube.com/live/mwiHAukbWjM?feature=share">Live stream: The New HTTP
+ * Client CLI</a>
  * @since 1.1.0
  */
 package uk.bot_by.ijhttp_tools.spring_boot_test;

@@ -53,7 +53,7 @@ With **HTTP Client Command Line** you can set directories that contain such file
 
 [GoncaloPT]: https://github.com/GoncaloPT "Gonçalo Silva"
 
-[leverage-test]: https://github.com/bot-by/ijhttp-maven-plugin/issues/51 "Leverage test instead of using main app"
+[leverage-test]: https://github.com/bot-by/ijhttp-tools/issues/51 "Leverage test instead of using main app"
 
 [cli-tool]: https://www.jetbrains.com/help/idea/http-client-cli.html
 

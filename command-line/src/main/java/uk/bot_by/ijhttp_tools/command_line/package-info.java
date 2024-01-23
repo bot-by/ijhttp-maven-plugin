@@ -3,9 +3,9 @@
  * helps to prepare command line to run Intellij HTTP Client CLI tool.
  * <p>
  * There are Maven plugin
- * <a href="https://gitlab.com/bot-by/ijhttp-maven-plugin/-/tree/main/maven-plugin">
+ * <a href="https://gitlab.com/bot-by/ijhttp-tools/-/tree/main/maven-plugin">
  * ijhttp-maven-plugin</a> and Spring Boot Test autoconfiguration
- * <a href="https://gitlab.com/bot-by/ijhttp-maven-plugin/-/tree/mai/spring-boot-test">
+ * <a href="https://gitlab.com/bot-by/ijhttp-tools/-/tree/mai/spring-boot-test">
  * ijhttp-spring-boot-test</a> to run HTTP requests by using the IntelliJ HTTP Client.
  *
  * @author Vitalij Berdinskih
