@@ -41,6 +41,7 @@
     </menu>
     <menu inherit="bottom" name="Documentation">
       <item href="./maven-plugin.html" name="Maven plugin"/>
+      <item href="./junit-extension.html" name="jUnit Extension"/>
       <item href="./autoconfiguration.html" name="Spring Boot Test autoconfiguration"/>
       <item href="./apidocs/" name="Javadocs"/>
     </menu>
@@ -79,7 +80,7 @@
       <iconNav>
         <menu>Icons</menu>
       </iconNav>
-      <keywords>ijhttp,http client cli,maven plugin,spring boot test</keywords>
+      <keywords>ijhttp,http client cli,maven plugin,junit extension,spring boot test</keywords>
       <topNav>
         <menu>Documentation</menu>
         <menu>Info and reports</menu>

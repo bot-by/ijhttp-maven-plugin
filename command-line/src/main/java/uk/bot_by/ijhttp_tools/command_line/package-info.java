@@ -4,8 +4,10 @@
  * <p>
  * There are Maven plugin
  * <a href="https://gitlab.com/bot-by/ijhttp-tools/-/tree/main/maven-plugin">
- * ijhttp-maven-plugin</a> and Spring Boot Test autoconfiguration
- * <a href="https://gitlab.com/bot-by/ijhttp-tools/-/tree/mai/spring-boot-test">
+ * ijhttp-maven-plugin</a>, jUnit Extension
+ * <a href="https://gitlab.com/bot-by/ijhttp-tools/-/tree/main/junit-extension"> and Spring Boot
+ * Test autoconfiguration <a
+ * href="https://gitlab.com/bot-by/ijhttp-tools/-/tree/mai/spring-boot-test">
  * ijhttp-spring-boot-test</a> to run HTTP requests by using the IntelliJ HTTP Client.
  *
  * @author Vitalij Berdinskih

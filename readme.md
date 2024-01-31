@@ -1,8 +1,8 @@
-# Maven plugin and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
+# Maven plugin, jUnit Extension and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
 
 I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
 using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
-thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
+thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test]. Next step was jUnit Extension.
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
@@ -15,6 +15,7 @@ Table of Contents
   * [Directories (extra feature)](#directories-extra-feature)
 * [Usage](#usage)
   * [Maven plugin](#maven-plugin)
+  * [jUnit Extension](#junit-extension)
   * [Spring Boot Test autoconfiguration](#spring-boot-test-autoconfiguration)
 * [Contributing](#contributing)
 * [History](#history)
@@ -30,8 +31,8 @@ Originally the IntelliJ HTTP Client plugin allows to create, edit, and execute H
 directly in the IntelliJ IDEA code editor.
 The IntelliJ HTTP Client is also [available as a CLI tool][cli-tool].
 
-The Maven plugin allows to run HTTP requests on the <em>integration-test</em> phase
-using the IntelliJ HTTP Client. The Spring Boot Test autoconfiguration allows to run them with
+The Maven plugin and jUnit Extension allow to run HTTP requests on the <em>integration-test</em>
+phase using the IntelliJ HTTP Client. The Spring Boot Test autoconfiguration allows to run them with
 Spring Boot Test, you don't need to package and run whole application.
 
 The [HTTP Request in Editor Specification][specification]
@@ -62,7 +63,7 @@ With **HTTP Client Command Line** you can set directories that contain such file
 
 ## Usage
 
-**Important!** Both plugin and autoconfiguration do not contain the HTTP client: you need
+**Important!** plugin, extension and autoconfiguration do not contain the HTTP client: you need
 to install it by yourself then add to `PATH`. You can also set the full path to the ijhttp
 via the parameter `executable`. The [HTTP Client Demo][demo] has some examples
 how to download the HTTP client.
@@ -77,6 +78,7 @@ There is one goal **run**. To use it add the plugin to your POM.
 Example of full configuration:
 
 ```xml
+
 <plugin>
   <groupId>uk.bot-by.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
@@ -84,19 +86,19 @@ Example of full configuration:
   <executions>
     <execution>
       <configuration>
-       <!-- At least one file or directory is required. -->
-       <directories>
-         <directory>src/test/resources</directory>
-       </directories>
-       <environmentFile>public-env.json</environmentFile>
-       <environmentName>dev</environmentName>
-       <files>
-         <file>sample-1-queries.http</file>
-         <file>sample-2-queries.http</file>
-       </files>
-       <logLevel>HEADERS</logLevel>
-       <report>true</report>
-       <workingDirectory>target</workingDirectory>
+        <!-- At least one file or directory is required. -->
+        <directories>
+          <directory>src/test/resources</directory>
+        </directories>
+        <environmentFile>public-env.json</environmentFile>
+        <environmentName>dev</environmentName>
+        <files>
+          <file>sample-1-queries.http</file>
+          <file>sample-2-queries.http</file>
+        </files>
+        <logLevel>HEADERS</logLevel>
+        <report>true</report>
+        <workingDirectory>target</workingDirectory>
       </configuration>
       <goals>
         <goal>run</goal>
@@ -108,6 +110,14 @@ Example of full configuration:
 ```
 
 To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
+
+### jUnit Extension
+
+[![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-junit-extension)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-junit-extension)
+[![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-junit-extension/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-junit-extension)
+
+Use annotations `HttpClientExecutor` and `HttpClientCommandLineParameters` to initialise and
+configure both executor and command line builder.
 
 ### Spring Boot Test autoconfiguration
 
@@ -123,7 +133,7 @@ ijhttp:
   parameters:
     connect-timeout: 9000
     directories:
-     - src/test/resources/ijhttp
+      - src/test/resources/ijhttp
     # docker-mode: false default value
     environment-file: public-env.json
     environment-name: dev
@@ -143,6 +153,7 @@ ijhttp:
 ```
 
 ```java
+
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @AutoConfigureHttpClientCommandLine(timeout = 7000)
 class HttpClientCommandLineApplicationTests {

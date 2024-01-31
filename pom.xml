@@ -317,7 +317,9 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <description>Maven plugin and Spring Boot Test autoconfiguration for IntelliJ HTTP Client</description>
+  <description>Maven plugin, jUnit Extension and Spring Boot Test autoconfiguration for IntelliJ
+    HTTP Client
+  </description>
   <developers>
     <developer>
       <email>vitalij_r2@outlook.com</email>

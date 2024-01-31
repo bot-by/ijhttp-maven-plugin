@@ -1,8 +1,8 @@
-# Maven plugin and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
+# Maven plugin, jUnit Extension and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
 
 I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
 using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
-thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
+thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test]. Next step was jUnit Extension.
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/73e1f8501ed84b0580dcf7ccee82c1e0)](https://app.codacy.com/gl/bot-by/ijhttp-maven-plugin/dashboard?utm_source=gl&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
@@ -14,9 +14,9 @@ Originally the IntelliJ HTTP Client plugin allows to create, edit, and execute H
 directly in the IntelliJ IDEA code editor.
 The IntelliJ HTTP Client is also [available as a CLI tool][cli-tool].
 
-The plugin allows to run HTTP requests on the <em>integration-test</em> phase
-using the IntelliJ HTTP Client. The autoconfiguration allows to run them with Spring Boot Test,
-you don't need to package and run whole application.
+The Maven plugin and jUnit Extension allows to run HTTP requests on the <em>integration-test</em> phase
+using the IntelliJ HTTP Client. The Spring Boot Test autoconfiguration allows to run them with
+Spring Boot Test, you don't need to package and run whole application.
 
 The [HTTP Request in Editor Specification][specification]
 describes format these files.
@@ -47,6 +47,7 @@ With **HTTP Client Command Line** you can set directories that contain such file
 ## Usage
 
 * [Maven plugin][maven-plugin]
+* [jUnit Extension][junit-extension]
 * [Spring Boot Test autoconfiguration][autoconfiguration]
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
@@ -60,5 +61,7 @@ With **HTTP Client Command Line** you can set directories that contain such file
 [specification]: https://github.com/JetBrains/http-request-in-editor-spec
 
 [maven-plugin]: maven-plugin.html
+
+[junit-extension]: junit-extension.html
 
 [autoconfiguration]: autoconfiguration.html
