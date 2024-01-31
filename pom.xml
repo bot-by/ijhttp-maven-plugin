@@ -317,7 +317,7 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-  <description>Maven plugin, jUnit Extension and Spring Boot Test autoconfiguration for IntelliJ
+  <description>Maven plugin, Spring Boot Test autoconfiguration and jUnit Extension for IntelliJ
     HTTP Client
   </description>
   <developers>

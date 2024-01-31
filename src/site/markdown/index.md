@@ -1,4 +1,4 @@
-# Maven plugin, jUnit Extension and Spring Boot Test autoconfiguration for IntelliJ HTTP Client
+# Maven plugin, Spring Boot Test autoconfiguration and jUnit Extension for IntelliJ HTTP Client
 
 I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
 using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
