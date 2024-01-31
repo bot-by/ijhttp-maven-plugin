@@ -10,6 +10,7 @@ cache:
   paths:
     - .m2/repository
     - command-line/target
+    - junit-extension/target
     - maven-plugin/target
     - spring-boot-test/target
 
@@ -35,6 +36,8 @@ test:
     reports:
       junit:
         - command-line/target/surefire-reports/TEST-*.xml
+        - junit-extension/target/surefire-reports/TEST-*.xml
+        - junit-extension/target/failsafe-reports/TEST-*.xml
         - maven-plugin/target/surefire-reports/TEST-*.xml
         - maven-plugin/target/failsafe-reports/TEST-*.xml
         - spring-boot-test/target/surefire-reports/TEST-*.xml
@@ -64,7 +67,7 @@ spotbugs-sast:
 coverage:
   stage: verify
   script:
-    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' command-line/target/site/jacoco/jacoco.csv maven-plugin/target/site/jacoco/jacoco.csv spring-boot-test/target/site/jacoco/jacoco.csv
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print covered, "/", instructions, "instructions covered"; print 100*covered/instructions, "% covered" }' command-line/target/site/jacoco/jacoco.csv junit-extension/target/site/jacoco/jacoco.csv maven-plugin/target/site/jacoco/jacoco.csv spring-boot-test/target/site/jacoco/jacoco.csv
   coverage: '/(\d+\.?\d*) \% covered/'
   rules:
     - if: $CI_DEFAULT_BRANCH == $CI_COMMIT_BRANCH && $CI_COMMIT_TAG == null
@@ -72,7 +75,7 @@ coverage:
 codacy:
   stage: verify
   script:
-    - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r command-line/target/site/jacoco/jacoco.xml -r maven-plugin/target/site/jacoco/jacoco.xml -r spring-boot-test/target/site/jacoco/jacoco.xml
+    - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r command-line/target/site/jacoco/jacoco.xml -r junit-extension/target/site/jacoco/jacoco.xml -r maven-plugin/target/site/jacoco/jacoco.xml -r spring-boot-test/target/site/jacoco/jacoco.xml
   rules:
     - if: $CODACY_PROJECT_TOKEN && $CI_COMMIT_TAG == null
 
