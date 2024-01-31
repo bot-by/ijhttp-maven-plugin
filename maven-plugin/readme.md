@@ -3,9 +3,10 @@
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
 [![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-maven-plugin)
 
-The plugin allows to run HTTP requests on the <em>integration-test</em> phase
-using the [IntelliJ HTTP Client][http-client]. The [HTTP Request in Editor Specification][specification]
-describes format these files.
+The Maven plugin allows to run HTTP requests on the <em>integration-test</em> phase
+using the [IntelliJ HTTP Client][http-client].
+
+The [HTTP Request in Editor Specification][specification] describes format these files.
 
 Example of test request:
 
