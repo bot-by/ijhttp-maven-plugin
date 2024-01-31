@@ -142,7 +142,7 @@
   <name>ijhttp tools : Maven plugin</name>
   <packaging>maven-plugin</packaging>
   <parent>
-    <artifactId>ijhttp-parent</artifactId>
+    <artifactId>ijhttp-tools</artifactId>
     <groupId>uk.bot-by.ijhttp-tools</groupId>
     <version>${revision}${changelist}${sha1}</version>
   </parent>

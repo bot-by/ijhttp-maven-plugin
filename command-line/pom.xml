@@ -92,7 +92,7 @@
   <name>ijhttp tools : Command Line</name>
   <packaging>jar</packaging>
   <parent>
-    <artifactId>ijhttp-parent</artifactId>
+    <artifactId>ijhttp-tools</artifactId>
     <groupId>uk.bot-by.ijhttp-tools</groupId>
     <version>${revision}${changelist}${sha1}</version>
   </parent>

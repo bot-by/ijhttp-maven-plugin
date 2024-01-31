@@ -117,7 +117,7 @@ public class HttpClientCommandLineConfiguration {
   Executor executor(@Value("${ijhttp.timeout:-1}") int timeout) {
     var executor = DefaultExecutor.builder().get();
 
-    if (timeout > 0) {
+    if (0 < timeout) {
       executor.setWatchdog(ExecuteWatchdog.builder().setTimeout(Duration.ofMillis(timeout)).get());
       if (logger.isDebugEnabled()) {
         logger.debug(String.format("Set the watchdog (%s) ms", timeout));

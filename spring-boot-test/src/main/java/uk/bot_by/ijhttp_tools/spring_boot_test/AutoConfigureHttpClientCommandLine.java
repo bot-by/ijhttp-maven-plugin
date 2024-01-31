@@ -39,9 +39,8 @@ import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
 public @interface AutoConfigureHttpClientCommandLine {
 
   /**
-   * The timeout for the process in milliseconds. It must be greater than 0.
-   *
-   * @return process timeout
+   * The timeout for the process in milliseconds. If the timeout parameter is greater than 0 then a
+   * watchdog will be added to an executor.
    */
   @PropertyMapping("timeout") int timeout() default -1;
 

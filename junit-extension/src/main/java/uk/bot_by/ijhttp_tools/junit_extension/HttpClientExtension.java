@@ -21,6 +21,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
 
 /**
  * Run integration tests using IntelliJ HTTP Client.
@@ -30,6 +32,8 @@ import org.junit.jupiter.api.extension.ParameterResolver;
  * @since 1.3.0
  */
 public class HttpClientExtension implements ParameterResolver {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientExtension.class);
 
   private final ParameterResolver[] parameterResolvers;
 
@@ -57,6 +61,7 @@ public class HttpClientExtension implements ParameterResolver {
         parameterResolver -> parameterResolver.supportsParameter(parameterContext,
             extensionContext)).toList();
 
+    LOGGER.debug(() -> String.format("Parameter resolvers %s", parameterResolverList));
     if (1 < parameterResolverList.size()) {
       throw new ParameterResolutionException(
           String.format("Too many factories: %s for parameter: %s", parameterResolverList,
