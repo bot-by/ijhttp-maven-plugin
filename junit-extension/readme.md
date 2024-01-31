@@ -60,3 +60,13 @@ class HttpClientCommandLineApplicationTests {
 
 }
 ```
+
+You can play with [HTTP Client Demo][demo].
+
+[http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+
+[specification]: https://github.com/JetBrains/http-request-in-editor-spec
+
+[cli-tool]: https://www.jetbrains.com/help/idea/http-client-cli.html
+
+[demo]: https://gitlab.com/vitalijr2/ijhttp-demo

@@ -119,6 +119,31 @@ To manage plugin's output use `useMavenLogger`, `quietLogs` and `outputFile`.
 Use annotations `HttpClientExecutor` and `HttpClientCommandLineParameters` to initialise and
 configure both executor and command line builder.
 
+Example of full configuration:
+
+```java
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@AutoConfigureHttpClientCommandLine(timeout = 7000)
+class HttpClientCommandLineApplicationTests {
+
+  @Autowired
+  private Executor executor;
+
+  @Autowired
+  private HttpClientCommandLine httpClientCommandLine;
+
+  @Test
+  void httpClientCommandLine() throws IOException {
+    // when
+    var exitCode = executor.execute(httpClientCommandLine.getCommandLine());
+
+    // then
+    assertEquals(0, exitCode);
+  }
+
+}
+```
+
 ### Spring Boot Test autoconfiguration
 
 [![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-spring-boot-test)
