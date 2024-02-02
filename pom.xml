@@ -190,6 +190,11 @@
           <groupId>org.jacoco</groupId>
           <version>0.8.11</version>
         </plugin>
+        <plugin>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <groupId>org.apache.maven.plugins</groupId>
+          <version>${javadoc-plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -395,7 +400,6 @@
               </execution>
             </executions>
             <groupId>org.apache.maven.plugins</groupId>
-            <version>${javadoc-plugin.version}</version>
           </plugin>
         </plugins>
       </build>
@@ -496,7 +500,6 @@
                 </reports>
               </reportSet>
             </reportSets>
-            <version>${javadoc-plugin.version}</version>
           </plugin>
           <plugin>
             <artifactId>maven-project-info-reports-plugin</artifactId>

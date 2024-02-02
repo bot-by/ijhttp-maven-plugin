@@ -2,7 +2,6 @@ package uk.bot_by.ijhttp_tools.junit_extension;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -22,16 +21,15 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @Tag("fast")
 @ExtendWith(MockitoExtension.class)
-class HttpClientExecutorResolverTest {
+class HttpClientCommandLineExtensionFastTest {
 
   @Mock
-  private HttpClientExecutor annotation;
+  private HttpClientCommandLineParameters annotation;
   @Mock
   private AnnotatedElement annotatedElement;
   @Mock
@@ -41,21 +39,22 @@ class HttpClientExecutorResolverTest {
   @Mock
   private ParameterContext parameterContext;
 
-  private HttpClientExecutorResolver resolver;
+  private HttpClientCommandLineExtension resolver;
 
   @BeforeEach
   void setUp() {
-    resolver = new HttpClientExecutorResolver();
+    resolver = new HttpClientCommandLineExtension();
   }
 
   @DisplayName("Unsupported parameter")
   @ParameterizedTest
-  @CsvSource({"java.lang.String,false", "org.apache.commons.exec.Executor,true"})
-  void unsupportedParameter(Class<?> type, Boolean isExecutorClass) {
+  @CsvSource({"java.lang.String,false",
+      "uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine,true"})
+  void unsupportedParameter(Class<?> type, Boolean isCommandLineClass) {
     // given
     when(parameterContext.getParameter()).thenReturn(parameter);
     when(parameter.getType()).thenAnswer((invocationOnMock) -> type);
-    if (isExecutorClass) {
+    if (isCommandLineClass) {
       when(parameterContext.isAnnotated(any())).thenReturn(false);
     }
 
@@ -64,8 +63,8 @@ class HttpClientExecutorResolverTest {
 
     verifyNoInteractions(extensionContext);
     verify(parameter).getType();
-    if (isExecutorClass) {
-      verify(parameterContext).isAnnotated(HttpClientExecutor.class);
+    if (isCommandLineClass) {
+      verify(parameterContext).isAnnotated(HttpClientCommandLineParameters.class);
     } else {
       verify(parameterContext, never()).isAnnotated(any());
     }
@@ -78,8 +77,8 @@ class HttpClientExecutorResolverTest {
     // given
     when(parameterContext.getParameter()).thenReturn(parameter);
     when(parameter.getType()).thenAnswer(
-        (invocationOnMock) -> org.apache.commons.exec.Executor.class);
-    when(parameterContext.isAnnotated(HttpClientExecutor.class)).thenReturn(true);
+        (invocationOnMock) -> uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine.class);
+    when(parameterContext.isAnnotated(HttpClientCommandLineParameters.class)).thenReturn(true);
 
     // when and then
     assertTrue(resolver.supportsParameter(parameterContext, extensionContext));
@@ -88,34 +87,6 @@ class HttpClientExecutorResolverTest {
     verify(parameter).getType();
     verify(parameterContext).isAnnotated(any());
     verify(parameterContext).getParameter();
-  }
-
-  @DisplayName("Resolve parameter")
-  @ParameterizedTest
-  @ValueSource(ints = {-1, 10000})
-  void resolveParameter(int timeout) {
-    // given
-    when(annotation.timeout()).thenReturn(timeout);
-    when(annotatedElement.getAnnotation(any())).thenReturn(annotation);
-    when(parameterContext.getAnnotatedElement()).thenReturn(annotatedElement);
-
-    var spiedResolver = spy(resolver);
-
-    // when and then
-    assertNotNull(spiedResolver.resolveParameter(parameterContext, extensionContext));
-
-    verifyNoInteractions(extensionContext);
-    verify(annotation).timeout();
-    verify(annotatedElement).getAnnotation(HttpClientExecutor.class);
-    verify(parameterContext).getAnnotatedElement();
-    verify(spiedResolver).getDuration(timeout);
-  }
-
-  @DisplayName("Default timeout")
-  @Test
-  void defaultTimeout() {
-    // when and then
-    assertNull(resolver.getDuration(-1));
   }
 
 }

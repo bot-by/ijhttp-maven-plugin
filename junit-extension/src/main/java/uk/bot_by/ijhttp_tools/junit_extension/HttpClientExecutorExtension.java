@@ -29,9 +29,10 @@ import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
 
-class HttpClientExecutorResolver implements ParameterResolver {
+class HttpClientExecutorExtension implements ParameterResolver {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientCommandLineResolver.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(
+      HttpClientCommandLineExtension.class);
 
   @Override
   public boolean supportsParameter(ParameterContext parameterContext,

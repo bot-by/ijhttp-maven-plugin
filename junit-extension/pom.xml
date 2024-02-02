@@ -110,6 +110,17 @@
       <build>
         <plugins>
           <plugin>
+            <artifactId>maven-invoker-plugin</artifactId>
+            <groupId>org.apache.maven.plugins</groupId>
+          </plugin>
+        </plugins>
+      </build>
+      <id>run-its</id>
+    </profile>
+    <profile>
+      <build>
+        <plugins>
+          <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
               <links>

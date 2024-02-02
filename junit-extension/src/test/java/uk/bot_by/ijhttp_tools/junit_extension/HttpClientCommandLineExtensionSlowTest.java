@@ -28,7 +28,7 @@ import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 
 @Tag("slow")
 @ExtendWith(MockitoExtension.class)
-class HttpClientCommandLineResolverSlowTest {
+class HttpClientCommandLineExtensionSlowTest {
 
   @Mock
   private HttpClientCommandLineParameters annotation;
@@ -41,22 +41,37 @@ class HttpClientCommandLineResolverSlowTest {
   @Mock
   private ParameterContext parameterContext;
 
-  private HttpClientCommandLineResolver resolver;
+  private HttpClientCommandLineExtension resolver;
 
   @BeforeEach
   void setUp() {
-    resolver = new HttpClientCommandLineResolver();
+    resolver = new HttpClientCommandLineExtension();
   }
 
   @DisplayName("Resolve parameter")
   @Test
   void resolveParameter() {
     // given
-    when(annotation.executable()).thenReturn("test");
-    when(annotation.files()).thenReturn(new String[]{"*"});
-    when(annotation.logLevel()).thenReturn("BASIC");
     when(annotatedElement.getAnnotation(any())).thenReturn(annotation);
     when(parameterContext.getAnnotatedElement()).thenReturn(annotatedElement);
+    // default values
+    when(annotation.connectTimeout()).thenReturn(-1);
+    when(annotation.directories()).thenReturn(new String[0]);
+    when(annotation.dockerMode()).thenReturn(false);
+    when(annotation.environmentFile()).thenReturn("");
+    when(annotation.environmentName()).thenReturn("");
+    when(annotation.environmentVariables()).thenReturn(new String[0]);
+    when(annotation.executable()).thenReturn("ijhttp");
+    when(annotation.insecure()).thenReturn(false);
+    when(annotation.logLevel()).thenReturn("BASIC");
+    when(annotation.privateEnvironmentFile()).thenReturn("");
+    when(annotation.privateEnvironmentVariables()).thenReturn(new String[0]);
+    when(annotation.proxy()).thenReturn("");
+    when(annotation.report()).thenReturn(false);
+    when(annotation.reportPath()).thenReturn("");
+    when(annotation.socketTimeout()).thenReturn(-1);
+    // test values
+    when(annotation.files()).thenReturn(new String[]{"*"});
 
     var spiedResolver = spy(resolver);
 
@@ -69,7 +84,7 @@ class HttpClientCommandLineResolverSlowTest {
     verify(parameterContext).getAnnotatedElement();
 
     assertAll("Default command line", () -> assertNotNull(commandLine),
-        () -> assertEquals("test", commandLine.getCommandLine().getExecutable()),
+        () -> assertEquals("ijhttp", commandLine.getCommandLine().getExecutable()),
         () -> assertThat(commandLine.getCommandLine().getArguments(), arrayContaining("*")));
   }
 
@@ -77,6 +92,11 @@ class HttpClientCommandLineResolverSlowTest {
   @Test
   void customConfiguration() {
     // given
+    when(annotatedElement.getAnnotation(any())).thenReturn(annotation);
+    when(parameterContext.getAnnotatedElement()).thenReturn(annotatedElement);
+    // default values
+    when(annotation.files()).thenReturn(new String[0]);
+    // custom values
     when(annotation.connectTimeout()).thenReturn(123);
     when(annotation.directories()).thenReturn(new String[]{"src/test/resources"});
     when(annotation.dockerMode()).thenReturn(true);
@@ -92,8 +112,6 @@ class HttpClientCommandLineResolverSlowTest {
     when(annotation.report()).thenReturn(true);
     when(annotation.reportPath()).thenReturn("report.dir");
     when(annotation.socketTimeout()).thenReturn(987);
-    when(annotatedElement.getAnnotation(any())).thenReturn(annotation);
-    when(parameterContext.getAnnotatedElement()).thenReturn(annotatedElement);
 
     var spiedResolver = spy(resolver);
 

@@ -15,8 +15,6 @@
  */
 package uk.bot_by.ijhttp_tools.junit_extension;
 
-import static java.util.Objects.nonNull;
-
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
@@ -29,9 +27,9 @@ import org.junit.platform.commons.logging.LoggerFactory;
 import uk.bot_by.ijhttp_tools.command_line.HttpClientCommandLine;
 import uk.bot_by.ijhttp_tools.command_line.LogLevel;
 
-class HttpClientCommandLineResolver implements ParameterResolver {
+class HttpClientCommandLineExtension implements ParameterResolver {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientCommandLineResolver.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(HttpClientCommandLineExtension.class);
 
   private static void copyBooleanParametersAndLogLevelAndExecutable(
       HttpClientCommandLineParameters parameters, HttpClientCommandLine httpClientCommandLine) {
@@ -44,19 +42,19 @@ class HttpClientCommandLineResolver implements ParameterResolver {
 
   private static void handleEnvironment(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
-    if (nonNull(parameters.environmentFile())) {
+    if (!parameters.environmentFile().isEmpty()) {
       httpClientCommandLine.environmentFile(Path.of(parameters.environmentFile()));
     }
-    if (nonNull(parameters.environmentName())) {
+    if (!parameters.environmentName().isEmpty()) {
       httpClientCommandLine.environmentName(parameters.environmentName());
     }
-    if (nonNull(parameters.environmentVariables())) {
+    if (0 < parameters.environmentVariables().length) {
       httpClientCommandLine.environmentVariables(List.of(parameters.environmentVariables()));
     }
-    if (nonNull(parameters.privateEnvironmentFile())) {
+    if (!parameters.privateEnvironmentFile().isEmpty()) {
       httpClientCommandLine.privateEnvironmentFile(Path.of(parameters.privateEnvironmentFile()));
     }
-    if (nonNull(parameters.privateEnvironmentVariables())) {
+    if (0 < parameters.privateEnvironmentVariables().length) {
       httpClientCommandLine.privateEnvironmentVariables(
           List.of(parameters.privateEnvironmentVariables()));
     }
@@ -64,21 +62,21 @@ class HttpClientCommandLineResolver implements ParameterResolver {
 
   private static void handleFileParameters(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
-    if (nonNull(parameters.files())) {
+    if (0 < parameters.files().length) {
       httpClientCommandLine.files(Stream.of(parameters.files()).map(Path::of).toArray(Path[]::new));
     }
-    if (nonNull(parameters.directories())) {
+    if (0 < parameters.directories().length) {
       httpClientCommandLine.directories(
           Stream.of(parameters.directories()).map(Path::of).toArray(Path[]::new));
     }
-    if (nonNull(parameters.reportPath())) {
+    if (!parameters.reportPath().isEmpty()) {
       httpClientCommandLine.reportPath(Path.of(parameters.reportPath()));
     }
   }
 
   private static void handleProxy(HttpClientCommandLineParameters parameters,
       HttpClientCommandLine httpClientCommandLine) {
-    if (nonNull(parameters.proxy())) {
+    if (!parameters.proxy().isEmpty()) {
       httpClientCommandLine.proxy(parameters.proxy());
     }
   }

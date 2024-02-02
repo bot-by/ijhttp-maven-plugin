@@ -1,0 +1,22 @@
+### Hello world
+
+GET / HTTP/1.1
+Host: localhost:8080
+
+> {%
+client.test("Request executed successfully", function () {
+client.assert(response.status === 200, "Response status is not 200");
+});
+
+client.test("Response content-type is text", function () {
+var type = response.contentType.mimeType;
+client.assert(type === "text/plain",
+    "Expected 'text/plain' but received '" + type + "'");
+});
+
+client.test("Response body is 'Hello world'", function () {
+var body = response.body;
+client.assert(body === "Hello world",
+    "Expected 'Hello world' but received '" + body + "'");
+})
+%}
