@@ -78,7 +78,7 @@
     </dependency>
   </dependencies>
   <description>The test of running jUnit Extension.</description>
-  <groupId>uk.bot-by.ijhttp-tools.command-line.it</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools.command-line.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <properties>
     <java.version>17</java.version>

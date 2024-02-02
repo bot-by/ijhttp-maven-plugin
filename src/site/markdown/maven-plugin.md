@@ -65,7 +65,7 @@ The parameters equal to arguments of `ijhttp`. Run `ijhttp --help` to learn them
 
 ```xml
 <plugin>
-  <groupId>uk.bot-by.ijhttp-tools</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
   <version><!-- search on Maven Central --></version>
   <executions>

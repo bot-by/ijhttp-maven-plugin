@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2023-2024 bot-by
+	Copyright 2023-2024 Vitalij Berdinskih
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@
         <artifactId>maven-plugin-plugin</artifactId>
         <configuration>
           <goalPrefix>ijhttp</goalPrefix>
-          <helpPackageName>uk.bot_by.ijhttp_tools.maven_plugin</helpPackageName>
+          <helpPackageName>io.gitlab.vitalij_r2.ijhttp_tools.maven_plugin</helpPackageName>
           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
         <executions>
@@ -76,7 +76,7 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <configuration>
           <excludes>
-            <exclude>uk/bot_by/ijhttp_tools/maven_plugin/HelpMojo.class</exclude>
+            <exclude>io/gitlab/vitalij_r2/ijhttp_tools/maven_plugin/HelpMojo.class</exclude>
           </excludes>
         </configuration>
         <groupId>org.jacoco</groupId>
@@ -86,7 +86,7 @@
   <dependencies>
     <dependency>
       <artifactId>ijhttp-command-line</artifactId>
-      <groupId>uk.bot-by.ijhttp-tools</groupId>
+      <groupId>io.gitlab.vitalijr2.ijhttp-tools</groupId>
       <version>${revision}${changelist}${sha1}</version>
     </dependency>
     <dependency>
@@ -143,7 +143,7 @@
   <packaging>maven-plugin</packaging>
   <parent>
     <artifactId>ijhttp-tools</artifactId>
-    <groupId>uk.bot-by.ijhttp-tools</groupId>
+    <groupId>io.gitlab.vitalijr2.ijhttp-tools</groupId>
     <version>${revision}${changelist}${sha1}</version>
   </parent>
   <prerequisites>

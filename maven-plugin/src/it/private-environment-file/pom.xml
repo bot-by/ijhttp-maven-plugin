@@ -54,7 +54,7 @@
     </plugins>
   </build>
   <description>The test of using a file with private environment variables.</description>
-  <groupId>uk.bot-by.ijhttp-tools.maven-plugin.it</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools.maven-plugin.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

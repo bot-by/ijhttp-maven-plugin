@@ -33,7 +33,7 @@
     </dependency>
   </dependencies>
   <description>The test of running Spring Boot Test.</description>
-  <groupId>uk.bot-by.ijhttp-tools.command-line.it</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools.command-line.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <name>Manual configuration for Spring Boot Test</name>
   <parent>

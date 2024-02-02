@@ -80,7 +80,7 @@ Example of full configuration:
 ```xml
 
 <plugin>
-  <groupId>uk.bot-by.ijhttp-tools</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools</groupId>
   <artifactId>ijhttp-maven-plugin</artifactId>
   <version><!-- search on Maven Central --></version>
   <executions>
@@ -211,7 +211,7 @@ See [Changelog](changelog.md)
 
 ## License
 
-Copyright 2023-2024 bot-by
+Copyright 2023-2024 Vitalij Berdinskih
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -225,7 +225,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-[Apache License v2.0](LICENSE)
+[Apache License v2.0](LICENSE)  
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 [http-client]: https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html

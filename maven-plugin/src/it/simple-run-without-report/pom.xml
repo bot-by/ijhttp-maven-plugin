@@ -51,7 +51,7 @@
     </plugins>
   </build>
   <description>A simple IT verifying the basic use case without report.</description>
-  <groupId>uk.bot-by.ijhttp-tools.maven-plugin.it</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools.maven-plugin.it</groupId>
   <modelVersion>4.0.0</modelVersion>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

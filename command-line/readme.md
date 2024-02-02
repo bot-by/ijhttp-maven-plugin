@@ -1,7 +1,7 @@
 # HTTP Client Command Line
 
-[![Maven Central](https://img.shields.io/maven-central/v/uk.bot-by.ijhttp-tools/ijhttp-command-line)](https://search.maven.org/artifact/uk.bot-by.ijhttp-tools/ijhttp-command-line)
-[![Javadoc](https://javadoc.io/badge2/uk.bot-by.ijhttp-tools/ijhttp-command-line/javadoc.svg)](https://javadoc.io/doc/uk.bot-by.ijhttp-tools/ijhttp-command-line)
+[![Maven Central](https://img.shields.io/maven-central/v/io.gitlab.vitalijr2.ijhttp-tools/ijhttp-command-line)](https://search.maven.org/artifact/io.gitlab.vitalijr2.ijhttp-tools/ijhttp-command-line)
+[![Javadoc](https://javadoc.io/badge2/io.gitlab.vitalijr2.ijhttp-tools/ijhttp-command-line/javadoc.svg)](https://javadoc.io/doc/io.gitlab.vitalijr2.ijhttp-tools/ijhttp-command-line)
 
 The builder-style component [HttpClientCommandLine][component] helps to prepare command line
 to run [Intellij HTTP Client CLI tool][cli-tool].
@@ -34,6 +34,6 @@ commandLine.directories(orders, catalog);
 executor.execute(commandLine.getCommandLine());
 ```
 
-[component]: src/main/java/uk/bot_by/ijhttp_tools/command_line/HttpClientCommandLine.java
+[component]: src/main/java/io/gitlab/vitalij_r2/ijhttp_tools/command_line/HttpClientCommandLine.java
 
 [cli-tool]: https://www.jetbrains.com/help/idea/http-client-cli.html

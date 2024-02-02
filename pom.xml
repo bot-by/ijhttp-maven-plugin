@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Copyright 2023-2024 bot-by
+  Copyright 2023-2024 Vitalij Berdinskikh
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -268,7 +268,7 @@
   </build>
   <ciManagement>
     <system>GitLab</system>
-    <url>https://gitlab.com/bot-by/ijhttp-tools/-/pipelines</url>
+    <url>https://gitlab.com/vitalijr2/ijhttp-tools/-/pipelines</url>
   </ciManagement>
   <dependencyManagement>
     <dependencies>
@@ -334,11 +334,11 @@
       <url>https://gitlab.com/vitalijr2</url>
     </developer>
   </developers>
-  <groupId>uk.bot-by.ijhttp-tools</groupId>
+  <groupId>io.gitlab.vitalijr2.ijhttp-tools</groupId>
   <inceptionYear>2023</inceptionYear>
   <issueManagement>
     <system>GitLab</system>
-    <url>https://gitlab.com/bot-by/ijhttp-tools/-/issues</url>
+    <url>https://gitlab.com/vitalijr2/ijhttp-tools/-/issues</url>
   </issueManagement>
   <licenses>
     <license>
@@ -356,10 +356,6 @@
     <module>spring-boot-test</module>
   </modules>
   <name>ijhttp tools</name>
-  <organization>
-    <name>bot-by</name>
-    <url>https://bot-by.uk</url>
-  </organization>
   <packaging>pom</packaging>
   <profiles>
     <profile>
@@ -526,8 +522,8 @@
     <changelist>-SNAPSHOT</changelist>
     <commons-exec.version>1.4.0</commons-exec.version>
     <docs-maven-skin.version>2.3.2</docs-maven-skin.version>
-    <github.release.url>https://github.com/bot-by/ijhttp-tools/releases</github.release.url>
-    <gitlab.release.url>https://gitlab.com/bot-by/ijhttp-tools/-/releases
+    <github.release.url>https://github.com/vitalijr2/ijhttp-tools/releases</github.release.url>
+    <gitlab.release.url>https://gitlab.com/vitalijr2/ijhttp-tools/-/releases
     </gitlab.release.url>
     <java.version>17</java.version>
     <javadoc-plugin.version>3.6.3</javadoc-plugin.version>
@@ -541,10 +537,10 @@
     <sha1/>
   </properties>
   <scm>
-    <connection>scm:git:https://gitlab.com/bot-by/ijhttp-tools.git</connection>
-    <developerConnection>scm:git:git@gitlab.com:bot-by/ijhttp-tools.git</developerConnection>
-    <url>https://gitlab.com/bot-by/ijhttp-tools</url>
+    <connection>scm:git:https://gitlab.com/vitalijr2/ijhttp-tools.git</connection>
+    <developerConnection>scm:git:git@gitlab.com:vitalijr2/ijhttp-tools.git</developerConnection>
+    <url>https://gitlab.com/vitalijr2/ijhttp-tools</url>
   </scm>
-  <url>https://gitlab.com/bot-by/ijhttp-tools</url>
+  <url>https://gitlab.com/vitalijr2/ijhttp-tools</url>
   <version>${revision}${changelist}${sha1}</version>
 </project>

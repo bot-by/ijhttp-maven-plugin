@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-	Copyright 2023-2024 bot-by
+	Copyright 2023-2024 Vitalij Berdinskih
 
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@
   <packaging>jar</packaging>
   <parent>
     <artifactId>ijhttp-tools</artifactId>
-    <groupId>uk.bot-by.ijhttp-tools</groupId>
+    <groupId>io.gitlab.vitalijr2.ijhttp-tools</groupId>
     <version>${revision}${changelist}${sha1}</version>
   </parent>
   <profiles>
