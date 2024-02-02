@@ -1,5 +1,8 @@
 # ijhttp tools
 
+> [!IMPORTANT]
+> The project was moved to [vitalijr2/ijhttp-tools](https://github.com/vitalijr2/ijhttp-tools) on 02-02-2024.
+
 I had started with a Maven plugin to run HTTP requests on the <em>integration-test</em> phase
 using the [IntelliJ HTTP Client][http-client]. Later I added a Spring Boot Test autoconfiguration,
 thanks [@GoncaloPT][GoncaloPT] for [his idea][leverage-test].
